@@ -177,6 +177,27 @@ struct s_hud
 
 };
 
+typedef struct s_mapSlot t_mapSlot;
+
+struct s_mapSlot
+{
+	t_background background;
+	t_rectangle collisions[10];
+	t_poney ennemis[10];
+};
+
+typedef struct s_maps t_maps;
+
+struct s_maps
+{
+	t_mapSlot saveMap1;
+	t_mapSlot saveMap2;
+	t_mapSlot saveMap3;
+	t_mapSlot saveMap4;
+	t_mapSlot currentMap;
+	t_mapSlot nextMap;
+};
+
 
 ///////////////////////////////////////
 #pragma endregion
