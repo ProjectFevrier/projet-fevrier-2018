@@ -1,45 +1,6 @@
-﻿  main.c
-f:\_game academy\projet fevrier\project 23-02-18 test\sfml-window\lib.h(31): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
-  f:\_game academy\projet fevrier\project 23-02-18 test\sfml-window\lib.h(13): note: voir la définition précédente de 'SPEED_PLAYER'
-f:\_game academy\projet fevrier\project 23-02-18 test\sfml-window\lib.h(33): warning C4005: 'GRAVITY' : redéfinition de macro
-  f:\_game academy\projet fevrier\project 23-02-18 test\sfml-window\lib.h(12): note: voir la définition précédente de 'GRAVITY'
-main.c(109): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
-main.c(135): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
-main.c(136): warning C4477: 'printf' : la chaîne de format '%.2f' nécessite un argument de type 'double', mais l'argument variadique 1 est de type 'int'
-main.c(562): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-main.c(564): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
-main.c(626): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
-main.c(626): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(709): warning C4244: '+=' : conversion de 'double' en 'int', perte possible de données
-main.c(761): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(767): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(768): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(772): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(773): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(787): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(788): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(790): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(791): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(799): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(800): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(802): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(803): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(811): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(812): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(814): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(815): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(826): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(827): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(829): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(830): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(840): warning C4142: 'RadToDeg' : redéfinition bénigne du type
-main.c(841): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-main.c(846): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(848): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-main.c(900): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(900): warning C4101: 'Temporaire' : variable locale non référencée
-main.c(1230): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-  Génération de code en cours
-  All 37 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+﻿  Génération de code en cours
+  2 of 38 functions ( 5.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
-  SFML-window.vcxproj -> F:\_Game Academy\Projet Fevrier\Project 23-02-18 TEST\Release\SFML-window.exe
+  SFML-window.vcxproj -> D:\GitHub\projet\projet-fevrier-2018\Project 23-02-18 TEST\Release\SFML-window.exe

@@ -258,5 +258,8 @@ void initHud(t_hud *Hud, t_player *Player);
 void manageHud(sfRenderWindow *window, t_hud *Hud, t_player *Player);
 //
 
+
+/*New fonctions*/
+void loadMaps(t_maps* _maps, int _currentLevel);
 ///////////////////////////////////////
 #pragma endregion

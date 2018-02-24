@@ -94,6 +94,9 @@ int main()
 	/*Hud init*/
 	initHud(&Hud, &Player);
 
+	loadMaps(&maps, currentLevel);
+	printf_s("elements number platforms : %d || elements number ennemis : %d \n", maps.saveMap1.collisions[0].elementsNumber, maps.saveMap1.ennemis[0].elementsNumber);
+
 #pragma region // Position de la console
 	HWND consoleWindow = GetConsoleWindow();
 	SetWindowPos(consoleWindow, 0, -500, 500, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
@@ -1261,7 +1264,7 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 
 
 	/*charger la map 1 du level en cours*/
-	sprintf_s(path, 50, "resources/datas/m%d-%1.txt", _currentLevel);
+	sprintf_s(path, 50, "resources/datas/m%d-1.txt", _currentLevel);
 	fopen_s(&file, path, "r");
 	if (file == NULL)
 		printf_s("erreur ouvrture fichier plateformes");
@@ -1279,16 +1282,17 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 		_maps->saveMap1.collisions[i].elementsNumber = elementsNumber;
 	}
 	fscanf_s(file, "%d\n", &elementsNumber);
+		printf_s("nbr = %d \n",elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
-		_maps->saveMap1.ennemis->sprite = sfSprite_create();
-		_maps->saveMap1.ennemis->sprite = createSprite("resources/sprites/m1-1.png");
+		_maps->saveMap1.ennemis[i].sprite = sfSprite_create();
+		_maps->saveMap1.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
 		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap1.ennemis[i].xStart, &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax);
 		_maps->saveMap1.ennemis[i].xStart += X_OFFSET;
 		_maps->saveMap1.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap1.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap1.ennemis[i].sprite);
-		_maps->nextMap.ennemis[i].Origin.x = _maps->saveMap1.ennemis[i].hitBox.width / 2;
-		_maps->nextMap.ennemis[i].Origin.y = _maps->saveMap1.ennemis[i].hitBox.height / 2;
+		_maps->saveMap1.ennemis[i].Origin.x = _maps->saveMap1.ennemis[i].hitBox.width / 2;
+		_maps->saveMap1.ennemis[i].Origin.y = _maps->saveMap1.ennemis[i].hitBox.height / 2;
 		sfSprite_setOrigin(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].pos);
 		_maps->saveMap1.ennemis[i].elementsNumber = elementsNumber;
