@@ -1268,7 +1268,7 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 	fopen_s(&file, path, "r");
 	if (file == NULL)
 		printf_s("erreur ouvrture fichier plateformes");
-
+	/*chargement des plateformes map 1*/
 	fscanf_s(file, "%d\n", &elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
@@ -1281,8 +1281,9 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 		_maps->saveMap1.collisions[i].hitBox = sfRectangleShape_getGlobalBounds(_maps->saveMap1.collisions[i].rectangle);
 		_maps->saveMap1.collisions[i].elementsNumber = elementsNumber;
 	}
+	/*chargement des ennemis map 1*/
 	fscanf_s(file, "%d\n", &elementsNumber);
-		printf_s("nbr = %d \n",elementsNumber);
+	printf_s("nbr = %d \n",elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
 		_maps->saveMap1.ennemis[i].sprite = sfSprite_create();
@@ -1297,10 +1298,45 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 		sfSprite_setPosition(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].pos);
 		_maps->saveMap1.ennemis[i].elementsNumber = elementsNumber;
 	}
-
 	fclose(file);
 
 
+	/*charger la map 2 du level en cours*/
+	sprintf_s(path, 50, "resources/datas/m%d-2.txt", _currentLevel);
+	fopen_s(&file, path, "r");
+	if (file == NULL)
+		printf_s("erreur ouvrture fichier plateformes");
+	/*chargement des plateformes map 2*/
+	fscanf_s(file, "%d\n", &elementsNumber);
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		_maps->saveMap2.collisions[i].rectangle = sfRectangleShape_create();
+		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_maps->saveMap2.collisions[i].pos.x, &_maps->saveMap2.collisions[i].pos.y, &_maps->saveMap2.collisions[i].size.x, &_maps->saveMap2.collisions[i].size.y);
+		_maps->saveMap2.collisions[i].pos.x += X_OFFSET;
+
+		sfRectangleShape_setSize(_maps->saveMap2.collisions[i].rectangle, _maps->saveMap2.collisions[i].size);
+		sfRectangleShape_setPosition(_maps->saveMap2.collisions[i].rectangle, _maps->saveMap2.collisions[i].pos);
+		_maps->saveMap2.collisions[i].hitBox = sfRectangleShape_getGlobalBounds(_maps->saveMap2.collisions[i].rectangle);
+		_maps->saveMap2.collisions[i].elementsNumber = elementsNumber;
+	}
+	/*chargement des ennemis map 2*/
+	fscanf_s(file, "%d\n", &elementsNumber);
+	printf_s("nbr = %d \n", elementsNumber);
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		_maps->saveMap2.ennemis[i].sprite = sfSprite_create();
+		_maps->saveMap2.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
+		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap2.ennemis[i].xStart, &_maps->saveMap2.ennemis[i].pos.x, &_maps->saveMap2.ennemis[i].pos.y, &_maps->saveMap2.ennemis[i].Direction, &_maps->saveMap2.ennemis[i].distMax);
+		_maps->saveMap2.ennemis[i].xStart += X_OFFSET;
+		_maps->saveMap2.ennemis[i].pos.x += X_OFFSET;
+		_maps->saveMap2.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap2.ennemis[i].sprite);
+		_maps->saveMap2.ennemis[i].Origin.x = _maps->saveMap2.ennemis[i].hitBox.width / 2;
+		_maps->saveMap2.ennemis[i].Origin.y = _maps->saveMap2.ennemis[i].hitBox.height / 2;
+		sfSprite_setOrigin(_maps->saveMap2.ennemis[i].sprite, _maps->saveMap2.ennemis[i].Origin);
+		sfSprite_setPosition(_maps->saveMap2.ennemis[i].sprite, _maps->saveMap2.ennemis[i].pos);
+		_maps->saveMap2.ennemis[i].elementsNumber = elementsNumber;
+	}
+	fclose(file);
 
 
 }
