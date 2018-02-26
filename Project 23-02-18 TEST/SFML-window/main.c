@@ -396,14 +396,14 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 		// Bords de map X
 		if (currentElement->Bullet.pos.x <= (0 + X_OFFSET) + WIDTH_COEUR || currentElement->Bullet.pos.x >= 1920 + WIDTH_COEUR)
 		{
-			printf("Delete");
+			//printf("Delete");
 			/*DeleteBulletToID(_list, countElement);
 			break;*/
 		}
 		// Bords de map Y
 		if (currentElement->Bullet.pos.y <= 0 || currentElement->Bullet.pos.y >= 1080 + HEIGHT_COEUR)
 		{
-			printf("Delete");
+			//printf("Delete");
 			/*DeleteBulletToID(_list, countElement);
 			break;*/
 		}
@@ -836,30 +836,30 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 				RectCenter.x = _rectangle1[i].hitBox.left + _rectangle1[i].hitBox.width / 2;
 				/*Test Collision*/
 				if (RectCenter.x - PlayerCenter.x > 0 && ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2)) <= -10)) {
-					printf("%d\n", Player->OnPlatform);
+					//printf("%d\n", Player->OnPlatform);
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x -= frctIntersection.width;
 
 					}
-					printf("right\n");
+					//printf("right\n");
 					Player->BlockLeft = 1;
 
 				}
 				else if (RectCenter.x - PlayerCenter.x < 0 && ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2)) <= -10)) {
-					printf("%d\n", Player->OnPlatform);
+					//printf("%d\n", Player->OnPlatform);
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x += frctIntersection.width;
 
 					}
-					printf("left\n");
+					//printf("left\n");
 					Player->BlockRight = 1;
 
 
 				}
 
-				printf("RectPoint : %.2f\n", ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2))));
+				//printf("RectPoint : %.2f\n", ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2))));
 			}
 		}
 	}
@@ -909,30 +909,30 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 				RectCenter.x = _rectangle2[i].hitBox.left + _rectangle2[i].hitBox.width / 2;
 				/*Test Collision*/
 				if (RectCenter.x - PlayerCenter.x > 0 && ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2)) <= -10)) {
-					printf("%d\n", Player->OnPlatform);
+					//printf("%d\n", Player->OnPlatform);
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x -= frctIntersection.width;
 
 					}
-					printf("right\n");
+					//printf("right\n");
 					Player->BlockLeft = 1;
 
 				}
 				else if (RectCenter.x - PlayerCenter.x < 0 && ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2)) <= -10)) {
-					printf("%d\n", Player->OnPlatform);
+					//printf("%d\n", Player->OnPlatform);
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x += frctIntersection.width;
 
 					}
-					printf("left\n");
+					//printf("left\n");
 					Player->BlockRight = 1;
 
 
 				}
 
-				printf("RectPoint : %.2f\n", ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2))));
+				//printf("RectPoint : %.2f\n", ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2))));
 			}
 		}
 	}
