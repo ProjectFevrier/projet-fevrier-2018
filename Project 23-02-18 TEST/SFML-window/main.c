@@ -43,12 +43,7 @@ int main()
 	int asStarted = 0;
 
 	/*Structures*/
-	t_background background[2];
-	t_rectangle rectangleMap1[10];
-	t_rectangle rectangleMap2[10];
 	t_paralax paralax;
-	t_poney poney1[10];
-	t_poney poney2[10];
 	t_hud Hud;
 
 	/*Ajout du 24/02/18*/
@@ -56,19 +51,7 @@ int main()
 
 #pragma region inits
 
-	/*Background 1 init*/
-	background[0].sprite = createSprite("resources/textures/1.png");
-	background[0].pos.x = 0 + X_OFFSET;
-	background[0].pos.y = 0;
-	background[0].backgroundNumber = 1;
-
-	/*Background 2 init*/
-	background[1].sprite = createSprite("resources/textures/2.png");
-	background[1].pos.x = 0 + X_OFFSET;
-	background[1].pos.y = 2000;
-	background[1].backgroundNumber = 2;
-
-	/*paralax init*/
+	/*parallax init*/
 	paralax.sprite = createSprite("resources/textures/fond.png");
 	paralax.animRect.left = 0;
 	paralax.animRect.top = 0;
@@ -78,15 +61,7 @@ int main()
 	paralax.pos.y = 0;
 	sfSprite_setTextureRect(paralax.sprite, paralax.animRect);
 	sfSprite_setPosition(paralax.sprite, paralax.pos);
-	
-	/*Platforms first init*/
-	initPlatforms(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, rectangleMap1, rectangleMap2);
-	newElementsOffset(rectangleMap2,0,0);
 
-	/*Poney init*/
-	initPoney(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, poney1, poney2,asStarted);
-	newElementsOffset2(poney2, 0, 0);
-	asStarted = 1;
 
 	/*Player init*/
 	initPlayer(&Player);
@@ -94,8 +69,11 @@ int main()
 	/*Hud init*/
 	initHud(&Hud, &Player);
 
-	loadMaps(&maps, currentLevel);
-	printf_s("elements number platforms : %d || elements number ennemis : %d \n", maps.saveMap1.collisions[0].elementsNumber, maps.saveMap1.ennemis[0].elementsNumber);
+	asStarted = 1;
+
+	/*Load maps*/
+	loadMaps(&maps, currentLevel, asStarted);
+	nextMapYOffset(&maps, 0);
 
 #pragma region // Position de la console
 	HWND consoleWindow = GetConsoleWindow();
@@ -132,6 +110,7 @@ int main()
 		
 		float currentJauge = (float)clock() / CLOCKS_PER_SEC;
 		float sinceJauge = currentJauge - startJauge;
+		velocityOffset = (BG_VELOCITY * timeSinceBackground);
 		// Calcule de point !!!
 		if (sinceJauge >= 1.5)
 		{
@@ -159,96 +138,32 @@ int main()
 
 
 		/*Deplacements*/
-		for (int i = 0; i < 2; i++)
-		{
-			background[i].pos.y -= BG_VELOCITY * timeSinceBackground;
-			paralax.animRect.top += 5;
-		}
-		moveElements(rectangleMap1, rectangleMap2, timeSinceBackground);
-		moveElements2(poney1, poney2, timeSinceBackground);
-
-#pragma region chargement maps et objets
-
-		/*chargement de la map suivante*/
-		if (background[0].pos.y <= -2000)
-		{
-			background[0].sprite = background[1].sprite;
-			background[0].backgroundNumber = background[1].backgroundNumber;
-			background[0].pos.y = 0;
-			background[1].pos.y = MAP_HEIGHT - (BG_VELOCITY * timeSinceBackground);
-			velocityOffset = (BG_VELOCITY * timeSinceBackground);
-			randomMapNb = rand() % (49 - 10) + 10;
-			while ((randomMapNb/10) == background[0].backgroundNumber)
-			{
-				randomMapNb = rand() % (49 - 10) + 10;
-			}
-			randomMapNb = randomMapNb / 10;
-			switch (randomMapNb)
-			{
-			case 1 :
-				background[1].sprite = createSprite("resources/textures/1.png");
-				background[1].backgroundNumber = 1;
-				initPlatforms(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, rectangleMap1, rectangleMap2);
-				initPoney(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, poney1, poney2, asStarted);
-				break;
-			case 2 :
-				background[1].sprite = createSprite("resources/textures/2.png");
-				background[1].backgroundNumber = 2;
-				initPlatforms(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, rectangleMap1, rectangleMap2);
-				initPoney(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, poney1, poney2, asStarted);
-				break;
-			case 3 :
-				background[1].sprite = createSprite("resources/textures/3.png");
-				background[1].backgroundNumber = 3;
-				initPlatforms(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, rectangleMap1, rectangleMap2);
-				initPoney(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, poney1, poney2, asStarted);
-				break;
-			case 4:
-				background[1].sprite = createSprite("resources/textures/4.png");
-				background[1].backgroundNumber = 4;
-				initPlatforms(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, rectangleMap1, rectangleMap2);
-				initPoney(currentLevel, background[0].backgroundNumber, background[1].backgroundNumber, poney1, poney2, asStarted);
-				break;
-			default : 
-				break;
-			}
-			newElementsOffset(rectangleMap2, currentTimeBackground, velocityOffset);
-			newElementsOffset2(poney2, currentTimeBackground, velocityOffset);
-
-		}
-
-#pragma endregion chargement maps et objets
-		//printf_s("pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", poney1[0].xStart, poney1[0].pos.x, poney1[0].pos.y, poney1[0].Direction, poney1[0].distMax);
-
-		/*Reset position 0 paralax*/
+		paralax.animRect.top += 5;
 		if (paralax.animRect.top >= 8000)
 		{
 			paralax.animRect.top = 0;
 		}
+		moveMaps(&maps, velocityOffset);
 
+
+		/*Set et draw parallax*/
 		sfSprite_setTextureRect(paralax.sprite, paralax.animRect);
 		sfRenderWindow_drawSprite(window, paralax.sprite, NULL);
 
-		/*set position et draw du sprite*/
-		for (int i = 0; i < 2; i++)
-		{
-			sfSprite_setPosition(background[i].sprite, background[i].pos);
-			sfRenderWindow_drawSprite(window, background[i].sprite, NULL);
-		}
+		/*set et draw des elements*/
+		displayMaps(&maps, window);
 
-		managePoney(window, mode, poney1, poney2, timeSinceBackground);
+
+
+		managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis, timeSinceBackground);
 
 		affMap(window, &Player);
-		ReadBullet(window, mode, list, poney1, poney2, &Player);
+		ReadBullet(window, mode, list, maps.currentMap.ennemis, maps.nextMap.ennemis, &Player);
 		managePlayer(window, mode, &Player, list, &gravity_Since);
 		manageHud(window, &Hud, &Player);
 		Gravity(window, mode, &Player, &gravity_Since);
-		checkColision(&Player, rectangleMap1, rectangleMap2);
+		checkColision(&Player, maps.currentMap.collisions, maps.nextMap.collisions);
 
-		/*set position et draw des sprite elements*/
-		displayElements(rectangleMap1, rectangleMap2, window);
-		displayElements2(poney1, poney2, window);
-		//////////////
 		sfRenderWindow_drawSprite(window, clouds, NULL);
 		sfRenderWindow_display(window);
 	}
@@ -271,176 +186,7 @@ sfSprite* createSprite(char *_source)
 	return sprite;
 }
 
-void initPlatforms(int _level,int _backGround1,int _backGround2,t_rectangle *_rectangle1, t_rectangle *_rectangle2)
-{
-	char* str = malloc(50);
-	int elementsNumber = 0;
 
-	/*charger le premier tableau*/
-	sprintf_s(str, 50, "resources/datas/p%d-%d.txt", _level, _backGround1);
-	FILE*file = NULL;
-	fopen_s(&file, str, "r");
-	if (file == NULL)
-		printf_s("erreur ouvrture fichier plateformes");
-	fscanf_s(file, "%d\n", &elementsNumber);
-	for (int i = 0; i < elementsNumber; i++)
-	{
-		_rectangle1[i].rectangle = sfRectangleShape_create();
-		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_rectangle1[i].pos.x, &_rectangle1[i].pos.y, &_rectangle1[i].size.x, &_rectangle1[i].size.y);
-		_rectangle1[i].pos.x += X_OFFSET;
-		sfRectangleShape_setSize(_rectangle1[i].rectangle, _rectangle1[i].size);
-		sfRectangleShape_setPosition(_rectangle1[i].rectangle, _rectangle1[i].pos);
-		_rectangle1[i].hitBox = sfRectangleShape_getGlobalBounds(_rectangle1[i].rectangle);
-		_rectangle1[i].elementsNumber = elementsNumber;
-	}
-	fclose(file);
-
-	/*charger le deuxieme tableau */
-	sprintf_s(str, 50, "resources/datas/p%d-%d.txt", _level, _backGround2);
-	fopen_s(&file, str, "r");
-	if (file == NULL)
-		printf_s("erreur ouvrture fichier plateformes");
-	fscanf_s(file, "%d\n", &elementsNumber);
-	for (int i = 0; i < elementsNumber; i++)
-	{
-		_rectangle2[i].rectangle = sfRectangleShape_create();
-		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_rectangle2[i].pos.x, &_rectangle2[i].pos.y, &_rectangle2[i].size.x, &_rectangle2[i].size.y);
-		_rectangle2[i].pos.x += X_OFFSET;
-		sfRectangleShape_setSize(_rectangle2[i].rectangle, _rectangle2[i].size);
-		sfRectangleShape_setPosition(_rectangle2[i].rectangle, _rectangle2[i].pos);
-		_rectangle2[i].elementsNumber = elementsNumber;
-	}
-	fclose(file);
-}
-
-void moveElements(t_rectangle *_rectangle1, t_rectangle *_rectangle2, float _timeSinceBackground)
-{
-	for (int i = 0; i < _rectangle1[0].elementsNumber; i++)
-	{
-		_rectangle1[i].pos.y -= BG_VELOCITY * _timeSinceBackground;
-	}
-	for (int i = 0; i < _rectangle2[0].elementsNumber; i++)
-	{
-		_rectangle2[i].pos.y -= BG_VELOCITY * _timeSinceBackground;
-	}
-}
-
-void displayElements(t_rectangle *_rectangle1, t_rectangle *_rectangle2, sfRenderWindow* _window)
-{
-	for (int i = 0; i < _rectangle1[0].elementsNumber; i++)
-	{
-		sfRectangleShape_setPosition(_rectangle1[i].rectangle, _rectangle1[i].pos);
-		//sfRenderWindow_drawRectangleShape(_window, _rectangle1[i].rectangle, NULL);
-	}
-	for (int i = 0; i < _rectangle2[0].elementsNumber; i++)
-	{
-		sfRectangleShape_setPosition(_rectangle2[i].rectangle, _rectangle2[i].pos);
-		//sfRenderWindow_drawRectangleShape(_window, _rectangle2[i].rectangle, NULL);
-	}
-}
-
-void newElementsOffset(t_rectangle *_rectangle2,float _timeSinceBackground, float _velocityOffset)
-{
-	for (int i = 0; i < _rectangle2[0].elementsNumber; i++)
-	{
-		_rectangle2[i].pos.y += MAP_HEIGHT - _velocityOffset;
-	}
-}
-
-void moveElements2(t_poney *_poney1, t_poney *_poney2, float _timeSinceBackground)
-{
-	for (int i = 0; i < _poney1[0].elementsNumber; i++)
-	{
-		_poney1[i].pos.y -= BG_VELOCITY * _timeSinceBackground;
-	}
-	for (int i = 0; i < _poney2[0].elementsNumber; i++)
-	{
-		_poney2[i].pos.y -= BG_VELOCITY * _timeSinceBackground;
-	}
-}
-
-void initPoney(int _level, int _backGround1, int _backGround2, t_poney *_poney1, t_poney *_poney2 , int _asStarted)
-{
-		char* str = malloc(50);
-		int elementsNumber = 0;
-
-		FILE*file = NULL;
-		
-		/*charger le premier tableau*/
-		sprintf_s(str, 50, "resources/datas/e%d-%d.txt", _level, _backGround1);
-		fopen_s(&file, str, "r");
-		if (file == NULL)
-			printf_s("erreur ouvrture fichier enemis");
-		fscanf_s(file, "%d\n", &elementsNumber);
-		for (int i = 0; i < elementsNumber; i++)
-		{
-			_poney1[i].sprite = sfSprite_create();
-			_poney1[i].sprite = createSprite("resources/textures/Poney.png");
-			fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_poney1[i].xStart, &_poney1[i].pos.x, &_poney1[i].pos.y, &_poney1[i].Direction, &_poney1[i].distMax);
-			_poney1[i].xStart += X_OFFSET;
-			_poney1[i].pos.x += X_OFFSET;
-			_poney1[i].hitBox = sfSprite_getGlobalBounds(_poney1[i].sprite);
-			_poney1[i].Origin.x = _poney1[i].hitBox.width / 2;
-			_poney1[i].Origin.y = _poney1[i].hitBox.height;
-			sfSprite_setOrigin(_poney1[i].sprite, _poney1[i].Origin);
-			sfSprite_setPosition(_poney1[i].sprite, _poney1[i].pos);
-			_poney1[i].elementsNumber = elementsNumber;
-		}
-		fclose(file);
-
-		/*charger le deuxieme tableau*/
-		sprintf_s(str, 50, "resources/datas/e%d-%d.txt", _level, _backGround2);
-		fopen_s(&file, str, "r");
-		if (file == NULL)
-			printf_s("erreur ouvrture fichier enemis");
-		fscanf_s(file, "%d\n", &elementsNumber);
-		for (int i = 0; i < elementsNumber; i++)
-		{
-			_poney2[i].sprite = sfSprite_create();
-			_poney2[i].sprite = createSprite("resources/textures/Poney.png");
-			fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_poney2[i].xStart, &_poney2[i].pos.x, &_poney2[i].pos.y, &_poney2[i].Direction, &_poney2[i].distMax);
-			_poney2[i].xStart += X_OFFSET;
-			_poney2[i].pos.x += X_OFFSET;
-			_poney2[i].hitBox = sfSprite_getGlobalBounds(_poney2[i].sprite);
-			_poney2[i].Origin.x = _poney2[i].hitBox.width / 2;
-			_poney2[i].Origin.y = _poney2[i].hitBox.height;
-			sfSprite_setOrigin(_poney2[i].sprite, _poney2[i].Origin);
-			sfSprite_setPosition(_poney2[i].sprite, _poney2[i].pos);
-			_poney2[i].elementsNumber = elementsNumber;
-		}
-		fclose(file);
-	
-}
-
-void displayElements2(t_poney *_poney1, t_poney *_poney2, sfRenderWindow* _window)
-{
-	for (int i = 0; i < _poney1[0].elementsNumber; i++)
-	{
-		if (_poney1[i].sprite != NULL)
-		{
-			_poney1[i].hitBox = sfSprite_getGlobalBounds(_poney1[i].sprite);
-			sfSprite_setPosition(_poney1[i].sprite, _poney1[i].pos);
-			sfRenderWindow_drawSprite(_window, _poney1[i].sprite, NULL);
-		}
-	}
-	for (int i = 0; i < _poney2[0].elementsNumber; i++)
-	{
-		if (_poney2[i].sprite != NULL)
-		{
-			_poney2[i].hitBox = sfSprite_getGlobalBounds(_poney2[i].sprite);
-			sfSprite_setPosition(_poney2[i].sprite, _poney2[i].pos);
-			sfRenderWindow_drawSprite(_window, _poney2[i].sprite, NULL);
-		}
-	}
-}
-
-void newElementsOffset2(t_poney *_poney2, float _timeSinceBackground, float _velocityOffset)
-{
-	for (int i = 0; i < _poney2[0].elementsNumber; i++)
-	{
-		_poney2[i].pos.y += MAP_HEIGHT - _velocityOffset;
-	}
-}
 
 void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2,float _timeSinceBackground)
 {
@@ -986,7 +732,7 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 
 	if (Player->pos.y < 0 || Player->pos.y > 1080)
 	{
-		sfRenderWindow_close(_window);
+		//sfRenderWindow_close(_window);
 	}
 
 	manageAnimPlayer(Player);
@@ -1246,7 +992,7 @@ void manageHud(sfRenderWindow *window, t_hud *Hud, t_player *Player)
 }
 
 
-void loadMaps(t_maps* _maps, int _currentLevel)
+void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 {
 	char* path = malloc(50);
 	int elementsNumber = 0;
@@ -1262,7 +1008,7 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 	_maps->saveMap4.background.sprite = createSprite(path);
 
 
-
+	///////////////////////////////////////////////////////////////////////////////////
 	/*charger la map 1 du level en cours*/
 	sprintf_s(path, 50, "resources/datas/m%d-1.txt", _currentLevel);
 	fopen_s(&file, path, "r");
@@ -1274,6 +1020,7 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 	{
 		_maps->saveMap1.collisions[i].rectangle = sfRectangleShape_create();
 		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_maps->saveMap1.collisions[i].pos.x, &_maps->saveMap1.collisions[i].pos.y, &_maps->saveMap1.collisions[i].size.x, &_maps->saveMap1.collisions[i].size.y);
+		printf_s ("colisions pX=%f,pY=%f,sX=%f,sY=%f\n", _maps->saveMap1.collisions[i].pos.x, _maps->saveMap1.collisions[i].pos.y, _maps->saveMap1.collisions[i].size.x, _maps->saveMap1.collisions[i].size.y);
 		_maps->saveMap1.collisions[i].pos.x += X_OFFSET;
 		
 		sfRectangleShape_setSize(_maps->saveMap1.collisions[i].rectangle, _maps->saveMap1.collisions[i].size);
@@ -1283,12 +1030,13 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 	}
 	/*chargement des ennemis map 1*/
 	fscanf_s(file, "%d\n", &elementsNumber);
-	printf_s("nbr = %d \n",elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
 		_maps->saveMap1.ennemis[i].sprite = sfSprite_create();
 		_maps->saveMap1.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
 		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap1.ennemis[i].xStart, &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax);
+		printf_s("poney : pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", _maps->saveMap1.ennemis[i].xStart, _maps->saveMap1.ennemis[i].pos.x,_maps->saveMap1.ennemis[i].pos.y, _maps->saveMap1.ennemis[i].Direction, _maps->saveMap1.ennemis[i].distMax);
+
 		_maps->saveMap1.ennemis[i].xStart += X_OFFSET;
 		_maps->saveMap1.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap1.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap1.ennemis[i].sprite);
@@ -1298,9 +1046,12 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 		sfSprite_setPosition(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].pos);
 		_maps->saveMap1.ennemis[i].elementsNumber = elementsNumber;
 	}
+	_maps->saveMap1.background.backgroundNumber = 1;
+	_maps->saveMap1.background.pos.x = 0 + X_OFFSET;
+	_maps->saveMap1.background.pos.y = 0;
 	fclose(file);
 
-
+	//////////////////////////////////////////////////////////////////////////////////
 	/*charger la map 2 du level en cours*/
 	sprintf_s(path, 50, "resources/datas/m%d-2.txt", _currentLevel);
 	fopen_s(&file, path, "r");
@@ -1321,7 +1072,6 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 	}
 	/*chargement des ennemis map 2*/
 	fscanf_s(file, "%d\n", &elementsNumber);
-	printf_s("nbr = %d \n", elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
 		_maps->saveMap2.ennemis[i].sprite = sfSprite_create();
@@ -1336,7 +1086,192 @@ void loadMaps(t_maps* _maps, int _currentLevel)
 		sfSprite_setPosition(_maps->saveMap2.ennemis[i].sprite, _maps->saveMap2.ennemis[i].pos);
 		_maps->saveMap2.ennemis[i].elementsNumber = elementsNumber;
 	}
+	_maps->saveMap2.background.backgroundNumber = 2;
+	_maps->saveMap2.background.pos.x = 0 + X_OFFSET;
+	_maps->saveMap2.background.pos.y = 0;
 	fclose(file);
 
+	//////////////////////////////////////////////////////////////////////////////////
+	/*charger la map 3 du level en cours*/
+	sprintf_s(path, 50, "resources/datas/m%d-3.txt", _currentLevel);
+	fopen_s(&file, path, "r");
+	if (file == NULL)
+		printf_s("erreur ouvrture fichier plateformes");
+	/*chargement des plateformes map 3*/
+	fscanf_s(file, "%d\n", &elementsNumber);
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		_maps->saveMap3.collisions[i].rectangle = sfRectangleShape_create();
+		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_maps->saveMap3.collisions[i].pos.x, &_maps->saveMap3.collisions[i].pos.y, &_maps->saveMap3.collisions[i].size.x, &_maps->saveMap3.collisions[i].size.y);
+		_maps->saveMap3.collisions[i].pos.x += X_OFFSET;
 
+		sfRectangleShape_setSize(_maps->saveMap3.collisions[i].rectangle, _maps->saveMap3.collisions[i].size);
+		sfRectangleShape_setPosition(_maps->saveMap3.collisions[i].rectangle, _maps->saveMap3.collisions[i].pos);
+		_maps->saveMap3.collisions[i].hitBox = sfRectangleShape_getGlobalBounds(_maps->saveMap3.collisions[i].rectangle);
+		_maps->saveMap3.collisions[i].elementsNumber = elementsNumber;
+	}
+	/*chargement des ennemis map 3*/
+	fscanf_s(file, "%d\n", &elementsNumber);
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		_maps->saveMap3.ennemis[i].sprite = sfSprite_create();
+		_maps->saveMap3.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
+		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap3.ennemis[i].xStart, &_maps->saveMap3.ennemis[i].pos.x, &_maps->saveMap3.ennemis[i].pos.y, &_maps->saveMap3.ennemis[i].Direction, &_maps->saveMap3.ennemis[i].distMax);
+		_maps->saveMap3.ennemis[i].xStart += X_OFFSET;
+		_maps->saveMap3.ennemis[i].pos.x += X_OFFSET;
+		_maps->saveMap3.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap3.ennemis[i].sprite);
+		_maps->saveMap3.ennemis[i].Origin.x = _maps->saveMap3.ennemis[i].hitBox.width / 2;
+		_maps->saveMap3.ennemis[i].Origin.y = _maps->saveMap3.ennemis[i].hitBox.height / 2;
+		sfSprite_setOrigin(_maps->saveMap3.ennemis[i].sprite, _maps->saveMap3.ennemis[i].Origin);
+		sfSprite_setPosition(_maps->saveMap3.ennemis[i].sprite, _maps->saveMap3.ennemis[i].pos);
+		_maps->saveMap3.ennemis[i].elementsNumber = elementsNumber;
+	}
+	_maps->saveMap3.background.backgroundNumber = 3;
+	_maps->saveMap3.background.pos.x = 0 + X_OFFSET;
+	_maps->saveMap3.background.pos.y = 0;
+	fclose(file);
+
+	//////////////////////////////////////////////////////////////////////////////////
+	/*charger la map 4 du level en cours*/
+	sprintf_s(path, 50, "resources/datas/m%d-4.txt", _currentLevel);
+	fopen_s(&file, path, "r");
+	if (file == NULL)
+		printf_s("erreur ouvrture fichier plateformes");
+	/*chargement des plateformes map 4*/
+	fscanf_s(file, "%d\n", &elementsNumber);
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		_maps->saveMap4.collisions[i].rectangle = sfRectangleShape_create();
+		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_maps->saveMap4.collisions[i].pos.x, &_maps->saveMap4.collisions[i].pos.y, &_maps->saveMap4.collisions[i].size.x, &_maps->saveMap4.collisions[i].size.y);
+		_maps->saveMap4.collisions[i].pos.x += X_OFFSET;
+
+		sfRectangleShape_setSize(_maps->saveMap4.collisions[i].rectangle, _maps->saveMap4.collisions[i].size);
+		sfRectangleShape_setPosition(_maps->saveMap4.collisions[i].rectangle, _maps->saveMap4.collisions[i].pos);
+		_maps->saveMap4.collisions[i].hitBox = sfRectangleShape_getGlobalBounds(_maps->saveMap4.collisions[i].rectangle);
+		_maps->saveMap4.collisions[i].elementsNumber = elementsNumber;
+	}
+	/*chargement des ennemis map 4*/
+	fscanf_s(file, "%d\n", &elementsNumber);
+	for (int i = 0; i < elementsNumber; i++)
+	{
+		_maps->saveMap4.ennemis[i].sprite = sfSprite_create();
+		_maps->saveMap4.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
+		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap4.ennemis[i].xStart, &_maps->saveMap4.ennemis[i].pos.x, &_maps->saveMap4.ennemis[i].pos.y, &_maps->saveMap4.ennemis[i].Direction, &_maps->saveMap4.ennemis[i].distMax);
+		_maps->saveMap4.ennemis[i].xStart += X_OFFSET;
+		_maps->saveMap4.ennemis[i].pos.x += X_OFFSET;
+		_maps->saveMap4.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap4.ennemis[i].sprite);
+		_maps->saveMap4.ennemis[i].Origin.x = _maps->saveMap4.ennemis[i].hitBox.width / 2;
+		_maps->saveMap4.ennemis[i].Origin.y = _maps->saveMap4.ennemis[i].hitBox.height / 2;
+		sfSprite_setOrigin(_maps->saveMap4.ennemis[i].sprite, _maps->saveMap4.ennemis[i].Origin);
+		sfSprite_setPosition(_maps->saveMap4.ennemis[i].sprite, _maps->saveMap4.ennemis[i].pos);
+		_maps->saveMap4.ennemis[i].elementsNumber = elementsNumber;
+	}
+	_maps->saveMap4.background.backgroundNumber = 4;
+	_maps->saveMap4.background.pos.x = 0 + X_OFFSET;
+	_maps->saveMap4.background.pos.y = 0;
+	fclose(file);
+
+	_maps->currentMap = _maps->saveMap1;
+	_maps->nextMap = _maps->saveMap2;
+	
+}
+
+void nextMapYOffset(t_maps* _maps, float _velocityOffset)
+{
+	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
+	{
+		_maps->nextMap.collisions[i].pos.y += MAP_HEIGHT - _velocityOffset;
+	}
+	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
+	{
+		_maps->nextMap.ennemis[i].pos.y += MAP_HEIGHT - _velocityOffset;
+	}
+	_maps->nextMap.background.pos.y += MAP_HEIGHT - _velocityOffset;
+}
+
+void moveMaps(t_maps* _maps, float _velocityOffset)
+{
+	/*Deplacements*/
+	for (int i = 0; i < _maps->currentMap.collisions[0].elementsNumber; i++)
+	{
+		_maps->currentMap.collisions[i].pos.y -= _velocityOffset;
+	}
+	for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
+	{
+		_maps->currentMap.ennemis[i].pos.y -= _velocityOffset;
+	}
+
+	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
+	{
+		_maps->nextMap.collisions[i].pos.y -= _velocityOffset;
+	}
+	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
+	{
+		_maps->nextMap.ennemis[i].pos.y -= _velocityOffset;
+	}
+	_maps->currentMap.background.pos.y -= _velocityOffset;
+	_maps->nextMap.background.pos.y -= _velocityOffset;
+
+
+	/*chargement de la map suivante*/
+	if (_maps->currentMap.background.pos.y <= -MAP_HEIGHT)
+	{
+		_maps->currentMap = _maps->nextMap;
+		int randomMapNb = rand() % (49 - 10) + 10;
+		while ((randomMapNb / 10) == _maps->currentMap.background.backgroundNumber)
+		{
+			randomMapNb = rand() % (49 - 10) + 10;
+		}
+		randomMapNb = randomMapNb / 10;
+		switch (randomMapNb)
+		{
+			case 1 :
+				_maps->nextMap = _maps->saveMap1;
+				break;
+			case 2:
+				_maps->nextMap = _maps->saveMap2;
+				break;
+			case 3:
+				_maps->nextMap = _maps->saveMap3;
+				break;
+			case 4:
+				_maps->nextMap = _maps->saveMap4;
+				break;
+		}
+		printf_s("next map :%d\n",_maps->nextMap.background.backgroundNumber);
+		nextMapYOffset(_maps, _velocityOffset);
+	}
+
+}
+
+void displayMaps(t_maps* _maps, sfRenderWindow *window)
+{
+	sfSprite_setPosition(_maps->currentMap.background.sprite, _maps->currentMap.background.pos);
+	sfRenderWindow_drawSprite(window, _maps->currentMap.background.sprite, NULL);
+	sfSprite_setPosition(_maps->nextMap.background.sprite, _maps->nextMap.background.pos);
+	sfRenderWindow_drawSprite(window, _maps->nextMap.background.sprite, NULL);
+
+	for (int i = 0; i < _maps->currentMap.collisions[0].elementsNumber; i++)
+	{
+		//printf_s("rectangle pos y :%.2f\n", _maps->currentMap.collisions[i].pos.y);
+		sfRectangleShape_setPosition(_maps->currentMap.collisions[i].rectangle, _maps->currentMap.collisions[i].pos);
+		sfRenderWindow_drawRectangleShape(window, _maps->currentMap.collisions[i].rectangle, NULL);
+	}
+	for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
+	{
+		//printf_s("poney pos y :%.2f\n", _maps->currentMap.ennemis[i].pos.y);
+		sfSprite_setPosition(_maps->currentMap.ennemis[i].sprite, _maps->currentMap.ennemis[i].pos);
+		sfRenderWindow_drawSprite(window, _maps->currentMap.ennemis[i].sprite, NULL);
+	}
+
+	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
+	{
+		sfRectangleShape_setPosition(_maps->nextMap.collisions[i].rectangle, _maps->nextMap.collisions[i].pos);
+		sfRenderWindow_drawRectangleShape(window, _maps->nextMap.collisions[i].rectangle, NULL);
+	}
+	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
+	{
+		sfSprite_setPosition(_maps->nextMap.ennemis[i].sprite, _maps->nextMap.ennemis[i].pos);
+		sfRenderWindow_drawSprite(window, _maps->nextMap.ennemis[i].sprite, NULL);
+	}
 }

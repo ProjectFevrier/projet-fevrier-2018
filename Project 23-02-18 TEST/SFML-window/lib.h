@@ -236,14 +236,10 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 
 
 /*fcts plateformes et enemis*/
-void initPlatforms(int _level, int _backGround1, int _backGround2, t_rectangle *_rectangle, t_rectangle *_rectangle2);
-void moveElements(t_rectangle *_rectangle1, t_rectangle *_rectangle2, float _timeSinceBackground);
-void displayElements(t_rectangle *_rectangle1, t_rectangle *_rectangle2, sfRenderWindow* _window);
-void newElementsOffset(t_rectangle *_rectangle2, float _timeSinceBackground, float _velocityOffset);
-void initPoney(int _level, int _backGround1, int _backGround2, t_poney *_poney1, t_poney *_poney2, int _asStarted);
-void moveElements2(t_poney *_poney1, t_poney *_poney2, float _timeSinceBackground);
-void displayElements2(t_poney *_poney1, t_poney *_poney2, sfRenderWindow* _window);
-void newElementsOffset2(t_poney *_poney2, float _timeSinceBackground, float _velocityOffset);
+void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted);
+void nextMapYOffset(t_maps* _maps, float _velocityOffset);
+void moveMaps(t_maps* _maps, float _velocityOffset);
+void displayMaps(t_maps* _maps, sfRenderWindow *window);
 void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2, float _timeSinceBackground);
 
 // Liste
@@ -260,6 +256,6 @@ void manageHud(sfRenderWindow *window, t_hud *Hud, t_player *Player);
 
 
 /*New fonctions*/
-void loadMaps(t_maps* _maps, int _currentLevel);
+void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted);
 ///////////////////////////////////////
 #pragma endregion
