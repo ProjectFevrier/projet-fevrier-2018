@@ -115,7 +115,7 @@ int main()
 			sinceJauge = 0;
 			startJauge = currentJauge;
 			Player.jaugePoint -= 0.2;
-			printf("%.2f", Player.jaugePoint);
+			//printf("%.2f", Player.jaugePoint);
 		}
 
 		if (timeSinceBackground > 1.0f / FRAMERATE)
@@ -213,7 +213,6 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				_poney1[i].pos.x -= PONEY_VELOCITY * _timeSinceBackground;
 			}
 		}
-		_poney1[i].hitBox = sfSprite_getGlobalBounds(_poney1[i].sprite);
 	}
 	for (int i = 0; i < _poney2[0].elementsNumber; i++)
 	{
@@ -241,7 +240,6 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				_poney2[i].pos.x -= PONEY_VELOCITY * _timeSinceBackground;
 			}
 		}
-		_poney2[i].hitBox = sfSprite_getGlobalBounds(_poney2[i].sprite);
 	}
 }
 
@@ -435,10 +433,10 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 
 		sfRenderWindow_drawSprite(_window, currentElement->Bullet.sprite, NULL);
 
-		for (int i = 0; i < _maps->currentMap.ennemis[i].elementsNumber ; i++)
+		for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber ; i++)
 		{
 
-			if (sfFloatRect_intersects(&_maps->currentMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL))
+			if (sfFloatRect_intersects(&(_maps->currentMap.ennemis[i].hitBox), &currentElement->Bullet.hitBox, NULL))
 			{
 				_maps->currentMap.ennemis[i].sprite = NULL;
 				_maps->currentMap.ennemis[i].hitBox.width = 0;
@@ -448,12 +446,10 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 				break;
 			}
 		}
-		for (int i = 0; i < _maps->nextMap.ennemis[i].elementsNumber; i++)
+		for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 		{
-			
 			if (sfFloatRect_intersects(&_maps->nextMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL))
 			{
-				printf_s("IIIINNNNNNN \n");
 				_maps->nextMap.ennemis[i].sprite = NULL;
 				_maps->nextMap.ennemis[i].hitBox.width = 0;
 				_maps->nextMap.ennemis[i].hitBox.height = 0;
@@ -1020,7 +1016,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	{
 		_maps->saveMap1.collisions[i].rectangle = sfRectangleShape_create();
 		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_maps->saveMap1.collisions[i].pos.x, &_maps->saveMap1.collisions[i].pos.y, &_maps->saveMap1.collisions[i].size.x, &_maps->saveMap1.collisions[i].size.y);
-		printf_s ("colisions pX=%f,pY=%f,sX=%f,sY=%f\n", _maps->saveMap1.collisions[i].pos.x, _maps->saveMap1.collisions[i].pos.y, _maps->saveMap1.collisions[i].size.x, _maps->saveMap1.collisions[i].size.y);
+		//printf_s ("colisions pX=%f,pY=%f,sX=%f,sY=%f\n", _maps->saveMap1.collisions[i].pos.x, _maps->saveMap1.collisions[i].pos.y, _maps->saveMap1.collisions[i].size.x, _maps->saveMap1.collisions[i].size.y);
 		_maps->saveMap1.collisions[i].pos.x += X_OFFSET;
 		
 		sfRectangleShape_setSize(_maps->saveMap1.collisions[i].rectangle, _maps->saveMap1.collisions[i].size);
@@ -1035,7 +1031,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap1.ennemis[i].sprite = sfSprite_create();
 		_maps->saveMap1.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
 		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap1.ennemis[i].xStart, &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax);
-		printf_s("poney : pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", _maps->saveMap1.ennemis[i].xStart, _maps->saveMap1.ennemis[i].pos.x,_maps->saveMap1.ennemis[i].pos.y, _maps->saveMap1.ennemis[i].Direction, _maps->saveMap1.ennemis[i].distMax);
+		//printf_s("poney : pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", _maps->saveMap1.ennemis[i].xStart, _maps->saveMap1.ennemis[i].pos.x,_maps->saveMap1.ennemis[i].pos.y, _maps->saveMap1.ennemis[i].Direction, _maps->saveMap1.ennemis[i].distMax);
 
 		_maps->saveMap1.ennemis[i].xStart += X_OFFSET;
 		_maps->saveMap1.ennemis[i].pos.x += X_OFFSET;
@@ -1238,7 +1234,7 @@ void moveMaps(t_maps* _maps, float _velocityOffset)
 				_maps->nextMap = _maps->saveMap4;
 				break;
 		}
-		printf_s("next map :%d\n",_maps->nextMap.background.backgroundNumber);
+		//printf_s("next map :%d\n",_maps->nextMap.background.backgroundNumber);
 		nextMapYOffset(_maps, _velocityOffset);
 	}
 
@@ -1253,15 +1249,17 @@ void displayMaps(t_maps* _maps, sfRenderWindow *window)
 
 	for (int i = 0; i < _maps->currentMap.collisions[0].elementsNumber; i++)
 	{
-		//printf_s("rectangle pos y :%.2f\n", _maps->currentMap.collisions[i].pos.y);
 		sfRectangleShape_setPosition(_maps->currentMap.collisions[i].rectangle, _maps->currentMap.collisions[i].pos);
 		sfRenderWindow_drawRectangleShape(window, _maps->currentMap.collisions[i].rectangle, NULL);
 	}
 	for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
 	{
-		//printf_s("poney pos y :%.2f\n", _maps->currentMap.ennemis[i].pos.y);
-		sfSprite_setPosition(_maps->currentMap.ennemis[i].sprite, _maps->currentMap.ennemis[i].pos);
-		sfRenderWindow_drawSprite(window, _maps->currentMap.ennemis[i].sprite, NULL);
+		if (_maps->currentMap.ennemis[i].sprite != NULL)
+		{
+			_maps->currentMap.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->currentMap.ennemis[i].sprite);
+			sfSprite_setPosition(_maps->currentMap.ennemis[i].sprite, _maps->currentMap.ennemis[i].pos);
+			sfRenderWindow_drawSprite(window, _maps->currentMap.ennemis[i].sprite, NULL);
+		}
 	}
 
 	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
@@ -1271,7 +1269,11 @@ void displayMaps(t_maps* _maps, sfRenderWindow *window)
 	}
 	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 	{
-		sfSprite_setPosition(_maps->nextMap.ennemis[i].sprite, _maps->nextMap.ennemis[i].pos);
-		sfRenderWindow_drawSprite(window, _maps->nextMap.ennemis[i].sprite, NULL);
+		if (_maps->nextMap.ennemis[i].sprite != NULL)
+		{
+			_maps->nextMap.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->nextMap.ennemis[i].sprite);
+			sfSprite_setPosition(_maps->nextMap.ennemis[i].sprite, _maps->nextMap.ennemis[i].pos);
+			sfRenderWindow_drawSprite(window, _maps->nextMap.ennemis[i].sprite, NULL);
+		}
 	}
 }
