@@ -244,7 +244,7 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 
 // Liste
 void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player *Player, sfVector2f Direction);
-void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_poney *_poney1, t_poney *_poney2, t_player *Player);
+void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player);
 void DeleteFirstBullet(List *_list);
 void DeleteBulletToID(List *_list, int ID);
 //

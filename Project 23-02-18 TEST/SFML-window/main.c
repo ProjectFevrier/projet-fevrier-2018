@@ -45,8 +45,6 @@ int main()
 	/*Structures*/
 	t_paralax paralax;
 	t_hud Hud;
-
-	/*Ajout du 24/02/18*/
 	t_maps maps;
 
 #pragma region inits
@@ -156,9 +154,8 @@ int main()
 
 
 		managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis, timeSinceBackground);
-
 		affMap(window, &Player);
-		ReadBullet(window, mode, list, maps.currentMap.ennemis, maps.nextMap.ennemis, &Player);
+		ReadBullet(window, mode, list, &maps, &Player);
 		managePlayer(window, mode, &Player, list, &gravity_Since);
 		manageHud(window, &Hud, &Player);
 		Gravity(window, mode, &Player, &gravity_Since);
@@ -216,6 +213,7 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				_poney1[i].pos.x -= PONEY_VELOCITY * _timeSinceBackground;
 			}
 		}
+		_poney1[i].hitBox = sfSprite_getGlobalBounds(_poney1[i].sprite);
 	}
 	for (int i = 0; i < _poney2[0].elementsNumber; i++)
 	{
@@ -243,6 +241,7 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				_poney2[i].pos.x -= PONEY_VELOCITY * _timeSinceBackground;
 			}
 		}
+		_poney2[i].hitBox = sfSprite_getGlobalBounds(_poney2[i].sprite);
 	}
 }
 
@@ -382,7 +381,7 @@ void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player
 	_list->firstElement = newElement;
 }
 
-void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_poney *_poney1, t_poney *_poney2, t_player *Player)
+void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player)
 {
 	ListElement *currentElement = _list->firstElement;
 
@@ -436,28 +435,29 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_poney
 
 		sfRenderWindow_drawSprite(_window, currentElement->Bullet.sprite, NULL);
 
-		for (int i = 0; i < _poney1[0].elementsNumber; i++)
+		for (int i = 0; i < _maps->currentMap.ennemis[i].elementsNumber ; i++)
 		{
-			//_poney1[i].hitBox = sfSprite_getGlobalBounds(_poney1[i].sprite);
-			if (sfFloatRect_intersects(&_poney1[i].hitBox, &currentElement->Bullet.hitBox, NULL))
+
+			if (sfFloatRect_intersects(&_maps->currentMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL))
 			{
-				_poney1[i].sprite = NULL;
-				_poney1[i].hitBox.width = 0;
-				_poney1[i].hitBox.height = 0;
-				Player->jaugePoint += 10;
+				_maps->currentMap.ennemis[i].sprite = NULL;
+				_maps->currentMap.ennemis[i].hitBox.width = 0;
+				_maps->currentMap.ennemis[i].hitBox.height = 0;
+				Player->jaugePoint += 5;
 				DeleteBulletToID(_list, countElement);
 				break;
 			}
 		}
-		for (int i = 0; i < _poney2[0].elementsNumber; i++)
+		for (int i = 0; i < _maps->nextMap.ennemis[i].elementsNumber; i++)
 		{
-			//_poney2[i].hitBox = sfSprite_getGlobalBounds(_poney2[i].sprite);
-			if (sfFloatRect_intersects(&(_poney2[i].hitBox), &currentElement->Bullet.hitBox, NULL))
+			
+			if (sfFloatRect_intersects(&_maps->nextMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL))
 			{
-				_poney2[i].sprite = NULL;
-				_poney2[i].hitBox.width = 0;
-				_poney2[i].hitBox.height = 0;
-				Player->jaugePoint += 50.0;
+				printf_s("IIIINNNNNNN \n");
+				_maps->nextMap.ennemis[i].sprite = NULL;
+				_maps->nextMap.ennemis[i].hitBox.width = 0;
+				_maps->nextMap.ennemis[i].hitBox.height = 0;
+				Player->jaugePoint += 5;
 				DeleteBulletToID(_list, countElement);
 				break;
 			}
@@ -1041,7 +1041,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap1.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap1.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap1.ennemis[i].sprite);
 		_maps->saveMap1.ennemis[i].Origin.x = _maps->saveMap1.ennemis[i].hitBox.width / 2;
-		_maps->saveMap1.ennemis[i].Origin.y = _maps->saveMap1.ennemis[i].hitBox.height / 2;
+		_maps->saveMap1.ennemis[i].Origin.y = _maps->saveMap1.ennemis[i].hitBox.height ;
 		sfSprite_setOrigin(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].pos);
 		_maps->saveMap1.ennemis[i].elementsNumber = elementsNumber;
@@ -1081,7 +1081,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap2.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap2.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap2.ennemis[i].sprite);
 		_maps->saveMap2.ennemis[i].Origin.x = _maps->saveMap2.ennemis[i].hitBox.width / 2;
-		_maps->saveMap2.ennemis[i].Origin.y = _maps->saveMap2.ennemis[i].hitBox.height / 2;
+		_maps->saveMap2.ennemis[i].Origin.y = _maps->saveMap2.ennemis[i].hitBox.height ;
 		sfSprite_setOrigin(_maps->saveMap2.ennemis[i].sprite, _maps->saveMap2.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap2.ennemis[i].sprite, _maps->saveMap2.ennemis[i].pos);
 		_maps->saveMap2.ennemis[i].elementsNumber = elementsNumber;
@@ -1121,7 +1121,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap3.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap3.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap3.ennemis[i].sprite);
 		_maps->saveMap3.ennemis[i].Origin.x = _maps->saveMap3.ennemis[i].hitBox.width / 2;
-		_maps->saveMap3.ennemis[i].Origin.y = _maps->saveMap3.ennemis[i].hitBox.height / 2;
+		_maps->saveMap3.ennemis[i].Origin.y = _maps->saveMap3.ennemis[i].hitBox.height ;
 		sfSprite_setOrigin(_maps->saveMap3.ennemis[i].sprite, _maps->saveMap3.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap3.ennemis[i].sprite, _maps->saveMap3.ennemis[i].pos);
 		_maps->saveMap3.ennemis[i].elementsNumber = elementsNumber;
@@ -1161,7 +1161,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap4.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap4.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap4.ennemis[i].sprite);
 		_maps->saveMap4.ennemis[i].Origin.x = _maps->saveMap4.ennemis[i].hitBox.width / 2;
-		_maps->saveMap4.ennemis[i].Origin.y = _maps->saveMap4.ennemis[i].hitBox.height / 2;
+		_maps->saveMap4.ennemis[i].Origin.y = _maps->saveMap4.ennemis[i].hitBox.height ;
 		sfSprite_setOrigin(_maps->saveMap4.ennemis[i].sprite, _maps->saveMap4.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap4.ennemis[i].sprite, _maps->saveMap4.ennemis[i].pos);
 		_maps->saveMap4.ennemis[i].elementsNumber = elementsNumber;
