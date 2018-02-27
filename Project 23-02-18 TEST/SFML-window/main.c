@@ -42,6 +42,8 @@ int main()
 
 	int asStarted = 0;
 
+	int keyPressed = 0;
+
 	/*Structures*/
 	t_paralax paralax;
 	t_hud Hud;
@@ -101,6 +103,23 @@ int main()
 		sfRenderWindow_clear(window, sfBlack);
 
 		///////////////
+
+		if (sfKeyboard_isKeyPressed(sfKeyA) && keyPressed == 0)
+		{
+			keyPressed = 1;
+
+			initPlayer(&Player);
+			initHud(&Hud, &Player);
+
+			asStarted = 1;
+
+			loadMaps(&maps, currentLevel, asStarted);
+			nextMapYOffset(&maps, 0);
+		}
+		else if(!sfKeyboard_isKeyPressed(sfKeyA))
+		{
+			keyPressed = 0;
+		}
 
 		/*Calcul temps de boucle*/
 		float currentTimeBackground = (float)clock() / CLOCKS_PER_SEC;
@@ -182,8 +201,6 @@ sfSprite* createSprite(char *_source)
 
 	return sprite;
 }
-
-
 
 void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2,float _timeSinceBackground)
 {
@@ -602,7 +619,7 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 	// Calcule D'angle
 	Player->angCursor = RadToDeg(createAngle(Player->pos, _window));
 
-	if (Player->angCursor < 0) // Evite un angle négatif !
+	if (Player->angCursor < 0) // Evite un angle nÃ©gatif !
 	{
 		Player->angCursor += (2 * 180);
 	}
@@ -776,7 +793,7 @@ void manageAnimPlayer(t_player *Player)
 
 void Gravity(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float *gravity_Since)
 {
-	// Gravité
+	// GravitÃ©
 	//if (Player->pos.y <= _mode.height - (Player->hitBox.height / 2))
 	//{
 	Player->velocity.y += (*gravity_Since * GRAVITY) * 25;
@@ -940,53 +957,197 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 
 void initHud(t_hud *Hud, t_player *Player)
 {
-	Hud->sprite = createSprite("resources/textures/Jauge.png");
+	// Hud
+	Hud->sprite = createSprite("resources/textures/Hud.png"); 
 	Hud->sprite_grille = createSprite("resources/textures/Grille.png");
+	Hud->sprite_jauge = createSprite("resources/textures/Bulle1.png");
 
 	Hud->pos.x = 0;
 	Hud->pos.y = 0;
+	//
 
 
-	Hud->jaugeRect = sfRectangleShape_create();
-	Hud->jaugeScale.x = 1;
-	Hud->jaugeScale.y = 1;
-
-	Hud->jaugeSize.x = 38;
-	Hud->jaugeSize.y = 0;
-
-	Hud->jaugeSizeMax = 227;
-
-	Hud->jaugePos.x = 221;
+	// Jauge Point
+	Hud->jaugePos.x = 223;
 	Hud->jaugePos.y = 633;
 
+	Hud->jaugeRect.width = 42;
+	Hud->jaugeRect.height = 228;
+	Hud->jaugeRect.top = 0;
+	Hud->jaugeRect.left = 0;
+
+	sfSprite_setTextureRect(Hud->sprite_jauge, Hud->jaugeRect);
+
+
 	Hud->jaugeOrigin.x = 0;
-	Hud->jaugeOrigin.y = Hud->jaugeSize.y;
+	Hud->jaugeOrigin.y = Hud->jaugeRect.height;
+
+	sfSprite_setOrigin(Hud->sprite_jauge, Hud->jaugeOrigin);
+
+	
+	Hud->jauge_Start = (float)clock() / CLOCKS_PER_SEC;
+	Hud->jauge_Current = Hud->jauge_Start;
+	Hud->jauge_Since = 0;
+
+	Hud->intAnimX = 0;
+	//
+
+	// Progression
+	Hud->time_Start = (float)clock() / CLOCKS_PER_SEC;
+	Hud->time_Current = Hud->jauge_Start;
+	Hud->time_Since = 0;
+	//
+
+	// Menu
+	Hud->sprite_buttMenu = createSprite("resources/textures/buttMenu.png");
+	Hud->pos_buttMenu.x = 135;
+	Hud->pos_buttMenu.y = 860;
+
+	Hud->buttMenu_Rect.width = 229;
+	Hud->buttMenu_Rect.height = 130;
+	Hud->buttMenu_Rect.top = 0;
+	Hud->buttMenu_Rect.left = 0;
+
+	Hud->intButt = 0;
+
+	Hud->buttMenu_hitBox = sfSprite_getGlobalBounds(Hud->sprite_buttMenu);
+
+	sfSprite_setTextureRect(Hud->sprite_buttMenu, Hud->buttMenu_Rect);
+
+	sfSprite_setPosition(Hud->sprite_buttMenu, Hud->pos_buttMenu);
+	//
+
+	// Aiguilles 1
+	Hud->Aiguille.Barre1.sprite_barre = createSprite("resources/textures/barre1.png");
+
+	Hud->Aiguille.Barre1.pos.x = 355;
+	Hud->Aiguille.Barre1.pos.y = 200;
+
+	sfSprite_setPosition(Hud->Aiguille.Barre1.sprite_barre, Hud->Aiguille.Barre1.pos);
+
+	Hud->Aiguille.Barre1.size_barre = sfSprite_getGlobalBounds(Hud->Aiguille.Barre1.sprite_barre);
+
+	Hud->Aiguille.Barre1.Origin.x = Hud->Aiguille.Barre1.size_barre.width/2;
+	Hud->Aiguille.Barre1.Origin.y = Hud->Aiguille.Barre1.size_barre.height/2;
+
+	sfSprite_setOrigin(Hud->Aiguille.Barre1.sprite_barre, Hud->Aiguille.Barre1.Origin);
+
+	// Start 185 | End 77
+	Hud->Aiguille.Barre1.angle = 185;
+
+	Hud->Aiguille.Barre1.speed = 1;
+
+	sfSprite_setRotation(Hud->Aiguille.Barre1.sprite_barre, Hud->Aiguille.Barre1.angle);
 }
 
-void manageHud(sfRenderWindow *window, t_hud *Hud, t_player *Player)
+void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 {
-	sfRenderWindow_drawSprite(window, Hud->sprite, NULL);
+#pragma region Hud Vide
+	sfRenderWindow_drawSprite(_window, Hud->sprite, NULL);
+#pragma endregion
 
-	sfRectangleShape_setPosition(Hud->jaugeRect, Hud->jaugePos);
-	sfRectangleShape_setSize(Hud->jaugeRect, Hud->jaugeSize);
-	sfRectangleShape_setFillColor(Hud->jaugeRect, red);
-	sfRectangleShape_setScale(Hud->jaugeRect, Hud->jaugeScale);
-	Hud->jaugeOrigin.x = 0;
-	Hud->jaugeOrigin.y = Hud->jaugeSize.y;
-	sfRectangleShape_setOrigin(Hud->jaugeRect, Hud->jaugeOrigin);
-	Hud->jaugeSize.y = Player->jaugePoint;
+#pragma region Anim premier plan
 
-	if (Hud->jaugeSize.y >= Hud->jaugeSizeMax)
+	// Aiguilles 1
+	barreAngle(Hud);
+	// Angle toujours entre 0 / 360 (A mettre en fonction?)
+	
+	Hud->Aiguille.Barre1.angle += Hud->Aiguille.Barre1.speed;
+
+	printf("%.2f\n", Hud->Aiguille.Barre1.angle);
+	//
+
+
+	sfSprite_setRotation(Hud->Aiguille.Barre1.sprite_barre, Hud->Aiguille.Barre1.angle);
+	sfRenderWindow_drawSprite(_window, Hud->Aiguille.Barre1.sprite_barre, NULL);
+	// Jauge
+
+	Hud->jauge_Current = (float)clock() / CLOCKS_PER_SEC;
+	Hud->jauge_Since = Hud->jauge_Current - Hud->jauge_Start;
+
+	//printf("Start %.2f, Current %.2f, Since %.2f, Int %d\n", Hud->jauge_Start, Hud->jauge_Current, Hud->jauge_Since, Hud->intAnimX);
+
+	if (Hud->jauge_Since > CD_ANIM_JAUGE)
 	{
-		Hud->jaugeSize.y = Hud->jaugeSizeMax;
-		sfRenderWindow_close(window);
+		Hud->jauge_Start = Hud->jauge_Current;
+		Hud->jauge_Since = 0;
+
+		Hud->intAnimX += 1;
+		if (Hud->intAnimX > NB_ANIM_JAUGE-1)
+		{
+			Hud->intAnimX = 0;
+		}
 	}
 
-	sfRenderWindow_drawRectangleShape(window, Hud->jaugeRect, NULL);
 
-	//sfRenderWindow_drawSprite(window, Hud->sprite_grille, NULL);
+	// Progression Jauge
+	Hud->time_Current = (float)clock() / CLOCKS_PER_SEC;
+	Hud->time_Since = Hud->time_Current - Hud->time_Start;
+
+
+	if (Hud->time_Since > CD_TIME_JAUGE)
+	{
+		Hud->time_Start = Hud->time_Current;
+		Hud->time_Since = 0;
+
+		if (Hud->jaugeRect.height > 0)
+		{
+			Hud->jaugeRect.height -= 0.50;
+			Hud->jaugeOrigin.y = Hud->jaugeRect.height;			// Reset l'origine Y
+			sfSprite_setOrigin(Hud->sprite_jauge, Hud->jaugeOrigin);
+		}
+	}
+
+	Hud->jaugeRect.left = Hud->intAnimX * Hud->jaugeRect.width;
+	sfSprite_setTextureRect(Hud->sprite_jauge, Hud->jaugeRect);
+
+
+	sfSprite_setPosition(Hud->sprite_jauge, Hud->jaugePos);
+	sfRenderWindow_drawSprite(_window, Hud->sprite_jauge, NULL);
+	// Boutton Menu
+	if (IsOver(_window, Hud->buttMenu_hitBox))
+	{
+		Hud->intButt = 1;
+	}
+	else
+	{
+		Hud->intButt = 0;
+	}
+
+	Hud->buttMenu_Rect.left = Hud->intButt * Hud->buttMenu_Rect.width;
+	Hud->buttMenu_hitBox = sfSprite_getGlobalBounds(Hud->sprite_buttMenu);
+
+	sfSprite_setTextureRect(Hud->sprite_buttMenu, Hud->buttMenu_Rect);
+	sfRenderWindow_drawSprite(_window, Hud->sprite_buttMenu, NULL);
+	
+	// Grille
+	//sfRenderWindow_drawSprite(_window, Hud->sprite_grille, NULL);
+#pragma endregion
 }
 
+void barreAngle(t_hud *Hud)
+{
+	if ((Hud->Aiguille.Barre1.angle += Hud->Aiguille.Barre1.speed) > 360)
+	{
+		Hud->Aiguille.Barre1.angle = 0;
+	}
+	if ((Hud->Aiguille.Barre1.angle += Hud->Aiguille.Barre1.speed) < 0)
+	{
+		Hud->Aiguille.Barre1.angle = 360;
+	}
+}
+
+int IsOver(sfRenderWindow *_window, sfFloatRect boundingBox)
+{
+	sfVector2i mousePos = sfMouse_getPosition(_window);
+
+	if (mousePos.x > boundingBox.left && mousePos.x < boundingBox.left + boundingBox.width
+		&& mousePos.y > boundingBox.top && mousePos.y < boundingBox.top + boundingBox.height)
+	{
+		return 1;
+	}
+	return 0;
+}
 
 void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 {
