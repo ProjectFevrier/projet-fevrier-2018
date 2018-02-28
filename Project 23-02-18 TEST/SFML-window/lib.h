@@ -24,7 +24,16 @@
 #define HEIGHT_COEUR 40
 
 #define CD_ANIM_COEUR 0.05
-#define NB_ANIM_COEUR 7
+#define NB_ANIM_COEUR 6
+
+// -- | Hud | --
+
+// Jauge
+#define CD_ANIM_JAUGE 0.080
+#define NB_ANIM_JAUGE 13
+#define CD_TIME_JAUGE 1.20
+
+//
 
 #define PLAYER_SIZE_WIDTH 46
 #define PLAYER_SIZE_HEIGHT 98
@@ -158,23 +167,89 @@ struct s_poney
 
 };
 
+#pragma region Aiguille
+typedef struct s_barre1 t_barre1;
+
+struct s_barre1
+{
+	sfSprite *sprite_barre;
+	sfVector2f pos;
+	sfVector2f Origin;
+	sfFloatRect size_barre;
+
+	float angle;
+	float speed;
+};
+
+typedef struct s_barre2 t_barre2;
+
+struct s_barre2
+{
+	sfSprite *sprite_barre;
+	sfVector2f pos;
+	sfVector2f Origin;
+	sfFloatRect size_barre;
+
+	float angle;
+	float speed;
+};
+
+typedef struct s_barre3 t_barre3;
+
+struct s_barre3
+{
+	sfSprite *sprite_barre;
+	sfVector2f pos;
+	sfVector2f Origin;
+	sfFloatRect size_barre;
+
+	float angle;
+	float speed;
+};
+
+typedef struct s_aiguille t_aiguille;
+
+struct s_aiguille
+{
+	// Aiguilles
+	t_barre1 Barre1;
+	t_barre2 Barre2;
+	t_barre3 Barre3;
+};
+#pragma endregion
+
 typedef struct s_hud t_hud;
 
 struct s_hud
 {
 	sfSprite* sprite;
 	sfSprite* sprite_grille;
+	sfSprite* sprite_jauge;
 	sfVector2f pos;
 
-	sfRectangleShape *jaugeRect;
-	sfVector2f jaugeScale;
-	sfVector2f jaugeSize;
+	// Hud
 	sfVector2f jaugePos;
+	sfIntRect jaugeRect;
 	sfVector2f jaugeOrigin;
-	float jaugeSizeMax;
-	sfColor alpha;
-	sfColor red;
+	int intAnimX;
 
+	float jauge_Start;
+	float jauge_Current;
+	float jauge_Since;
+
+	// Progression
+	float time_Start;
+	float time_Current;
+	float time_Since;
+
+	//Menu
+	sfSprite *sprite_buttMenu;
+	sfVector2f pos_buttMenu;
+	sfIntRect buttMenu_Rect;
+	sfFloatRect buttMenu_hitBox;
+	int intButt;
+
+	t_aiguille Aiguille;
 };
 
 typedef struct s_mapSlot t_mapSlot;
@@ -201,10 +276,10 @@ struct s_maps
 
 ///////////////////////////////////////
 #pragma endregion
-// Liste Chainé
+// Liste ChainÃ©
 typedef struct t_listElement ListElement;
 
-#pragma region Liste Chainé
+#pragma region Liste ChainÃ©
 struct t_listElement
 {
 	t_bullet Bullet;
@@ -217,7 +292,7 @@ struct t_list
 {
 	ListElement *firstElement;
 };
-#pragma endregion Liste Chainé
+#pragma endregion Liste ChainÃ©
 
 
 #pragma region Fonctions
@@ -252,6 +327,8 @@ void DeleteBulletToID(List *_list, int ID);
 // Hud
 void initHud(t_hud *Hud, t_player *Player);
 void manageHud(sfRenderWindow *window, t_hud *Hud, t_player *Player);
+int IsOver(sfRenderWindow *_window, sfFloatRect boundingBox);
+void barreAngle(t_hud *Hud);
 //
 
 
