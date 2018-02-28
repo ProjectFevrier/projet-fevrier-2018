@@ -233,16 +233,19 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				_poney1[i].pos.x -= PONEY_VELOCITY * _timeSinceBackground;
 			}
 		}
-		_poney1[i].animRect.left = _poney1[i].currentAnimFrame * _poney1[i].animRect.width;
-		_poney1[i].animRect.top = _poney1[i].Direction * _poney1[i].animRect.height;
-		sfSprite_setTextureRect(_poney1[i].sprite, _poney1[i].animRect);
-		if (_poney1[i].enemy_Since > 0.05)
+		if (_poney1[i].sprite != NULL)
 		{
-			_poney1[i].enemy_Start = _poney1[i].enemy_Current;
-			if (_poney1[i].currentAnimFrame < _poney1[i].animFrames - 1)
-				_poney1[i].currentAnimFrame++;
-			else
-				_poney1[i].currentAnimFrame = 0;
+			_poney1[i].animRect.left = _poney1[i].currentAnimFrame * _poney1[i].animRect.width;
+			_poney1[i].animRect.top = _poney1[i].Direction * _poney1[i].animRect.height;
+			sfSprite_setTextureRect(_poney1[i].sprite, _poney1[i].animRect);
+			if (_poney1[i].enemy_Since > 0.05)
+			{
+				_poney1[i].enemy_Start = _poney1[i].enemy_Current;
+				if (_poney1[i].currentAnimFrame < _poney1[i].animFrames - 1)
+					_poney1[i].currentAnimFrame++;
+				else
+					_poney1[i].currentAnimFrame = 0;
+			}
 		}
 	}
 	for (int i = 0; i < _poney2[0].elementsNumber; i++)
@@ -272,16 +275,19 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				_poney2[i].pos.x -= PONEY_VELOCITY * _timeSinceBackground;
 			}
 		}
-		_poney2[i].animRect.left = _poney2[i].currentAnimFrame * _poney2[i].animRect.width;
-		_poney2[i].animRect.top = _poney2[i].Direction * _poney2[i].animRect.height;
-		sfSprite_setTextureRect(_poney2[i].sprite, _poney2[i].animRect);
-		if (_poney2[i].enemy_Since > 0.05)
+		if (_poney2[i].sprite != NULL)
 		{
-			_poney2[i].enemy_Start = _poney2[i].enemy_Current;
-			if (_poney2[i].currentAnimFrame < _poney2[i].animFrames - 1)
-				_poney2[i].currentAnimFrame++;
-			else
-				_poney2[i].currentAnimFrame = 0;
+			_poney2[i].animRect.left = _poney2[i].currentAnimFrame * _poney2[i].animRect.width;
+			_poney2[i].animRect.top = _poney2[i].Direction * _poney2[i].animRect.height;
+			sfSprite_setTextureRect(_poney2[i].sprite, _poney2[i].animRect);
+			if (_poney2[i].enemy_Since > 0.05)
+			{
+				_poney2[i].enemy_Start = _poney2[i].enemy_Current;
+				if (_poney2[i].currentAnimFrame < _poney2[i].animFrames - 1)
+					_poney2[i].currentAnimFrame++;
+				else
+					_poney2[i].currentAnimFrame = 0;
+			}
 		}
 	}
 }
