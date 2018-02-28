@@ -208,7 +208,8 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 {
 	for (int i = 0; i < _poney1[0].elementsNumber; i++)
 	{
-
+		_poney1[i].enemy_Current = (float)clock() / CLOCKS_PER_SEC;
+		_poney1[i].enemy_Since = _poney1[i].enemy_Current - _poney1[i].enemy_Start;
 		//Mouvement Droite Gauche
 		if (_poney1[i].Direction == 0)
 		{
@@ -232,10 +233,22 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				_poney1[i].pos.x -= PONEY_VELOCITY * _timeSinceBackground;
 			}
 		}
+		_poney1[i].animRect.left = _poney1[i].currentAnimFrame * _poney1[i].animRect.width;
+		_poney1[i].animRect.top = _poney1[i].Direction * _poney1[i].animRect.height;
+		sfSprite_setTextureRect(_poney1[i].sprite, _poney1[i].animRect);
+		if (_poney1[i].enemy_Since > 0.05)
+		{
+			_poney1[i].enemy_Start = _poney1[i].enemy_Current;
+			if (_poney1[i].currentAnimFrame < _poney1[i].animFrames - 1)
+				_poney1[i].currentAnimFrame++;
+			else
+				_poney1[i].currentAnimFrame = 0;
+		}
 	}
 	for (int i = 0; i < _poney2[0].elementsNumber; i++)
 	{
-
+		_poney2[i].enemy_Current = (float)clock() / CLOCKS_PER_SEC;
+		_poney2[i].enemy_Since = _poney2[i].enemy_Current - _poney2[i].enemy_Start;
 		//Mouvement Droite Gauche
 		if (_poney2[i].Direction == 0)
 		{
@@ -258,6 +271,17 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 			{
 				_poney2[i].pos.x -= PONEY_VELOCITY * _timeSinceBackground;
 			}
+		}
+		_poney2[i].animRect.left = _poney2[i].currentAnimFrame * _poney2[i].animRect.width;
+		_poney2[i].animRect.top = _poney2[i].Direction * _poney2[i].animRect.height;
+		sfSprite_setTextureRect(_poney2[i].sprite, _poney2[i].animRect);
+		if (_poney2[i].enemy_Since > 0.05)
+		{
+			_poney2[i].enemy_Start = _poney2[i].enemy_Current;
+			if (_poney2[i].currentAnimFrame < _poney2[i].animFrames - 1)
+				_poney2[i].currentAnimFrame++;
+			else
+				_poney2[i].currentAnimFrame = 0;
 		}
 	}
 }
@@ -1056,7 +1080,7 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 	
 	Hud->Aiguille.Barre1.angle += Hud->Aiguille.Barre1.speed;
 
-	printf("%.2f\n", Hud->Aiguille.Barre1.angle);
+	//printf("%.2f\n", Hud->Aiguille.Barre1.angle);
 	//
 
 
@@ -1179,7 +1203,6 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	{
 		_maps->saveMap1.collisions[i].rectangle = sfRectangleShape_create();
 		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_maps->saveMap1.collisions[i].pos.x, &_maps->saveMap1.collisions[i].pos.y, &_maps->saveMap1.collisions[i].size.x, &_maps->saveMap1.collisions[i].size.y);
-		//printf_s ("colisions pX=%f,pY=%f,sX=%f,sY=%f\n", _maps->saveMap1.collisions[i].pos.x, _maps->saveMap1.collisions[i].pos.y, _maps->saveMap1.collisions[i].size.x, _maps->saveMap1.collisions[i].size.y);
 		_maps->saveMap1.collisions[i].pos.x += X_OFFSET;
 		
 		sfRectangleShape_setSize(_maps->saveMap1.collisions[i].rectangle, _maps->saveMap1.collisions[i].size);
@@ -1191,11 +1214,18 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	fscanf_s(file, "%d\n", &elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
+		//fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap1.ennemis[i].xStart, &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax);
+		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d,aRL=%d,aRT=%d,aRW=%d,aRH=%d,aF=%d,eT=%d\n", &_maps->saveMap1.ennemis[i].xStart, &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax, &_maps->saveMap1.ennemis[i].animRect.left, &_maps->saveMap1.ennemis[i].animRect.top, &_maps->saveMap1.ennemis[i].animRect.width, &_maps->saveMap1.ennemis[i].animRect.height, &_maps->saveMap1.ennemis[i].animFrames, &_maps->saveMap1.ennemis[i].ennemiType);
 		_maps->saveMap1.ennemis[i].sprite = sfSprite_create();
-		_maps->saveMap1.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
-		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap1.ennemis[i].xStart, &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax);
-		//printf_s("poney : pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", _maps->saveMap1.ennemis[i].xStart, _maps->saveMap1.ennemis[i].pos.x,_maps->saveMap1.ennemis[i].pos.y, _maps->saveMap1.ennemis[i].Direction, _maps->saveMap1.ennemis[i].distMax);
-
+		sprintf_s(path, 50, "resources/sprites/m%d-%d.png", _currentLevel, _maps->saveMap1.ennemis[i].ennemiType);
+		_maps->saveMap1.ennemis[i].sprite = createSprite(path);
+		_maps->saveMap1.ennemis[i].currentAnimFrame = 0;
+		_maps->saveMap1.ennemis[i].animRect.top = _maps->saveMap1.ennemis[i].Direction *_maps->saveMap1.ennemis[i].animRect.height;
+		sfSprite_setTextureRect(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].animRect);
+		_maps->saveMap1.ennemis[i].enemy_Start = (float)clock() / CLOCKS_PER_SEC;
+		_maps->saveMap1.ennemis[i].enemy_Current = 0;
+		_maps->saveMap1.ennemis[i].enemy_Since = 0;
+		
 		_maps->saveMap1.ennemis[i].xStart += X_OFFSET;
 		_maps->saveMap1.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap1.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap1.ennemis[i].sprite);
@@ -1233,9 +1263,18 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	fscanf_s(file, "%d\n", &elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
+		//fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap2.ennemis[i].xStart, &_maps->saveMap2.ennemis[i].pos.x, &_maps->saveMap2.ennemis[i].pos.y, &_maps->saveMap2.ennemis[i].Direction, &_maps->saveMap2.ennemis[i].distMax);
+		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d,aRL=%d,aRT=%d,aRW=%d,aRH=%d,aF=%d,eT=%d\n", &_maps->saveMap2.ennemis[i].xStart, &_maps->saveMap2.ennemis[i].pos.x, &_maps->saveMap2.ennemis[i].pos.y, &_maps->saveMap2.ennemis[i].Direction, &_maps->saveMap2.ennemis[i].distMax, &_maps->saveMap2.ennemis[i].animRect.left, &_maps->saveMap2.ennemis[i].animRect.top, &_maps->saveMap2.ennemis[i].animRect.width, &_maps->saveMap2.ennemis[i].animRect.height, &_maps->saveMap2.ennemis[i].animFrames, &_maps->saveMap2.ennemis[i].ennemiType);
 		_maps->saveMap2.ennemis[i].sprite = sfSprite_create();
-		_maps->saveMap2.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
-		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap2.ennemis[i].xStart, &_maps->saveMap2.ennemis[i].pos.x, &_maps->saveMap2.ennemis[i].pos.y, &_maps->saveMap2.ennemis[i].Direction, &_maps->saveMap2.ennemis[i].distMax);
+		sprintf_s(path, 50, "resources/sprites/m%d-%d.png", _currentLevel, _maps->saveMap2.ennemis[i].ennemiType);
+		_maps->saveMap2.ennemis[i].sprite = createSprite(path);
+		_maps->saveMap2.ennemis[i].currentAnimFrame = 0;
+		_maps->saveMap2.ennemis[i].animRect.top = _maps->saveMap2.ennemis[i].Direction *_maps->saveMap2.ennemis[i].animRect.height;
+		sfSprite_setTextureRect(_maps->saveMap2.ennemis[i].sprite, _maps->saveMap2.ennemis[i].animRect);
+		_maps->saveMap2.ennemis[i].enemy_Start = (float)clock() / CLOCKS_PER_SEC;
+		_maps->saveMap2.ennemis[i].enemy_Current = 0;
+		_maps->saveMap2.ennemis[i].enemy_Since = 0;
+
 		_maps->saveMap2.ennemis[i].xStart += X_OFFSET;
 		_maps->saveMap2.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap2.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap2.ennemis[i].sprite);
@@ -1273,9 +1312,17 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	fscanf_s(file, "%d\n", &elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
+		//fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap3.ennemis[i].xStart, &_maps->saveMap3.ennemis[i].pos.x, &_maps->saveMap3.ennemis[i].pos.y, &_maps->saveMap3.ennemis[i].Direction, &_maps->saveMap3.ennemis[i].distMax);
+		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d,aRL=%d,aRT=%d,aRW=%d,aRH=%d,aF=%d,eT=%d\n", &_maps->saveMap3.ennemis[i].xStart, &_maps->saveMap3.ennemis[i].pos.x, &_maps->saveMap3.ennemis[i].pos.y, &_maps->saveMap3.ennemis[i].Direction, &_maps->saveMap3.ennemis[i].distMax, &_maps->saveMap3.ennemis[i].animRect.left, &_maps->saveMap3.ennemis[i].animRect.top, &_maps->saveMap3.ennemis[i].animRect.width, &_maps->saveMap3.ennemis[i].animRect.height, &_maps->saveMap3.ennemis[i].animFrames, &_maps->saveMap3.ennemis[i].ennemiType);
 		_maps->saveMap3.ennemis[i].sprite = sfSprite_create();
-		_maps->saveMap3.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
-		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap3.ennemis[i].xStart, &_maps->saveMap3.ennemis[i].pos.x, &_maps->saveMap3.ennemis[i].pos.y, &_maps->saveMap3.ennemis[i].Direction, &_maps->saveMap3.ennemis[i].distMax);
+		sprintf_s(path, 50, "resources/sprites/m%d-%d.png", _currentLevel, _maps->saveMap3.ennemis[i].ennemiType);
+		_maps->saveMap3.ennemis[i].sprite = createSprite(path);
+		_maps->saveMap3.ennemis[i].currentAnimFrame = 0;
+		_maps->saveMap3.ennemis[i].animRect.top = _maps->saveMap3.ennemis[i].Direction *_maps->saveMap3.ennemis[i].animRect.height;
+		sfSprite_setTextureRect(_maps->saveMap3.ennemis[i].sprite, _maps->saveMap3.ennemis[i].animRect);
+		_maps->saveMap3.ennemis[i].enemy_Start = (float)clock() / CLOCKS_PER_SEC;
+		_maps->saveMap3.ennemis[i].enemy_Current = 0;
+		_maps->saveMap3.ennemis[i].enemy_Since = 0;
 		_maps->saveMap3.ennemis[i].xStart += X_OFFSET;
 		_maps->saveMap3.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap3.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap3.ennemis[i].sprite);
@@ -1313,9 +1360,17 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	fscanf_s(file, "%d\n", &elementsNumber);
 	for (int i = 0; i < elementsNumber; i++)
 	{
+		//fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap4.ennemis[i].xStart, &_maps->saveMap4.ennemis[i].pos.x, &_maps->saveMap4.ennemis[i].pos.y, &_maps->saveMap4.ennemis[i].Direction, &_maps->saveMap4.ennemis[i].distMax);
+		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d,aRL=%d,aRT=%d,aRW=%d,aRH=%d,aF=%d,eT=%d\n", &_maps->saveMap4.ennemis[i].xStart, &_maps->saveMap4.ennemis[i].pos.x, &_maps->saveMap4.ennemis[i].pos.y, &_maps->saveMap4.ennemis[i].Direction, &_maps->saveMap4.ennemis[i].distMax, &_maps->saveMap4.ennemis[i].animRect.left, &_maps->saveMap4.ennemis[i].animRect.top, &_maps->saveMap4.ennemis[i].animRect.width, &_maps->saveMap4.ennemis[i].animRect.height, &_maps->saveMap4.ennemis[i].animFrames, &_maps->saveMap4.ennemis[i].ennemiType);
 		_maps->saveMap4.ennemis[i].sprite = sfSprite_create();
-		_maps->saveMap4.ennemis[i].sprite = createSprite("resources/sprites/m1-1.png");
-		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap4.ennemis[i].xStart, &_maps->saveMap4.ennemis[i].pos.x, &_maps->saveMap4.ennemis[i].pos.y, &_maps->saveMap4.ennemis[i].Direction, &_maps->saveMap4.ennemis[i].distMax);
+		sprintf_s(path, 50, "resources/sprites/m%d-%d.png", _currentLevel, _maps->saveMap4.ennemis[i].ennemiType);
+		_maps->saveMap4.ennemis[i].sprite = createSprite(path);
+		_maps->saveMap4.ennemis[i].currentAnimFrame = 0;
+		_maps->saveMap4.ennemis[i].animRect.top = _maps->saveMap4.ennemis[i].Direction *_maps->saveMap4.ennemis[i].animRect.height;
+		sfSprite_setTextureRect(_maps->saveMap4.ennemis[i].sprite, _maps->saveMap4.ennemis[i].animRect);
+		_maps->saveMap4.ennemis[i].enemy_Start = (float)clock() / CLOCKS_PER_SEC;
+		_maps->saveMap4.ennemis[i].enemy_Current = 0;
+		_maps->saveMap4.ennemis[i].enemy_Since = 0;
 		_maps->saveMap4.ennemis[i].xStart += X_OFFSET;
 		_maps->saveMap4.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap4.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap4.ennemis[i].sprite);

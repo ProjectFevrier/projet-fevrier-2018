@@ -159,11 +159,19 @@ struct s_poney
 	sfSprite* sprite;
 	sfVector2f Origin;
 	sfFloatRect hitBox;
+	sfIntRect animRect;
+	int ennemiType;
+	int animFrames;
+	int currentAnimFrame;
 	float speed;
 	float angle;
 	int distMax;
 	int Direction;
 	int elementsNumber;
+
+	float enemy_Current;
+	float enemy_Since;
+	float enemy_Start;
 
 };
 
@@ -279,7 +287,7 @@ struct s_maps
 // Liste Chainé
 typedef struct t_listElement ListElement;
 
-#pragma region Liste Chainé
+#pragma region Liste Chaine
 struct t_listElement
 {
 	t_bullet Bullet;
@@ -292,7 +300,7 @@ struct t_list
 {
 	ListElement *firstElement;
 };
-#pragma endregion Liste Chainé
+#pragma endregion Liste Chaine
 
 
 #pragma region Fonctions
