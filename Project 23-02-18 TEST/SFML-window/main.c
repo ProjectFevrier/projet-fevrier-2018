@@ -4,10 +4,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
+#include <time.h>
 #include "lib.h"
 
-/*test*/
-/*test2*/
 
 
 int main()
@@ -79,7 +78,7 @@ int main()
 
 #pragma region // Position de la console
 	HWND consoleWindow = GetConsoleWindow();
-	SetWindowPos(consoleWindow, 0, -500, 500, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+	SetWindowPos(consoleWindow, 0, -1000, 500, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 #pragma endregion
 
 
@@ -91,9 +90,9 @@ int main()
 
 	sfRenderWindow_setFramerateLimit(window, 30);
 
+	/*Time*/
 	srand(time(NULL));
 
-	/*Time*/
 
 	while (sfRenderWindow_isOpen(window))
 	{
@@ -176,7 +175,7 @@ int main()
 
 		managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis, timeSinceBackground);
 		affMap(window, &Player);
-		ReadBullet(window, mode, list, &maps, &Player);
+		ReadBullet(window, mode, list, &maps, &Player, &Hud);
 		managePlayer(window, mode, &Player, list, &gravity_Since);
 		manageHud(window, &Hud, &Player);
 		Gravity(window, mode, &Player, &gravity_Since);
@@ -204,7 +203,7 @@ sfSprite* createSprite(char *_source)
 	return sprite;
 }
 
-void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2,float _timeSinceBackground)
+void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2, float _timeSinceBackground)
 {
 	for (int i = 0; i < _poney1[0].elementsNumber; i++)
 	{
@@ -428,11 +427,12 @@ void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player
 	_list->firstElement = newElement;
 }
 
-void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player)
+void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player, t_hud *Hud)
 {
 	ListElement *currentElement = _list->firstElement;
 
 	int countElement = 0;
+	int nextEllementDeleted = NULL;
 
 	while (currentElement != NULL)
 	{
@@ -446,15 +446,19 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 		if (currentElement->Bullet.pos.x <= (0 + X_OFFSET) + WIDTH_COEUR || currentElement->Bullet.pos.x >= 1920 + WIDTH_COEUR)
 		{
 			//printf("Delete");
-			/*DeleteBulletToID(_list, countElement);
-			break;*/
+			printf("Map : ");
+			DeleteBulletToID(_list, countElement);
+			nextEllementDeleted = countElement;
+			break;
 		}
 		// Bords de map Y
 		if (currentElement->Bullet.pos.y <= 0 || currentElement->Bullet.pos.y >= 1080 + HEIGHT_COEUR)
 		{
 			//printf("Delete");
-			/*DeleteBulletToID(_list, countElement);
-			break;*/
+			printf("Map : ");
+			DeleteBulletToID(_list, countElement);
+			nextEllementDeleted = countElement;
+			break;
 		}
 
 		//Animation
@@ -479,32 +483,40 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 			sfSprite_setTextureRect(currentElement->Bullet.sprite, currentElement->Bullet.rect);
 		}
 		////////////////
+		if (nextEllementDeleted == NULL)
+		{
 
 		sfRenderWindow_drawSprite(_window, currentElement->Bullet.sprite, NULL);
 
-		for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber ; i++)
-		{
 
-			if (sfFloatRect_intersects(&(_maps->currentMap.ennemis[i].hitBox), &currentElement->Bullet.hitBox, NULL))
+			for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
 			{
-				_maps->currentMap.ennemis[i].sprite = NULL;
-				_maps->currentMap.ennemis[i].hitBox.width = 0;
-				_maps->currentMap.ennemis[i].hitBox.height = 0;
-				Player->jaugePoint += 5;
-				DeleteBulletToID(_list, countElement);
-				break;
+				if (sfFloatRect_intersects(&(_maps->currentMap.ennemis[i].hitBox), &currentElement->Bullet.hitBox, NULL))
+				{
+					_maps->currentMap.ennemis[i].sprite = NULL;
+					_maps->currentMap.ennemis[i].hitBox.width = 0;
+					_maps->currentMap.ennemis[i].hitBox.height = 0;
+					Player->jaugePoint += 7;
+					Hud->stateBarre = KILL;
+					printf("Ennem : ");
+					DeleteBulletToID(_list, countElement);
+					break;
+				}
 			}
-		}
-		for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
-		{
-			if (sfFloatRect_intersects(&_maps->nextMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL))
+			for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 			{
-				_maps->nextMap.ennemis[i].sprite = NULL;
-				_maps->nextMap.ennemis[i].hitBox.width = 0;
-				_maps->nextMap.ennemis[i].hitBox.height = 0;
-				Player->jaugePoint += 5;
-				DeleteBulletToID(_list, countElement);
-				break;
+
+				if (sfFloatRect_intersects(&_maps->nextMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL))
+				{
+					_maps->nextMap.ennemis[i].sprite = NULL;
+					_maps->nextMap.ennemis[i].hitBox.width = 0;
+					_maps->nextMap.ennemis[i].hitBox.height = 0;
+					Player->jaugePoint += 7;
+					Hud->stateBarre = KILL;
+					printf("Ennem : ");
+					DeleteBulletToID(_list, countElement);
+					break;
+				}
 			}
 		}
 
@@ -527,6 +539,7 @@ void DeleteBulletToID(List *_list, int ID)
 
 	int currentID = 0;
 
+
 	if (currentID == ID)
 	{
 		DeleteFirstBullet(_list);
@@ -538,6 +551,7 @@ void DeleteBulletToID(List *_list, int ID)
 			currentID++;
 			if (currentID == ID)
 			{
+				printf("ID - CURRENT : %d , %d\n", ID, currentID);
 				ListElement *deletedElement = currentElement->nextElement;
 
 				currentElement->nextElement = currentElement->nextElement->nextElement;
@@ -1004,7 +1018,7 @@ void initHud(t_hud *Hud, t_player *Player)
 	Hud->jaugePos.y = 633;
 
 	Hud->jaugeRect.width = 42;
-	Hud->jaugeRect.height = 228;
+	Hud->jaugeRect.height = Player->jaugePoint;
 	Hud->jaugeRect.top = 0;
 	Hud->jaugeRect.left = 0;
 
@@ -1049,55 +1063,287 @@ void initHud(t_hud *Hud, t_player *Player)
 	sfSprite_setPosition(Hud->sprite_buttMenu, Hud->pos_buttMenu);
 	//
 
-	// Aiguilles 1
-	Hud->Aiguille.Barre1.sprite_barre = createSprite("resources/textures/barre1.png");
+	// Aiguilles
 
-	Hud->Aiguille.Barre1.pos.x = 355;
-	Hud->Aiguille.Barre1.pos.y = 200;
+	Hud->stateBarre = 0;//
+	Hud->previousState = 0;//
+	Hud->countAfterKill = 0;//
 
-	sfSprite_setPosition(Hud->Aiguille.Barre1.sprite_barre, Hud->Aiguille.Barre1.pos);
+	for (int i = 0; i < 3; i++)
+	{
+		if (i == 0)
+		{
+			Hud->Aiguille[i].sprite_barre = createSprite("resources/textures/barre0.png");
 
-	Hud->Aiguille.Barre1.size_barre = sfSprite_getGlobalBounds(Hud->Aiguille.Barre1.sprite_barre);
+			Hud->Aiguille[i].pos.x = 355;
+			Hud->Aiguille[i].pos.y = 200;
 
-	Hud->Aiguille.Barre1.Origin.x = Hud->Aiguille.Barre1.size_barre.width/2;
-	Hud->Aiguille.Barre1.Origin.y = Hud->Aiguille.Barre1.size_barre.height/2;
+			// Start 185
+		
+			Hud->Aiguille[i].angStart = 185;
+			Hud->Aiguille[i].angle = Hud->Aiguille[i].angStart;
 
-	sfSprite_setOrigin(Hud->Aiguille.Barre1.sprite_barre, Hud->Aiguille.Barre1.Origin);
+			Hud->Aiguille[i].speed = 0.10;
 
-	// Start 185 | End 77
-	Hud->Aiguille.Barre1.angle = 185;
+			Hud->Aiguille[i].angMin = randomBarre(1, i, Hud);
+			Hud->Aiguille[i].angMax = randomBarre(0, i, Hud);
+		}
+		if (i == 1)
+		{
+			Hud->Aiguille[i].sprite_barre = createSprite("resources/textures/barre1.png");
 
-	Hud->Aiguille.Barre1.speed = 1;
+			Hud->Aiguille[i].pos.x = 192;
+			Hud->Aiguille[i].pos.y = 257;
 
-	sfSprite_setRotation(Hud->Aiguille.Barre1.sprite_barre, Hud->Aiguille.Barre1.angle);
+			// Start 125 
+			Hud->Aiguille[i].angStart = 125;
+			Hud->Aiguille[i].angle = Hud->Aiguille[i].angStart;
+
+			Hud->Aiguille[i].speed = 0.10;
+
+			Hud->Aiguille[i].angMin = randomBarre(1, i, Hud);
+			Hud->Aiguille[i].angMax = randomBarre(0, i, Hud);
+		}
+		if (i == 2)
+		{
+			Hud->Aiguille[i].sprite_barre = createSprite("resources/textures/barre2.png");
+
+			Hud->Aiguille[i].pos.x = 118;
+			Hud->Aiguille[i].pos.y = 182;
+
+			// Start 70		
+			Hud->Aiguille[i].angStart = 70;
+			Hud->Aiguille[i].angle = Hud->Aiguille[i].angStart;
+
+			Hud->Aiguille[i].speed = 0.10;
+
+			Hud->Aiguille[i].angMin = randomBarre(1, i, Hud);
+			Hud->Aiguille[i].angMax = randomBarre(0, i, Hud);
+		}
+
+		sfSprite_setPosition(Hud->Aiguille[i].sprite_barre, Hud->Aiguille[i].pos);//
+
+		Hud->Aiguille[i].size_barre = sfSprite_getGlobalBounds(Hud->Aiguille[i].sprite_barre);//
+
+		Hud->Aiguille[i].Origin.x = Hud->Aiguille[i].size_barre.width / 2;//
+		Hud->Aiguille[i].Origin.y = Hud->Aiguille[i].size_barre.height / 2;//
+
+		sfSprite_setOrigin(Hud->Aiguille[i].sprite_barre, Hud->Aiguille[i].Origin);//
+		sfSprite_setRotation(Hud->Aiguille[i].sprite_barre, Hud->Aiguille[i].angle);//
+
+		Hud->Aiguille[i].sens = 1;//
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (i == 0)
+		{
+			Hud->Rouages[i].sprite = createSprite("resources/textures/RouageA.png");
+
+			Hud->Rouages[i].pos.x = 123;
+			Hud->Rouages[i].pos.y = 124;
+		}
+		if (i == 1)
+		{
+			Hud->Rouages[i].sprite = createSprite("resources/textures/RouageB.png");
+
+			Hud->Rouages[i].pos.x = 167;
+			Hud->Rouages[i].pos.y = 408;
+		}
+		if (i == 2)
+		{
+			Hud->Rouages[i].sprite = createSprite("resources/textures/RouageC.png");
+
+			Hud->Rouages[i].pos.x = 342;
+			Hud->Rouages[i].pos.y = 472;
+		}
+		if (i == 3)
+		{
+			Hud->Rouages[i].sprite = createSprite("resources/textures/RouageD.png");
+
+			Hud->Rouages[i].pos.x = 416;
+			Hud->Rouages[i].pos.y = 134;
+		}
+		if (i == 4)
+		{
+			Hud->Rouages[i].sprite = createSprite("resources/textures/RouageE.png");
+
+			Hud->Rouages[i].pos.x = 270;
+			Hud->Rouages[i].pos.y = 615;
+		}
+			Hud->Rouages[i].size = sfSprite_getGlobalBounds(Hud->Rouages[i].sprite);
+
+			Hud->Rouages[i].Origin.x = Hud->Rouages[i].size.width / 2;
+			Hud->Rouages[i].Origin.y = Hud->Rouages[i].size.height / 2;
+			sfSprite_setOrigin(Hud->Rouages[i].sprite, Hud->Rouages[i].Origin);
+
+			Hud->Rouages[i].angle = 0;
+	}
+}
+
+int randomBarre(int minOrmax,int _index, t_hud *Hud)
+{
+	int numberMax = 0;
+	int numberMin = 0;
+	int newNumber = 0;
+
+	if (minOrmax == 0) // Max
+	{	
+		if (Hud->stateBarre == START || Hud->previousState == START && Hud->stateBarre == KILL)
+		{
+			if (_index == 0)
+			{
+				numberMax = 295;
+				numberMin = 246;
+			}
+			if (_index == 1)
+			{
+				numberMax = 235;
+				numberMin = 186;
+			}
+			if (_index == 2)
+			{
+				numberMax = 170;
+				numberMin = 121;
+			}
+		}
+		newNumber = rand() % (numberMax - numberMin) + numberMin;
+	}
+	else if (minOrmax == 1) // Min
+	{
+		if (Hud->stateBarre ==START || Hud->previousState == START && Hud->stateBarre == KILL)
+		{
+			if (_index == 0)
+			{
+				numberMax = 245;
+				numberMin = Hud->Aiguille[_index].angStart + 10;
+			}
+			if (_index == 1)
+			{
+				numberMax = 185;
+				numberMin = Hud->Aiguille[_index].angStart + 10;
+			}
+			if (_index == 2)
+			{
+				numberMax = 120;
+				numberMin = Hud->Aiguille[_index].angStart + 10;
+
+			}
+		}
+		newNumber = rand() % (numberMax - numberMin) + numberMin;
+	}
+
+	return newNumber;
+}
+
+int randBarre_Speed(t_hud *Hud)
+{
+	int speed = 0;
+
+	if (Hud->stateBarre == KILL)
+	{
+		speed = rand() % (6 - 4) + 4;
+	}
+	else
+	{
+		speed = rand() % (3 - 1) + 1;
+	}
+
+	return speed;
 }
 
 void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 {
+#pragma region Rouages
+	for (int i = 0; i < 5; i++)
+	{
+		Hud->Rouages[i].angle -= 0.50;
+		sfSprite_setRotation(Hud->Rouages[i].sprite, Hud->Rouages[i].angle);
+
+		sfSprite_setPosition(Hud->Rouages[i].sprite, Hud->Rouages[i].pos);
+		sfRenderWindow_drawSprite(_window, Hud->Rouages[i].sprite, NULL);
+	}
+#pragma endregion
+
 #pragma region Hud Vide
 	sfRenderWindow_drawSprite(_window, Hud->sprite, NULL);
 #pragma endregion
 
 #pragma region Anim premier plan
 
-	// Aiguilles 1
-	barreAngle(Hud);
-	// Angle toujours entre 0 / 360 (A mettre en fonction?)
-	
-	Hud->Aiguille.Barre1.angle += Hud->Aiguille.Barre1.speed;
+	#pragma region Aiguilles
+	// Aiguilles
 
-	//printf("%.2f\n", Hud->Aiguille.Barre1.angle);
-	//
+	normalAngle(Hud);
 
+	for (int i = 0; i < 3; i++)
+	{
+		if (Hud->Aiguille[i].angle > (Hud->Aiguille[i].angStart + 10) - 2 && Hud->Aiguille[i].angle < (Hud->Aiguille[i].angStart + 10))
+		{
+			Hud->Aiguille[i].speed = 1;
+		}
 
-	sfSprite_setRotation(Hud->Aiguille.Barre1.sprite_barre, Hud->Aiguille.Barre1.angle);
-	sfRenderWindow_drawSprite(_window, Hud->Aiguille.Barre1.sprite_barre, NULL);
+		if (Hud->Aiguille[i].sens == 1)
+		{
+			if (Hud->Aiguille[i].angle < Hud->Aiguille[i].angMax)
+			{
+				Hud->Aiguille[i].angle += Hud->Aiguille[i].speed;
+			}
+			else
+			{	
+				if (Hud->stateBarre == KILL && i == 1)
+				{
+					Hud->countAfterKill += 1;
+				}
+				if (Hud->countAfterKill >= 2)
+				{
+					Hud->stateBarre = Hud->previousState;
+					Hud->countAfterKill = 0;
+				}
+
+				Hud->Aiguille[i].angMax = randomBarre(0, i, Hud);
+				Hud->Aiguille[i].speed = randBarre_Speed(Hud);
+				Hud->Aiguille[i].sens = 0;
+			}
+		}
+		if (Hud->Aiguille[i].sens == 0)
+		{
+			if (Hud->Aiguille[i].angle > Hud->Aiguille[i].angMin)
+			{
+				Hud->Aiguille[i].angle -= Hud->Aiguille[i].speed;
+			}
+			else
+			{
+				if (Hud->stateBarre == KILL && i == 1)
+				{
+					Hud->countAfterKill += 1;
+				}
+				if (Hud->countAfterKill >= 2)
+				{
+					Hud->stateBarre = Hud->previousState;
+					Hud->countAfterKill = 0;
+				}
+
+				Hud->Aiguille[i].angMin = randomBarre(1, i, Hud);
+				Hud->Aiguille[i].speed = randBarre_Speed(Hud);
+				Hud->Aiguille[i].sens = 1;
+			}
+		}
+		
+		if (i == 0)
+		{
+			printf("State : %d |Previous : %d Count : %d | Speed %.2f\n", Hud->stateBarre, Hud->previousState, Hud->countAfterKill, Hud->Aiguille[i].speed);
+		}
+
+		sfSprite_setRotation(Hud->Aiguille[i].sprite_barre, Hud->Aiguille[i].angle);
+		sfRenderWindow_drawSprite(_window, Hud->Aiguille[i].sprite_barre, NULL);
+	}
+	#pragma endregion 
+
 	// Jauge
 
 	Hud->jauge_Current = (float)clock() / CLOCKS_PER_SEC;
 	Hud->jauge_Since = Hud->jauge_Current - Hud->jauge_Start;
-
-	//printf("Start %.2f, Current %.2f, Since %.2f, Int %d\n", Hud->jauge_Start, Hud->jauge_Current, Hud->jauge_Since, Hud->intAnimX);
 
 	if (Hud->jauge_Since > CD_ANIM_JAUGE)
 	{
@@ -1124,7 +1370,8 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 
 		if (Hud->jaugeRect.height > 0)
 		{
-			Hud->jaugeRect.height -= 0.50;
+			Player->jaugePoint -= 1;
+			Hud->jaugeRect.height = Player->jaugePoint;
 			Hud->jaugeOrigin.y = Hud->jaugeRect.height;			// Reset l'origine Y
 			sfSprite_setOrigin(Hud->sprite_jauge, Hud->jaugeOrigin);
 		}
@@ -1155,17 +1402,21 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 	// Grille
 	//sfRenderWindow_drawSprite(_window, Hud->sprite_grille, NULL);
 #pragma endregion
+
 }
 
-void barreAngle(t_hud *Hud)
+void normalAngle(t_hud *Hud)
 {
-	if ((Hud->Aiguille.Barre1.angle += Hud->Aiguille.Barre1.speed) > 360)
+	for (int i = 0; i > 3; i++)
 	{
-		Hud->Aiguille.Barre1.angle = 0;
-	}
-	if ((Hud->Aiguille.Barre1.angle += Hud->Aiguille.Barre1.speed) < 0)
-	{
-		Hud->Aiguille.Barre1.angle = 360;
+		if ((Hud->Aiguille[i].angle + Hud->Aiguille[i].speed) > 360)
+		{
+			Hud->Aiguille[i].angle = 0;
+		}
+		if ((Hud->Aiguille[i].angle + Hud->Aiguille[i].speed) < 0)
+		{
+			Hud->Aiguille[i].angle = 360;
+		}
 	}
 }
 
@@ -1210,9 +1461,9 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap1.collisions[i].rectangle = sfRectangleShape_create();
 		fscanf_s(file, "pX=%f,pY=%f,sX=%f,sY=%f\n", &_maps->saveMap1.collisions[i].pos.x, &_maps->saveMap1.collisions[i].pos.y, &_maps->saveMap1.collisions[i].size.x, &_maps->saveMap1.collisions[i].size.y);
 		_maps->saveMap1.collisions[i].pos.x += X_OFFSET;
-		
+
 		sfRectangleShape_setSize(_maps->saveMap1.collisions[i].rectangle, _maps->saveMap1.collisions[i].size);
-		sfRectangleShape_setPosition(_maps->saveMap1.collisions[i].rectangle,_maps->saveMap1.collisions[i].pos);
+		sfRectangleShape_setPosition(_maps->saveMap1.collisions[i].rectangle, _maps->saveMap1.collisions[i].pos);
 		_maps->saveMap1.collisions[i].hitBox = sfRectangleShape_getGlobalBounds(_maps->saveMap1.collisions[i].rectangle);
 		_maps->saveMap1.collisions[i].elementsNumber = elementsNumber;
 	}
@@ -1231,12 +1482,12 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap1.ennemis[i].enemy_Start = (float)clock() / CLOCKS_PER_SEC;
 		_maps->saveMap1.ennemis[i].enemy_Current = 0;
 		_maps->saveMap1.ennemis[i].enemy_Since = 0;
-		
+
 		_maps->saveMap1.ennemis[i].xStart += X_OFFSET;
 		_maps->saveMap1.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap1.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap1.ennemis[i].sprite);
 		_maps->saveMap1.ennemis[i].Origin.x = _maps->saveMap1.ennemis[i].hitBox.width / 2;
-		_maps->saveMap1.ennemis[i].Origin.y = _maps->saveMap1.ennemis[i].hitBox.height ;
+		_maps->saveMap1.ennemis[i].Origin.y = _maps->saveMap1.ennemis[i].hitBox.height;
 		sfSprite_setOrigin(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap1.ennemis[i].sprite, _maps->saveMap1.ennemis[i].pos);
 		_maps->saveMap1.ennemis[i].elementsNumber = elementsNumber;
@@ -1285,7 +1536,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap2.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap2.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap2.ennemis[i].sprite);
 		_maps->saveMap2.ennemis[i].Origin.x = _maps->saveMap2.ennemis[i].hitBox.width / 2;
-		_maps->saveMap2.ennemis[i].Origin.y = _maps->saveMap2.ennemis[i].hitBox.height ;
+		_maps->saveMap2.ennemis[i].Origin.y = _maps->saveMap2.ennemis[i].hitBox.height;
 		sfSprite_setOrigin(_maps->saveMap2.ennemis[i].sprite, _maps->saveMap2.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap2.ennemis[i].sprite, _maps->saveMap2.ennemis[i].pos);
 		_maps->saveMap2.ennemis[i].elementsNumber = elementsNumber;
@@ -1333,7 +1584,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap3.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap3.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap3.ennemis[i].sprite);
 		_maps->saveMap3.ennemis[i].Origin.x = _maps->saveMap3.ennemis[i].hitBox.width / 2;
-		_maps->saveMap3.ennemis[i].Origin.y = _maps->saveMap3.ennemis[i].hitBox.height ;
+		_maps->saveMap3.ennemis[i].Origin.y = _maps->saveMap3.ennemis[i].hitBox.height;
 		sfSprite_setOrigin(_maps->saveMap3.ennemis[i].sprite, _maps->saveMap3.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap3.ennemis[i].sprite, _maps->saveMap3.ennemis[i].pos);
 		_maps->saveMap3.ennemis[i].elementsNumber = elementsNumber;
@@ -1381,7 +1632,7 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 		_maps->saveMap4.ennemis[i].pos.x += X_OFFSET;
 		_maps->saveMap4.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->saveMap4.ennemis[i].sprite);
 		_maps->saveMap4.ennemis[i].Origin.x = _maps->saveMap4.ennemis[i].hitBox.width / 2;
-		_maps->saveMap4.ennemis[i].Origin.y = _maps->saveMap4.ennemis[i].hitBox.height ;
+		_maps->saveMap4.ennemis[i].Origin.y = _maps->saveMap4.ennemis[i].hitBox.height;
 		sfSprite_setOrigin(_maps->saveMap4.ennemis[i].sprite, _maps->saveMap4.ennemis[i].Origin);
 		sfSprite_setPosition(_maps->saveMap4.ennemis[i].sprite, _maps->saveMap4.ennemis[i].pos);
 		_maps->saveMap4.ennemis[i].elementsNumber = elementsNumber;
@@ -1393,7 +1644,8 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 
 	_maps->currentMap = _maps->saveMap1;
 	_maps->nextMap = _maps->saveMap2;
-	
+	_maps->speedFactor = 1;
+
 }
 
 void nextMapYOffset(t_maps* _maps, float _velocityOffset)

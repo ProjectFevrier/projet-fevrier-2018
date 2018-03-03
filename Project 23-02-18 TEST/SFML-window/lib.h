@@ -1,5 +1,3 @@
-#pragma once
-
 #define PI 3.14159265359
 #define FRAMERATE 60
 #define BG_VELOCITY 200
@@ -175,54 +173,36 @@ struct s_poney
 
 };
 
-#pragma region Aiguille
-typedef struct s_barre1 t_barre1;
-
-struct s_barre1
-{
-	sfSprite *sprite_barre;
-	sfVector2f pos;
-	sfVector2f Origin;
-	sfFloatRect size_barre;
-
-	float angle;
-	float speed;
-};
-
-typedef struct s_barre2 t_barre2;
-
-struct s_barre2
-{
-	sfSprite *sprite_barre;
-	sfVector2f pos;
-	sfVector2f Origin;
-	sfFloatRect size_barre;
-
-	float angle;
-	float speed;
-};
-
-typedef struct s_barre3 t_barre3;
-
-struct s_barre3
-{
-	sfSprite *sprite_barre;
-	sfVector2f pos;
-	sfVector2f Origin;
-	sfFloatRect size_barre;
-
-	float angle;
-	float speed;
-};
-
+#pragma region Aiguille et Rouages
 typedef struct s_aiguille t_aiguille;
 
 struct s_aiguille
 {
 	// Aiguilles
-	t_barre1 Barre1;
-	t_barre2 Barre2;
-	t_barre3 Barre3;
+	sfSprite *sprite_barre;
+	sfVector2f pos;
+	sfVector2f Origin;
+	sfFloatRect size_barre;
+
+	int sens;
+	float angMin;
+	float angMax;
+	float angle;
+	float angStart;
+	float speed;
+};
+
+typedef struct s_rouages t_rouages;
+
+struct s_rouages
+{
+	// Rouages
+	sfSprite *sprite;
+	sfVector2f pos;
+	sfVector2f Origin;
+	sfFloatRect size;
+
+	float angle;
 };
 #pragma endregion
 
@@ -257,7 +237,21 @@ struct s_hud
 	sfFloatRect buttMenu_hitBox;
 	int intButt;
 
-	t_aiguille Aiguille;
+	// Aiguilles
+	enum e_stateBarre
+	{
+		START = 0,
+		MID,
+		END,
+		KILL,
+
+	}stateBarre, previousState;
+
+	int countAfterKill;
+
+	t_aiguille Aiguille[3];
+
+	t_rouages Rouages[5];
 };
 
 typedef struct s_mapSlot t_mapSlot;
@@ -279,6 +273,7 @@ struct s_maps
 	t_mapSlot saveMap4;
 	t_mapSlot currentMap;
 	t_mapSlot nextMap;
+	int speedFactor;
 };
 
 
@@ -300,7 +295,7 @@ struct t_list
 {
 	ListElement *firstElement;
 };
-#pragma endregion Liste Chaine
+#pragma endregion
 
 
 #pragma region Fonctions
@@ -327,7 +322,7 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 
 // Liste
 void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player *Player, sfVector2f Direction);
-void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player);
+void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player, t_hud *Hud);
 void DeleteFirstBullet(List *_list);
 void DeleteBulletToID(List *_list, int ID);
 //
@@ -336,7 +331,9 @@ void DeleteBulletToID(List *_list, int ID);
 void initHud(t_hud *Hud, t_player *Player);
 void manageHud(sfRenderWindow *window, t_hud *Hud, t_player *Player);
 int IsOver(sfRenderWindow *_window, sfFloatRect boundingBox);
-void barreAngle(t_hud *Hud);
+void normalAngle(t_hud *Hud);
+int randomBarre(int type, int _index, t_hud *Hud);
+int randBarre_Speed(t_hud *Hud);
 //
 
 
