@@ -74,7 +74,7 @@ int main()
 
 	/*Load maps*/
 	loadMaps(&maps, currentLevel, asStarted);
-	nextMapYOffset(&maps, 0);
+	nextMapYOffset(&maps, 0, &Player);
 
 #pragma region // Position de la console
 	HWND consoleWindow = GetConsoleWindow();
@@ -115,7 +115,7 @@ int main()
 			asStarted = 1;
 
 			loadMaps(&maps, currentLevel, asStarted);
-			nextMapYOffset(&maps, 0);
+			nextMapYOffset(&maps, 0, &Player);
 		}
 		else if(!sfKeyboard_isKeyPressed(sfKeyA))
 		{
@@ -152,7 +152,10 @@ int main()
 		{
 			gravity_Since = 1.0f / FRAMERATE;
 		}
+
+		// Timer PLayer
 		Player.shoot_Current = (float)clock() / CLOCKS_PER_SEC;
+		Player.walk_Current = (float)clock() / CLOCKS_PER_SEC;
 
 
 		/*Deplacements*/
@@ -161,7 +164,7 @@ int main()
 		{
 			paralax.animRect.top = 0;
 		}
-		moveMaps(&maps, velocityOffset);
+		moveMaps(&maps, velocityOffset,&Player);
 
 
 		/*Set et draw parallax*/
@@ -174,9 +177,8 @@ int main()
 
 
 		managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis, timeSinceBackground);
-		affMap(window, &Player);
-		ReadBullet(window, mode, list, &maps, &Player, &Hud);
 		managePlayer(window, mode, &Player, list, &gravity_Since);
+		ReadBullet(window, mode, list, &maps, &Player, &Hud);
 		manageHud(window, &Hud, &Player);
 		Gravity(window, mode, &Player, &gravity_Since);
 		checkColision(&Player, maps.currentMap.collisions, maps.nextMap.collisions);
@@ -293,7 +295,7 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 
 void initPlayer(t_player *Player)
 {
-	Player->sprite = createSprite("resources/textures/persoT.png");
+	Player->sprite = createSprite("resources/textures/perso.png");
 
 	Player->pos.x = 500 + X_OFFSET;
 	Player->pos.y = 500;
@@ -318,6 +320,8 @@ void initPlayer(t_player *Player)
 	sfSprite_setTextureRect(Player->sprite, Player->rectAnim);
 
 	Player->intAnim = 0;
+	Player->intAnimX = 0;
+	Player->intAnimBras = 0;
 
 	Player->airOn = 1;
 
@@ -333,8 +337,7 @@ void initPlayer(t_player *Player)
 
 	Player->Recoil = 0;
 
-	Player->Speed = 3.5;
-	Player->speedAir = 1.5;
+	Player->Speed = 1.25;
 
 	// Anim Bras
 	Player->Bras = createSprite("resources/textures/Bras.png");
@@ -355,23 +358,10 @@ void initPlayer(t_player *Player)
 	Player->BlockLeft = 0;
 	Player->BlockRight = 0;
 
-	Player->jaugePoint = 135.5;
+	Player->jaugePoint = JAUGE_START_SIZE;
+	Player->speedFactor = 1;
 
 	return Player;
-}
-
-void affMap(sfRenderWindow *_window, t_player *Player)
-{
-	//sfSprite_setPosition(BackGround->sprite, BackGround->pos);
-	//sfRenderWindow_drawSprite(_window, BackGround->sprite, NULL);
-
-	sfSprite_setPosition(Player->sprite, Player->pos);
-	sfRenderWindow_drawSprite(_window, Player->sprite, NULL);
-
-	//sfRenderWindow_drawSprite(_window, Hud->sprite, NULL);
-	// AnimBras
-	sfSprite_setPosition(Player->Bras, Player->pos_Bras);
-	sfRenderWindow_drawSprite(_window, Player->Bras, NULL);
 }
 
 void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player *Player, sfVector2f Direction)
@@ -433,6 +423,11 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 
 	int countElement = 0;
 	int nextEllementDeleted = NULL;
+	int sens = 0;
+	int i = 0;
+	int max = 1000;
+
+	
 
 	while (currentElement != NULL)
 	{
@@ -445,8 +440,7 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 		// Bords de map X
 		if (currentElement->Bullet.pos.x <= (0 + X_OFFSET) + WIDTH_COEUR || currentElement->Bullet.pos.x >= 1920 + WIDTH_COEUR)
 		{
-			//printf("Delete");
-			printf("Map : ");
+			//printf("Map : ");
 			DeleteBulletToID(_list, countElement);
 			nextEllementDeleted = countElement;
 			break;
@@ -454,8 +448,7 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 		// Bords de map Y
 		if (currentElement->Bullet.pos.y <= 0 || currentElement->Bullet.pos.y >= 1080 + HEIGHT_COEUR)
 		{
-			//printf("Delete");
-			printf("Map : ");
+			//printf("Map : ");
 			DeleteBulletToID(_list, countElement);
 			nextEllementDeleted = countElement;
 			break;
@@ -662,6 +655,7 @@ float createAngle(sfVector2f _pointA, sfRenderWindow *_window)
 
 void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, List *_list, float *gravity_Since)
 {
+	manageAnimPlayer(Player, _window);
 	// Calcule D'angle
 	Player->angCursor = RadToDeg(createAngle(Player->pos, _window));
 
@@ -679,10 +673,13 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 
 		sfSprite_setRotation(Player->Bras, Player->angCursor);
 	}
-	else if (Player->angCursor >= 42.5 && Player->angCursor < 137.50)    // Mid
+	else if (Player->angCursor >= 10 && Player->angCursor < 105)    // Mid
 	{
 		Player->ShootAng = 1;
-		Player->intAnim = 2;
+		if (Player->stateAir == AIR)
+		{
+			Player->intAnim = 2;
+		}
 	}
 	else if (Player->angCursor >= 137.50 && Player->angCursor < 190)   // Gauche
 	{
@@ -707,7 +704,6 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 			Player->intAnim = 1;
 		}
 	}
-	sfVector2i Temporaire = sfMouse_getPosition(_window);
 	/////////////////////////////////////////////
 
 	// Tir
@@ -718,6 +714,7 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 
 	if (sfMouse_isButtonPressed(sfMouseLeft) && Player->Shoot == sfFalse && Player->shoot_Since > CD_SHOOT && Player->ShootAng == 1)
 	{
+
 		Player->Recoil = 2;
 		sfVector2f Direction = vectorStart(_window, Player, noAngle);
 		AddBullet(_window, _mode, _list, Player, Direction);
@@ -747,7 +744,7 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 		{
 			if (Player->velocity.y <= -150)
 			{
-				Player->velocity.y = -150;
+Player->velocity.y = -150;
 			}
 		}
 		Player->pos.y += Player->velocity.y * (*gravity_Since);
@@ -761,30 +758,56 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 		}
 	}
 	/////////////////////////////////////////////
-
-	// Deplacement 
-
-	if (sfKeyboard_isKeyPressed(sfKeyLeft) && Player->pos.x >= (0 + X_OFFSET) + WIDTH_PLAYER/2)
+	if (Player->stateAir == AIR)
 	{
-		// Si Colisions sous les pieds
-		if (Player->airOn == 0)
+		Player->walk_Start = 0;
+	}
+	// Deplacement 
+	if (sfKeyboard_isKeyPressed(sfKeyLeft) && Player->pos.x >= (0 + X_OFFSET) + WIDTH_PLAYER / 2)
+	{
+		if (Player->stateAir == SOL)
+		{
+			Player->intAnim = 5;
+
+			if (Player->walk_Start == 0)
+			{
+				Player->walk_Start = (float)clock() / CLOCKS_PER_SEC;
+			}
+
+			Player->pos.x -= (Player->Speed + 1) * 5;
+		}
+		else
 		{
 			Player->pos.x -= Player->Speed * 5;
 		}
-		else
-		{
-			Player->pos.x -= Player->speedAir * 5;
-		}
 	}
-	else if (sfKeyboard_isKeyPressed(sfKeyRight) && Player->pos.x <= 1920 - WIDTH_PLAYER/2)
+	else if (sfKeyboard_isKeyPressed(sfKeyRight) && Player->pos.x <= 1920 - WIDTH_PLAYER / 2)
 	{
-		if (Player->airOn == 0)
+		if (Player->stateAir == SOL)
+		{
+			Player->intAnim = 6;
+
+			if (Player->walk_Start == 0)
+			{
+				Player->walk_Start = (float)clock() / CLOCKS_PER_SEC;
+			}
+
+			Player->pos.x += (Player->Speed + 1) * 5;
+		}
+		else
 		{
 			Player->pos.x += Player->Speed * 5;
 		}
-		else
+	}
+	else
+	{
+		if (Player->intAnim == 6)
 		{
-			Player->pos.x += Player->speedAir * 5;
+			Player->intAnim = 1;
+		}
+		else if (Player->intAnim == 5)
+		{
+			Player->intAnim = 0;
 		}
 	}
 	//////////////////////////////////////////////
@@ -793,47 +816,120 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 	{
 		//sfRenderWindow_close(_window);
 	}
-
-	manageAnimPlayer(Player);
 }
 
-void manageAnimPlayer(t_player *Player)
+void manageAnimPlayer(t_player *Player, sfRenderWindow* _window)
 {
+	// Air ou Collid
+	Player->stateAir = Player->OnPlatform;
 
-	Player->rectAnim.top = Player->intAnim * Player->rectAnim.height;
-	sfSprite_setTextureRect(Player->sprite, Player->rectAnim);
-
-	Player->rectBras.top = Player->intAnim * Player->rectBras.height;
-	sfSprite_setTextureRect(Player->Bras, Player->rectBras);
-
-	if (Player->airOn == 1 || Player->airOn == 2)
+	if (Player->stateAir == AIR)
 	{
 		if (Player->intAnim == 0)
 		{
-
-			Player->pos_Bras.x = Player->pos.x + 10;
-			Player->pos_Bras.y = Player->pos.y - 6;
-
-			Player->origin_Bras.x = Player->sizeSpr.width / 2 + 33;
-			Player->origin_Bras.y = Player->sizeSpr.height / 2 - 13;
-
-			sfSprite_setOrigin(Player->Bras, Player->origin_Bras);
+			Player->intAnim = 4;
 		}
-		else if (Player->intAnim == 1)
+		if (Player->intAnim == 1)
 		{
-
-			Player->pos_Bras.x = Player->pos.x - 10;
-			Player->pos_Bras.y = Player->pos.y - 6;
-
-			Player->origin_Bras.x = Player->sizeSpr.width / 2 - 33;
-			Player->origin_Bras.y = Player->sizeSpr.height / 2 - 13;
-
-			sfSprite_setOrigin(Player->Bras, Player->origin_Bras);
+			Player->intAnim = 3;
 		}
 	}
-	else if (Player->airOn == 3 || Player->airOn == 4)
+	else if (Player->stateAir == SOL)
 	{
+		if (Player->intAnim == 2)
+		{
+			Player->intAnim = 0;
+		}
+	}
 
+	// Gestion bras
+	if (Player->intAnim == 1 || Player->intAnim == 3 || Player->intAnim == 6)
+	{
+		Player->pos_Bras.x = Player->pos.x;
+		Player->pos_Bras.y = Player->pos.y - 12;
+
+		Player->origin_Bras.x = Player->sizeSpr.width / 2 - 33;
+		Player->origin_Bras.y = Player->sizeSpr.height / 2 - 13;
+
+		sfSprite_setOrigin(Player->Bras, Player->origin_Bras);
+		sfSprite_setPosition(Player->Bras, Player->pos_Bras);
+
+		sfRenderWindow_drawSprite(_window, Player->Bras, NULL);
+	} 
+	
+
+	//Aff Perso
+	//printf("Start : %.2f | Current : %.2f | Since : %.2f | Amin : %d\n", Player->walk_Start, Player->walk_Current, Player->walk_Since, Player->intAnim);
+
+	if (Player->intAnim == 5 || Player->intAnim == 6)
+	{
+		Player->walk_Since = Player->walk_Current - Player->walk_Start;
+
+		if (Player->walk_Since >= CD_ANIM_WALK)
+		{
+			Player->walk_Since = 0;
+			Player->intAnimX += 1;
+
+			if (Player->intAnimX == NB_ANIM_WALK - 1)
+			{
+				Player->intAnimX = 0;
+			}
+		}
+	}
+	else
+	{
+		Player->intAnimX = 0; 
+	}
+
+	Player->rectAnim.left = Player->intAnimX * Player->rectAnim.width;
+	Player->rectAnim.top = Player->intAnim * Player->rectAnim.height;
+	sfSprite_setTextureRect(Player->sprite, Player->rectAnim);
+
+	sfSprite_setPosition(Player->sprite, Player->pos);
+	sfRenderWindow_drawSprite(_window, Player->sprite, NULL);
+
+	// Affich Bras
+	if (Player->intAnim == 3 || Player->intAnim == 4 || Player->intAnim == 5 || Player->intAnim == 6)
+	{
+		if (Player->intAnim == 3 || Player->intAnim == 6)
+		{
+			Player->intAnimBras = 1;
+		}
+		else if (Player->intAnim == 4 || Player->intAnim == 5)
+		{
+			Player->intAnimBras = 0;
+		}
+
+		Player->rectBras.top = Player->intAnimBras * Player->rectBras.height;
+		sfSprite_setTextureRect(Player->Bras, Player->rectBras);
+	}
+	else
+	{
+		Player->rectBras.top = Player->intAnim * Player->rectBras.height;
+		sfSprite_setTextureRect(Player->Bras, Player->rectBras);
+	}
+
+
+	// Gestion bras
+	if (Player->intAnim == 0 || Player->intAnim == 4 || Player->intAnim == 5)
+	{
+		if (Player->intAnim == 5)
+		{
+			Player->pos_Bras.x = Player->pos.x - 3;
+		}
+		else
+		{
+			Player->pos_Bras.x = Player->pos.x + 10;
+		}
+		Player->pos_Bras.y = Player->pos.y - 6;
+
+		Player->origin_Bras.x = Player->sizeSpr.width / 2 + 33;
+		Player->origin_Bras.y = Player->sizeSpr.height / 2 - 13;
+
+		sfSprite_setOrigin(Player->Bras, Player->origin_Bras);
+		sfSprite_setPosition(Player->Bras, Player->pos_Bras);
+
+		sfRenderWindow_drawSprite(_window, Player->Bras, NULL);
 	}
 }
 
@@ -843,7 +939,6 @@ void Gravity(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float
 	//if (Player->pos.y <= _mode.height - (Player->hitBox.height / 2))
 	//{
 	Player->velocity.y += (*gravity_Since * GRAVITY) * 25;
-	Player->airOn = 1;
 
 	Player->pos.x += Player->velocity.x * (*gravity_Since);
 	Player->pos.y += Player->velocity.y * (*gravity_Since);
@@ -885,10 +980,14 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 					//printf("Down");
 					Player->pos.y += frctIntersection.height;
 					Player->velocity.y = 0;
-					Player->OnPlatform = 0;
+					//Player->OnPlatform = 0;
 					Player->OnJump = 1;
 
 				}
+			}
+			else if (Player->velocity.y > 50 && Player->velocity.y > -50)
+			{
+				Player->OnPlatform = 0;
 			}
 
 			if (frctIntersection.width < Player->hitBox.width && frctIntersection.height > 1) {
@@ -899,31 +998,25 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 				RectCenter.x = _rectangle1[i].hitBox.left + _rectangle1[i].hitBox.width / 2;
 				/*Test Collision*/
 				if (RectCenter.x - PlayerCenter.x > 0 && ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2)) <= -10)) {
-					//printf("%d\n", Player->OnPlatform);
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x -= frctIntersection.width;
-
 					}
-					//printf("right\n");
 					Player->BlockLeft = 1;
-
 				}
 				else if (RectCenter.x - PlayerCenter.x < 0 && ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2)) <= -10)) {
-					//printf("%d\n", Player->OnPlatform);
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x += frctIntersection.width;
 
 					}
-					//printf("left\n");
 					Player->BlockRight = 1;
-
-
 				}
-
-				//printf("RectPoint : %.2f\n", ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2))));
 			}
+		}
+		else if (Player->velocity.y > 50 && Player->velocity.y > -50)
+		{
+			Player->OnPlatform = 0;
 		}
 	}
 	for (int i = 0; i < _rectangle2[0].elementsNumber; i++)
@@ -934,10 +1027,6 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 		sfFloatRect frctIntersection;
 		if (sfFloatRect_intersects(&_rectangle2[i].hitBox, &Player->hitBox, &frctIntersection) == sfTrue)
 		{
-			/*Create Center Player and Rectangle*/
-
-
-			/*Test Rantangle Collision (global)*/
 			if (frctIntersection.height < _rectangle2[i].hitBox.height && frctIntersection.width > 1) {
 				sfVector2f PlayerCenter, RectCenter;
 
@@ -947,7 +1036,6 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 				RectCenter.x = _rectangle2[i].hitBox.left + _rectangle2[i].hitBox.width / 2;
 
 				if (RectCenter.y - PlayerCenter.y > 0) {
-					//printf("Up");
 					Player->pos.y -= frctIntersection.height;
 					Player->OnPlatform = 1;
 					Player->OnJump = 0;
@@ -955,10 +1043,9 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 
 				}
 				else if (RectCenter.y - PlayerCenter.y < 0) {
-					//printf("Down");
 					Player->pos.y += frctIntersection.height;
 					Player->velocity.y = 0;
-					Player->OnPlatform = 0;
+				//	Player->OnPlatform = 0;
 					Player->OnJump = 1;
 
 				}
@@ -970,9 +1057,7 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 				PlayerCenter.y = Player->hitBox.top + Player->hitBox.height / 2;
 				RectCenter.y = _rectangle2[i].hitBox.top + _rectangle2[i].hitBox.height / 2;
 				RectCenter.x = _rectangle2[i].hitBox.left + _rectangle2[i].hitBox.width / 2;
-				/*Test Collision*/
 				if (RectCenter.x - PlayerCenter.x > 0 && ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2)) <= -10)) {
-					//printf("%d\n", Player->OnPlatform);
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x -= frctIntersection.width;
@@ -983,7 +1068,6 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 
 				}
 				else if (RectCenter.x - PlayerCenter.x < 0 && ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2)) <= -10)) {
-					//printf("%d\n", Player->OnPlatform);
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x += frctIntersection.width;
@@ -1034,6 +1118,7 @@ void initHud(t_hud *Hud, t_player *Player)
 	Hud->jauge_Start = (float)clock() / CLOCKS_PER_SEC;
 	Hud->jauge_Current = Hud->jauge_Start;
 	Hud->jauge_Since = 0;
+
 
 	Hud->intAnimX = 0;
 	//
@@ -1329,11 +1414,6 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 				Hud->Aiguille[i].sens = 1;
 			}
 		}
-		
-		if (i == 0)
-		{
-			printf("State : %d |Previous : %d Count : %d | Speed %.2f\n", Hud->stateBarre, Hud->previousState, Hud->countAfterKill, Hud->Aiguille[i].speed);
-		}
 
 		sfSprite_setRotation(Hud->Aiguille[i].sprite_barre, Hud->Aiguille[i].angle);
 		sfRenderWindow_drawSprite(_window, Hud->Aiguille[i].sprite_barre, NULL);
@@ -1376,7 +1456,13 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 			sfSprite_setOrigin(Hud->sprite_jauge, Hud->jaugeOrigin);
 		}
 	}
-
+	if (Player->jaugePoint > JAUGE_START_SIZE)
+	{
+		Player->speedFactor = (((float)Player->jaugePoint - JAUGE_START_SIZE) / 100) + 1;
+		printf_s("JAUGE :%d ,SPEED : %.4f\n", Player->jaugePoint, Player->speedFactor);
+	}
+	else
+		Player->speedFactor = 1;
 	Hud->jaugeRect.left = Hud->intAnimX * Hud->jaugeRect.width;
 	sfSprite_setTextureRect(Hud->sprite_jauge, Hud->jaugeRect);
 
@@ -1648,41 +1734,42 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 
 }
 
-void nextMapYOffset(t_maps* _maps, float _velocityOffset)
+void nextMapYOffset(t_maps* _maps, float _velocityOffset, t_player *Player)
 {
+
 	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
 	{
-		_maps->nextMap.collisions[i].pos.y += MAP_HEIGHT - _velocityOffset;
+		_maps->nextMap.collisions[i].pos.y += MAP_HEIGHT - (_velocityOffset * Player->speedFactor);
 	}
 	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 	{
-		_maps->nextMap.ennemis[i].pos.y += MAP_HEIGHT - _velocityOffset;
+		_maps->nextMap.ennemis[i].pos.y += MAP_HEIGHT - (_velocityOffset * Player->speedFactor);
 	}
-	_maps->nextMap.background.pos.y += MAP_HEIGHT - _velocityOffset;
+	_maps->nextMap.background.pos.y += MAP_HEIGHT - (_velocityOffset * Player->speedFactor);
 }
 
-void moveMaps(t_maps* _maps, float _velocityOffset)
+void moveMaps(t_maps* _maps, float _velocityOffset, t_player *Player)
 {
 	/*Deplacements*/
 	for (int i = 0; i < _maps->currentMap.collisions[0].elementsNumber; i++)
 	{
-		_maps->currentMap.collisions[i].pos.y -= _velocityOffset;
+		_maps->currentMap.collisions[i].pos.y -= (_velocityOffset * Player->speedFactor);
 	}
 	for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
 	{
-		_maps->currentMap.ennemis[i].pos.y -= _velocityOffset;
+		_maps->currentMap.ennemis[i].pos.y -= (_velocityOffset * Player->speedFactor);
 	}
 
 	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
 	{
-		_maps->nextMap.collisions[i].pos.y -= _velocityOffset;
+		_maps->nextMap.collisions[i].pos.y -= (_velocityOffset * Player->speedFactor);
 	}
 	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 	{
-		_maps->nextMap.ennemis[i].pos.y -= _velocityOffset;
+		_maps->nextMap.ennemis[i].pos.y -= (_velocityOffset * Player->speedFactor);
 	}
-	_maps->currentMap.background.pos.y -= _velocityOffset;
-	_maps->nextMap.background.pos.y -= _velocityOffset;
+	_maps->currentMap.background.pos.y -= (_velocityOffset * Player->speedFactor);
+	_maps->nextMap.background.pos.y -= (_velocityOffset * Player->speedFactor);
 
 
 	/*chargement de la map suivante*/
@@ -1697,21 +1784,21 @@ void moveMaps(t_maps* _maps, float _velocityOffset)
 		randomMapNb = randomMapNb / 10;
 		switch (randomMapNb)
 		{
-			case 1 :
-				_maps->nextMap = _maps->saveMap1;
-				break;
-			case 2:
-				_maps->nextMap = _maps->saveMap2;
-				break;
-			case 3:
-				_maps->nextMap = _maps->saveMap3;
-				break;
-			case 4:
-				_maps->nextMap = _maps->saveMap4;
-				break;
+		case 1:
+			_maps->nextMap = _maps->saveMap1;
+			break;
+		case 2:
+			_maps->nextMap = _maps->saveMap2;
+			break;
+		case 3:
+			_maps->nextMap = _maps->saveMap3;
+			break;
+		case 4:
+			_maps->nextMap = _maps->saveMap4;
+			break;
 		}
 		//printf_s("next map :%d\n",_maps->nextMap.background.backgroundNumber);
-		nextMapYOffset(_maps, _velocityOffset);
+		nextMapYOffset(_maps, _velocityOffset, Player);
 	}
 
 }

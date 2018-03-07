@@ -6,16 +6,18 @@
 #define PONEY_VELOCITY 500
 #define X_OFFSET 500
 
-#define CD_SHOOT 0.35
+#define CD_SHOOT 0.55
+#define CD_RECOIL 0.25
 #define GRAVITY 9.81
 #define SPEED_PLAYER -100
-#define CD_RECOIL 0.25
+#define CD_ANIM_WALK 0.80
+#define NB_ANIM_WALK 8
 
-#define WIDTH_PLAYER 124
-#define HEIGHT_PLAYER 186
+#define WIDTH_PLAYER 87
+#define HEIGHT_PLAYER 178
 
 #define WIDTH_BRAS 85
-#define HEIGHT_BRAS 50
+#define HEIGHT_BRAS 51
 
 // Coeur
 #define WIDTH_COEUR 33
@@ -30,7 +32,7 @@
 #define CD_ANIM_JAUGE 0.080
 #define NB_ANIM_JAUGE 13
 #define CD_TIME_JAUGE 1.20
-
+#define JAUGE_START_SIZE 128
 //
 
 #define PLAYER_SIZE_WIDTH 46
@@ -60,7 +62,9 @@ struct s_player
 	sfFloatRect hitBox;
 	sfIntRect rectAnim;
 	sfVector2f shootPoint;
+	int intAnimX;
 	int intAnim;
+	int intAnimBras;
 	int Shoot;
 	int ShootAng;
 	int Recoil;
@@ -74,9 +78,16 @@ struct s_player
 	int BlockLeft;
 
 	float Speed;
-	float speedAir;
 	float angCursor;
 	float cooldownShoot;
+	//vitesse en fct de la jauge
+	float speedFactor;
+	enum e_stateAnim
+	{
+		AIR = 0,
+		SOL,
+
+	}stateAir;
 
 	float shoot_Current;
 	float shoot_Since;
@@ -85,6 +96,10 @@ struct s_player
 	float recoil_Current;
 	float recoil_Start;
 	float recoil_Since;
+
+	float walk_Current;
+	float walk_Start;
+	float walk_Since;
 
 	sfVector2f velocity;
 
@@ -304,19 +319,18 @@ sfSprite* createSprite(char *_source);
 
 /*fct player*/
 void initPlayer(t_player *Player);
-void affMap(sfRenderWindow *_window, t_player *Player);
 sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle);
 float createAngle(sfVector2f _pointA, sfRenderWindow *_window);
 void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, List *_list, float *gravity_Since);
 void Gravity(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float *gravity_Since);
-void manageAnimPlayer(t_player *PLAYER);
+void manageAnimPlayer(t_player *PLAYER, sfRenderWindow* _window);
 void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rectangle2);
 
 
 /*fcts plateformes et enemis*/
 void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted);
-void nextMapYOffset(t_maps* _maps, float _velocityOffset);
-void moveMaps(t_maps* _maps, float _velocityOffset);
+void nextMapYOffset(t_maps* _maps, float _velocityOffset,t_player *Player);
+void moveMaps(t_maps* _maps, float _velocityOffset, t_player *Player);
 void displayMaps(t_maps* _maps, sfRenderWindow *window);
 void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2, float _timeSinceBackground);
 
