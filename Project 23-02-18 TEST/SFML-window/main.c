@@ -379,7 +379,6 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 			if ((float)(_poney1[i].xStart + _poney1[i].distMax) < _poney1[i].pos.x)
 			{
 				_poney1[i].Direction = 1;
-				_poney1[i].currentAnimFrameTop = 0;
 			}
 			else
 			{
@@ -391,7 +390,6 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 			if ((float)(_poney1[i].xStart - _poney1[i].distMax) > _poney1[i].pos.x)
 			{
 				_poney1[i].Direction = 0;
-				_poney1[i].currentAnimFrameTop = 1;
 			}
 			else
 			{
@@ -401,45 +399,15 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 		if (_poney1[i].sprite != NULL)
 		{
 			_poney1[i].animRect.left = _poney1[i].currentAnimFrame * _poney1[i].animRect.width;
-			_poney1[i].animRect.top = _poney1[i].currentAnimFrameTop * _poney1[i].animRect.height;
-
-			if (_poney1[i].ennemiType == 1) // Giraffe
+			_poney1[i].animRect.top = _poney1[i].Direction * _poney1[i].animRect.height;
+			sfSprite_setTextureRect(_poney1[i].sprite, _poney1[i].animRect);
+			if (_poney1[i].enemy_Since > 0.05)
 			{
-				sfSprite_setTextureRect(_poney1[i].sprite, _poney1[i].animRect);
-
-				if (_poney1[i].enemy_Since > 0.05)
-				{
-					_poney1[i].enemy_Start = _poney1[i].enemy_Current;
-
-					if (_poney1[i].currentAnimFrame < _poney1[i].animFrames - 1)
-						_poney1[i].currentAnimFrame++;
-					else
-						_poney1[i].currentAnimFrame = 0;
-				}
-			}
-			else if (_poney1[i].ennemiType == 2)	// Fantome
-			{
-				sfSprite_setTextureRect(_poney1[i].sprite, _poney1[i].animRect);
-				if (_poney1[i].enemy_Since > 0.20)
-				{
-					_poney1[i].enemy_Start = _poney1[i].enemy_Current;
-					if (_poney1[i].currentAnimFrame < _poney1[i].animFrames - 1)
-						_poney1[i].currentAnimFrame++;
-					else
-						_poney1[i].currentAnimFrame = 0;
-				}
-			}
-			else if (_poney1[i].ennemiType == 3)	// Chauve Souris
-			{
-				sfSprite_setTextureRect(_poney1[i].sprite, _poney1[i].animRect);
-				if (_poney1[i].enemy_Since > 0.20)
-				{
-					_poney1[i].enemy_Start = _poney1[i].enemy_Current;
-					if (_poney1[i].currentAnimFrame < _poney1[i].animFrames - 1)
-						_poney1[i].currentAnimFrame++;
-					else
-						_poney1[i].currentAnimFrame = 0;
-				}
+				_poney1[i].enemy_Start = _poney1[i].enemy_Current;
+				if (_poney1[i].currentAnimFrame < _poney1[i].animFrames - 1)
+					_poney1[i].currentAnimFrame++;
+				else
+					_poney1[i].currentAnimFrame = 0;
 			}
 		}
 	}
@@ -453,7 +421,6 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 			if ((float)(_poney2[i].xStart + _poney2[i].distMax) < _poney2[i].pos.x)
 			{
 				_poney2[i].Direction = 1;
-				_poney2[i].currentAnimFrameTop = 1;
 			}
 			else
 			{
@@ -465,7 +432,6 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 			if ((float)(_poney2[i].xStart - _poney2[i].distMax) > _poney2[i].pos.x)
 			{
 				_poney2[i].Direction = 0;
-				_poney2[i].currentAnimFrameTop = 0;
 			}
 			else
 			{
@@ -475,44 +441,15 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 		if (_poney2[i].sprite != NULL)
 		{
 			_poney2[i].animRect.left = _poney2[i].currentAnimFrame * _poney2[i].animRect.width;
-			_poney2[i].animRect.top = _poney2[i].currentAnimFrameTop * _poney2[i].animRect.height;
-
-			if (_poney2[i].ennemiType == 1) // Giraffe
+			_poney2[i].animRect.top = _poney2[i].Direction * _poney2[i].animRect.height;
+			sfSprite_setTextureRect(_poney2[i].sprite, _poney2[i].animRect);
+			if (_poney2[i].enemy_Since > 0.05)
 			{
-				sfSprite_setTextureRect(_poney2[i].sprite, _poney2[i].animRect);
-
-				if (_poney2[i].enemy_Since > 0.05)
-				{
-					_poney2[i].enemy_Start = _poney2[i].enemy_Current;
-					if (_poney2[i].currentAnimFrame < _poney2[i].animFrames - 1)
-						_poney2[i].currentAnimFrame++;
-					else
-						_poney2[i].currentAnimFrame = 0;
-				}
-			}
-			else if (_poney2[i].ennemiType == 2)	// Fantome
-			{
-				sfSprite_setTextureRect(_poney2[i].sprite, _poney2[i].animRect);
-				if (_poney2[i].enemy_Since > 0.20)
-				{
-					_poney2[i].enemy_Start = _poney2[i].enemy_Current;
-					if (_poney2[i].currentAnimFrame < _poney2[i].animFrames - 1)
-						_poney2[i].currentAnimFrame++;
-					else
-						_poney2[i].currentAnimFrame = 0;
-				}
-			}
-			else if (_poney2[i].ennemiType == 3)	// Chauve Souris
-			{
-				sfSprite_setTextureRect(_poney2[i].sprite, _poney2[i].animRect);
-				if (_poney2[i].enemy_Since > 0.20)
-				{
-					_poney2[i].enemy_Start = _poney2[i].enemy_Current;
-					if (_poney2[i].currentAnimFrame < _poney2[i].animFrames - 1)
-						_poney2[i].currentAnimFrame++;
-					else
-						_poney2[i].currentAnimFrame = 0;
-				}
+				_poney2[i].enemy_Start = _poney2[i].enemy_Current;
+				if (_poney2[i].currentAnimFrame < _poney2[i].animFrames - 1)
+					_poney2[i].currentAnimFrame++;
+				else
+					_poney2[i].currentAnimFrame = 0;
 			}
 		}
 	}
