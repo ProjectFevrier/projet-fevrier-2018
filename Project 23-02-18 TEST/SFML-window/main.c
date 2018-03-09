@@ -61,35 +61,35 @@ int main()
 
 #pragma region inits
 
-	///*parallax init*/
-	//paralax.sprite = createSprite("resources/textures/fond.png");
-	//paralax.animRect.left = 0;
-	//paralax.animRect.top = 0;
-	//paralax.animRect.width = mode.width;
-	//paralax.animRect.height = mode.height;
-	//paralax.pos.x = 0 + X_OFFSET;
-	//paralax.pos.y = 0;
-	//sfSprite_setTextureRect(paralax.sprite, paralax.animRect);
-	//sfSprite_setPosition(paralax.sprite, paralax.pos);
+	/*parallax init*/
+	paralax.sprite = createSprite("resources/textures/fond.png");
+	paralax.animRect.left = 0;
+	paralax.animRect.top = 0;
+	paralax.animRect.width = mode.width;
+	paralax.animRect.height = mode.height;
+	paralax.pos.x = 0 + X_OFFSET;
+	paralax.pos.y = 0;
+	sfSprite_setTextureRect(paralax.sprite, paralax.animRect);
+	sfSprite_setPosition(paralax.sprite, paralax.pos);
 
 
-	///*Player init*/
-	//initPlayer(&Player);
+	/*Player init*/
+	initPlayer(&Player);
 
-	///*Hud init*/
-	//initHud(&Hud, &Player);
-	//			
+	/*Hud init*/
+	initHud(&Hud, &Player);
+				
 	///*init menu txts*/
 	initMenu(&menuTxts);
-	//
-	///*Load highscores*/
-	//loadHighscores(&scoreTable);
+	
+	/*Load highscores*/
+	loadHighscores(&scoreTable);
 
-	//asStarted = 1;
+	asStarted = 1;
 
-	///*Load maps*/
-	//loadMaps(&maps, currentLevel, asStarted);
-	//nextMapYOffset(&maps, 0, &Player);
+	/*Load maps*/
+	loadMaps(&maps, currentLevel, asStarted);
+	nextMapYOffset(&maps, 0, &Player);
 
 #pragma region // Position de la console
 	HWND consoleWindow = GetConsoleWindow();

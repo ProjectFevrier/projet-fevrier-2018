@@ -59,8 +59,8 @@ main.c(1825): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWin
 main.c(2191): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
 main.c(2346): warning C4101: 'readChar' : variable locale non référencée
   Génération de code en cours
-  2 of 42 functions ( 4.8%) were compiled, the rest were copied from previous compilation.
+  14 of 42 functions (33.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    7 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
   SFML-window.vcxproj -> D:\telechargements firefox\A - Project 08-03-18 - Map\A - Project 08-03-18 - Map\Release\SFML-window.exe
