@@ -61,35 +61,35 @@ int main()
 
 #pragma region inits
 
-	/*parallax init*/
-	paralax.sprite = createSprite("resources/textures/fond.png");
-	paralax.animRect.left = 0;
-	paralax.animRect.top = 0;
-	paralax.animRect.width = mode.width;
-	paralax.animRect.height = mode.height;
-	paralax.pos.x = 0 + X_OFFSET;
-	paralax.pos.y = 0;
-	sfSprite_setTextureRect(paralax.sprite, paralax.animRect);
-	sfSprite_setPosition(paralax.sprite, paralax.pos);
+	///*parallax init*/
+	//paralax.sprite = createSprite("resources/textures/fond.png");
+	//paralax.animRect.left = 0;
+	//paralax.animRect.top = 0;
+	//paralax.animRect.width = mode.width;
+	//paralax.animRect.height = mode.height;
+	//paralax.pos.x = 0 + X_OFFSET;
+	//paralax.pos.y = 0;
+	//sfSprite_setTextureRect(paralax.sprite, paralax.animRect);
+	//sfSprite_setPosition(paralax.sprite, paralax.pos);
 
 
-	/*Player init*/
-	initPlayer(&Player);
+	///*Player init*/
+	//initPlayer(&Player);
 
-	/*Hud init*/
-	initHud(&Hud, &Player);
-				
-	/*init menu txts*/
+	///*Hud init*/
+	//initHud(&Hud, &Player);
+	//			
+	///*init menu txts*/
 	initMenu(&menuTxts);
-	
-	/*Load highscores*/
-	loadHighscores(&scoreTable);
+	//
+	///*Load highscores*/
+	//loadHighscores(&scoreTable);
 
-	asStarted = 1;
+	//asStarted = 1;
 
-	/*Load maps*/
-	loadMaps(&maps, currentLevel, asStarted);
-	nextMapYOffset(&maps, 0, &Player);
+	///*Load maps*/
+	//loadMaps(&maps, currentLevel, asStarted);
+	//nextMapYOffset(&maps, 0, &Player);
 
 #pragma region // Position de la console
 	HWND consoleWindow = GetConsoleWindow();
@@ -135,12 +135,37 @@ int main()
 						timer_Start = (float)clock() / CLOCKS_PER_SEC;
 						timer_Since = 0;
 						timer_Current = 0;
-
 						gravity_Start = (float)clock() / CLOCKS_PER_SEC;;
 						gravity_Since = 0;
 						gravity_Current = 0;
-
 						startJauge = (float)clock() / CLOCKS_PER_SEC;
+						/*parallax init*/
+						paralax.sprite = createSprite("resources/textures/fond.png");
+						paralax.animRect.left = 0;
+						paralax.animRect.top = 0;
+						paralax.animRect.width = mode.width;
+						paralax.animRect.height = mode.height;
+						paralax.pos.x = 0 + X_OFFSET;
+						paralax.pos.y = 0;
+						sfSprite_setTextureRect(paralax.sprite, paralax.animRect);
+						sfSprite_setPosition(paralax.sprite, paralax.pos);
+						/*Player init*/
+						initPlayer(&Player);
+						/*Hud init*/
+						initHud(&Hud, &Player);
+						/*Load highscores*/
+						loadHighscores(&scoreTable);
+						asStarted = 1;
+						/*Load maps*/
+						loadMaps(&maps, currentLevel, asStarted);
+						nextMapYOffset(&maps, 0, &Player);
+						randomMapNb = 0;
+						currentLevel = 1;
+						velocityOffset = 0;
+						BlockRight = 0;
+						BlockLeft = 0;
+						asStarted = 0;
+						keyPressed = 0;
 						gameState = GAME;
 					}
 				}
