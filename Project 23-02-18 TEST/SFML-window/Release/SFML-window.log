@@ -4,60 +4,60 @@ d:\telechargements firefox\a - project 08-03-18 - map\a - project 08-03-18 - map
 d:\telechargements firefox\a - project 08-03-18 - map\a - project 08-03-18 - map\sfml-window\lib.h(42): warning C4005: 'GRAVITY' : redéfinition de macro
   d:\telechargements firefox\a - project 08-03-18 - map\a - project 08-03-18 - map\sfml-window\lib.h(11): note: voir la définition précédente de 'GRAVITY'
 main.c(109): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
-main.c(229): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
+main.c(238): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
 main.c(56): warning C4101: 'backButton' : variable locale non référencée
-main.c(323): warning C4098: 'txtCreate' : fonction 'void' retournant une valeur
-main.c(555): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
-main.c(602): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
-main.c(602): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(669): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-main.c(615): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-main.c(754): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(760): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(761): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(765): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(766): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(780): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(781): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(783): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(784): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(332): warning C4098: 'txtCreate' : fonction 'void' retournant une valeur
+main.c(564): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
+main.c(611): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
+main.c(611): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(678): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+main.c(624): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+main.c(763): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(769): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(770): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(774): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(775): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(789): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(790): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(792): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(793): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(795): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(796): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(801): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(802): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(804): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(805): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(807): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(808): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(819): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(820): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(822): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(823): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(833): warning C4142: 'RadToDeg' : redéfinition bénigne du type
-main.c(834): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-main.c(839): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(841): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-main.c(1393): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1451): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1453): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1454): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1467): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1469): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1470): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1483): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1485): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1486): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1584): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(1589): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(1594): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(1669): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1670): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1692): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1693): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1735): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1791): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(2157): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
-main.c(2312): warning C4101: 'readChar' : variable locale non référencée
+main.c(813): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(814): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(816): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(817): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(828): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(829): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(831): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(832): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(842): warning C4142: 'RadToDeg' : redéfinition bénigne du type
+main.c(843): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+main.c(848): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(850): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+main.c(1402): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1460): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(1462): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1463): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1476): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(1478): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1479): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1492): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(1494): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1495): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1593): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(1598): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(1603): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(1678): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1679): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1701): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1702): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1744): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1800): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(2166): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
+main.c(2321): warning C4101: 'readChar' : variable locale non référencée
   Génération de code en cours
   1 of 42 functions ( 2.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation

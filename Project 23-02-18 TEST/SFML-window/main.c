@@ -131,6 +131,16 @@ int main()
 					if (sfMouse_isButtonPressed(sfMouseLeft))
 					{
 						Player.timer_Start = (float)clock() / CLOCKS_PER_SEC;
+						startTimeBackground = (float)clock() / CLOCKS_PER_SEC;
+						timer_Start = (float)clock() / CLOCKS_PER_SEC;
+						timer_Since = 0;
+						timer_Current = 0;
+
+						gravity_Start = (float)clock() / CLOCKS_PER_SEC;;
+						gravity_Since = 0;
+						gravity_Current = 0;
+
+						startJauge = (float)clock() / CLOCKS_PER_SEC;
 						gameState = GAME;
 					}
 				}
@@ -220,7 +230,7 @@ int main()
 				Player.timer_Current = (float)clock() / CLOCKS_PER_SEC;
 				Player.timer_Since = (int)(Player.timer_Current - Player.timer_Start) + 1;
 
-				// Calcule de point !!!
+				// Calcul de point !!!
 				if (sinceJauge >= 1.5)
 				{
 					sinceJauge = 0;
