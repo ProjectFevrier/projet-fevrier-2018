@@ -10,7 +10,7 @@
 #define CD_RECOIL 0.25
 #define GRAVITY 9.81
 #define SPEED_PLAYER -100
-#define CD_ANIM_WALK 0.80
+#define CD_ANIM_WALK 0.02
 #define NB_ANIM_WALK 8
 
 #define WIDTH_PLAYER 87
@@ -101,6 +101,10 @@ struct s_player
 	float walk_Start;
 	float walk_Since;
 
+	float timer_Current;
+	float timer_Start;
+	int timer_Since;
+	
 	sfVector2f velocity;
 
 	// Anim
@@ -176,6 +180,7 @@ struct s_poney
 	int ennemiType;
 	int animFrames;
 	int currentAnimFrame;
+	int currentAnimFrameTop;
 	float speed;
 	float angle;
 	int distMax;
@@ -291,7 +296,53 @@ struct s_maps
 	int speedFactor;
 };
 
+typedef struct s_txtBox t_txtBox;
 
+struct s_txtBox
+{
+	int txtOutline;
+	unsigned int fontSize;
+	sfText* txt;
+	sfFont* font;
+	sfVector2f txtOrigin;
+	sfVector2f txtPos;
+	sfFloatRect txtBoundingBox;
+};
+
+
+typedef struct s_menu t_menu;
+
+struct s_menu
+{
+	t_txtBox Jouer;
+	t_txtBox Highscore;
+	t_txtBox Quitter;
+};
+
+typedef struct s_scores t_scores;
+
+struct s_scores
+{
+	char* name;
+	int score;
+	t_txtBox txtB;
+	t_txtBox txtS;
+};
+
+typedef struct s_scoreTable t_scoreTable;
+
+struct s_scoreTable
+{
+	t_scores playerScore;
+	t_scores score1;
+	t_scores score2;
+	t_scores score3;
+	t_txtBox backBtn;
+	int isPressed;
+	int lastKeyPressed;
+	int nameIdex;
+	int isPressedBack;
+};
 ///////////////////////////////////////
 #pragma endregion
 // Liste Chainé
@@ -310,12 +361,28 @@ struct t_list
 {
 	ListElement *firstElement;
 };
+
+typedef enum e_gameState t_gameState;
+
+enum e_gameState
+{
+	MENU = 0 ,
+	HIGHSCORE,
+	GAME,
+	END_GAME,
+
+};
 #pragma endregion
 
 
 #pragma region Fonctions
 // Fonctions
 sfSprite* createSprite(char *_source);
+void txtCreate(char* _src, t_txtBox* _text);
+void initMenu(t_menu* _menuTxts);
+void loadHighscores(t_scoreTable* _scoreTable);
+void highScoreEnterInit(t_scoreTable* _scoreTable, t_player *Player);
+void highScoreEnter(t_scoreTable* _scoreTable, t_player *Player, t_gameState* _gameState);
 
 /*fct player*/
 void initPlayer(t_player *Player);

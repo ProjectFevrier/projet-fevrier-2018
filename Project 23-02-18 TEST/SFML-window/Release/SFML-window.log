@@ -1,60 +1,66 @@
 ﻿  main.c
-d:\telechargements firefox\a - project 03-03-18\a - project 03-03-18\sfml-window\lib.h(40): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
-  d:\telechargements firefox\a - project 03-03-18\a - project 03-03-18\sfml-window\lib.h(12): note: voir la définition précédente de 'SPEED_PLAYER'
-d:\telechargements firefox\a - project 03-03-18\a - project 03-03-18\sfml-window\lib.h(42): warning C4005: 'GRAVITY' : redéfinition de macro
-  d:\telechargements firefox\a - project 03-03-18\a - project 03-03-18\sfml-window\lib.h(11): note: voir la définition précédente de 'GRAVITY'
-main.c(94): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
-main.c(137): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
-main.c(364): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
-main.c(412): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
-main.c(412): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(479): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-main.c(425): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-main.c(564): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(570): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(571): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(575): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(576): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(590): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(591): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(593): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(594): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(602): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(603): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(605): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(606): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(614): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(615): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(617): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(618): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(629): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(630): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(632): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(633): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(643): warning C4142: 'RadToDeg' : redéfinition bénigne du type
-main.c(644): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-main.c(649): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(651): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-main.c(1113): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1171): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1173): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1174): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1187): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1189): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1190): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1203): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1205): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1206): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1304): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(1309): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(1314): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(1389): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1390): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1412): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1413): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1455): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1511): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+d:\telechargements firefox\a - project 08-03-18 - map\a - project 08-03-18 - map\sfml-window\lib.h(40): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
+  d:\telechargements firefox\a - project 08-03-18 - map\a - project 08-03-18 - map\sfml-window\lib.h(12): note: voir la définition précédente de 'SPEED_PLAYER'
+d:\telechargements firefox\a - project 08-03-18 - map\a - project 08-03-18 - map\sfml-window\lib.h(42): warning C4005: 'GRAVITY' : redéfinition de macro
+  d:\telechargements firefox\a - project 08-03-18 - map\a - project 08-03-18 - map\sfml-window\lib.h(11): note: voir la définition précédente de 'GRAVITY'
+main.c(109): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+main.c(229): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
+main.c(56): warning C4101: 'backButton' : variable locale non référencée
+main.c(323): warning C4098: 'txtCreate' : fonction 'void' retournant une valeur
+main.c(555): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
+main.c(602): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
+main.c(602): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(669): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+main.c(615): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+main.c(754): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(760): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(761): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(765): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(766): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(780): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(781): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(783): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(784): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(792): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(793): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(795): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(796): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(804): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(805): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(807): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(808): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(819): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(820): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(822): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(823): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(833): warning C4142: 'RadToDeg' : redéfinition bénigne du type
+main.c(834): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+main.c(839): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(841): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+main.c(1393): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1451): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(1453): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1454): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1467): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(1469): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1470): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1483): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(1485): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1486): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1584): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(1589): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(1594): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(1669): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1670): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1692): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1693): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1735): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1791): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(2157): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
+main.c(2312): warning C4101: 'readChar' : variable locale non référencée
   Génération de code en cours
-  All 36 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  1 of 42 functions ( 2.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
-  SFML-window.vcxproj -> D:\telechargements firefox\A - Project 03-03-18\A - Project 03-03-18\Release\SFML-window.exe
+  SFML-window.vcxproj -> D:\telechargements firefox\A - Project 08-03-18 - Map\A - Project 08-03-18 - Map\Release\SFML-window.exe
