@@ -1,5 +1,6 @@
 #define PI 3.14159265359
-#define FRAMERATE 60
+#define FRAMERATE 120
+#define BG_SPEED 5
 #define BG_VELOCITY 200
 #define PRLX_VELOCITY 30
 #define MAP_HEIGHT 2000
@@ -41,6 +42,8 @@
 #define SPEED_PLAYER_FALL 20
 #define GRAVITY 100
 
+#define Color_Collid 255
+
 #pragma region Variables
 // Variables
 
@@ -70,6 +73,7 @@ struct s_player
 	int Recoil;
 	int airOn;
 	int jaugePoint;
+	int upShoot;
 
 	int OnJump;
 	int OnPlatform;
@@ -113,12 +117,21 @@ struct s_player
 	sfVector2f origin_Bras;
 	sfFloatRect sizeSpr;
 	sfIntRect rectBras;
+	/*Collision Control*/
+	int leftCollider;
+	int rightCollider;
+	int downCollider;
+
+	float offSetCollision_Y ;
+	float offSetCollision_X ;
+
+	int blobk ;
 
 };
 
 t_player Player;
 
-typedef struct s_background t_background;
+
 
 typedef struct s_bullet t_bullet;
 
@@ -139,10 +152,13 @@ struct s_bullet
 	float anim_shoot_Start;
 };
 
+typedef struct s_background t_background;
+
 struct s_background
 {
 	sfSprite* sprite;
 	sfVector2f pos;
+	sfImage *collid;
 	int backgroundNumber;
 };
 
@@ -386,13 +402,14 @@ void highScoreEnter(t_scoreTable* _scoreTable, t_player *Player, t_gameState* _g
 
 /*fct player*/
 void initPlayer(t_player *Player);
-sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle);
+sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, int _index);
 float createAngle(sfVector2f _pointA, sfRenderWindow *_window);
-void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, List *_list, float *gravity_Since);
+void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, List *_list, float *gravity_Since, float _velocityOffset);
 void Gravity(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float *gravity_Since);
+void Gravity2(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float *gravity_Since);
 void manageAnimPlayer(t_player *PLAYER, sfRenderWindow* _window);
 void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rectangle2);
-
+void collidPlayer(t_player *Player, t_maps* _maps);
 
 /*fcts plateformes et enemis*/
 void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted);

@@ -1,61 +1,66 @@
 ﻿  main.c
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\lib.h(40): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
-  c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\lib.h(12): note: voir la définition précédente de 'SPEED_PLAYER'
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\lib.h(42): warning C4005: 'GRAVITY' : redéfinition de macro
-  c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\lib.h(11): note: voir la définition précédente de 'GRAVITY'
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(94): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(137): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(430): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(477): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(477): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(544): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(490): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(629): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(635): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(636): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(640): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(641): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(655): warning C4013: 'atan' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(655): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(656): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(658): warning C4013: 'cos' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(658): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(659): warning C4013: 'sin' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(659): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(667): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(668): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(670): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(671): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(679): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(680): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(682): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(683): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(694): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(695): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(697): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(698): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(708): warning C4142: 'RadToDeg' : redéfinition bénigne du type
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(709): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(714): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(716): warning C4013: 'atan2' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(716): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1268): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1326): warning C4305: '=' : troncation de 'double' à 'float'
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1328): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1329): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1342): warning C4305: '=' : troncation de 'double' à 'float'
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1344): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1345): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1358): warning C4305: '=' : troncation de 'double' à 'float'
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1360): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1361): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1459): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1464): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1469): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1544): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1545): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1567): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1568): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1610): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a - project 08-03-18 - map\sfml-window\main.c(1666): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-  SFML-window.vcxproj -> C:\Users\Dimitri\Desktop\Projet GitHub\A - Project 08-03-18 - Map\Debug\SFML-window.exe
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\lib.h(40): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
+  c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\lib.h(12): note: voir la définition précédente de 'SPEED_PLAYER'
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\lib.h(42): warning C4005: 'GRAVITY' : redéfinition de macro
+  c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\lib.h(11): note: voir la définition précédente de 'GRAVITY'
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(109): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(263): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(56): warning C4101: 'backButton' : variable locale non référencée
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(357): warning C4098: 'txtCreate' : fonction 'void' retournant une valeur
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(526): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(573): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(573): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(640): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(586): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(725): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(731): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(732): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(736): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(737): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(751): warning C4013: 'atan' non défini(e) ; extern retournant int pris par défaut
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(751): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(752): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(754): warning C4013: 'cos' non défini(e) ; extern retournant int pris par défaut
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(754): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(755): warning C4013: 'sin' non défini(e) ; extern retournant int pris par défaut
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(755): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(763): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(764): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(766): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(767): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(775): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(776): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(778): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(779): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(790): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(791): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(793): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(794): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(804): warning C4142: 'RadToDeg' : redéfinition bénigne du type
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(805): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(810): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(812): warning C4013: 'atan2' non défini(e) ; extern retournant int pris par défaut
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(812): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1364): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1422): warning C4305: '=' : troncation de 'double' à 'float'
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1424): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1425): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1438): warning C4305: '=' : troncation de 'double' à 'float'
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1440): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1441): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1454): warning C4305: '=' : troncation de 'double' à 'float'
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1456): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1457): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1555): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1560): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1565): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1640): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1641): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1663): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1664): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1706): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1762): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(2128): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
+c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(2283): warning C4101: 'readChar' : variable locale non référencée
+  LINK : C:\Users\Dimitri\Desktop\Projet GitHub\A- Project 09-03-18\Debug\SFML-window.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
+  SFML-window.vcxproj -> C:\Users\Dimitri\Desktop\Projet GitHub\A- Project 09-03-18\Debug\SFML-window.exe
