@@ -1,7 +1,7 @@
 #define PI 3.14159265359
 #define FRAMERATE 120
-#define BG_SPEED 5
-#define BG_VELOCITY 200
+#define BG_SPEED 2
+#define BG_VELOCITY 100
 #define PRLX_VELOCITY 30
 #define MAP_HEIGHT 2000
 #define PONEY_VELOCITY 500

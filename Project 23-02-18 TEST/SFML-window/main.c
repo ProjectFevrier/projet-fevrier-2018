@@ -103,7 +103,7 @@ int main()
 	if (!window)
 		return -1;
 
-	sfRenderWindow_setFramerateLimit(window, 30);
+	sfRenderWindow_setFramerateLimit(window, 60);
 
 	/*Time*/
 	srand(time(NULL));
@@ -512,7 +512,7 @@ void initPlayer(t_player *Player)
 
 	Player->Recoil = 0;
 
-	Player->Speed = 1.25;
+	Player->Speed = 0.625;
 
 	// Anim Bras
 	Player->Bras = createSprite("resources/textures/Bras.png");
@@ -592,7 +592,7 @@ void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player
 	newElement->Bullet.Dir.x = Direction.x;
 	newElement->Bullet.Dir.y = Direction.y;
 
-	newElement->Bullet.speed = 20.0;
+	newElement->Bullet.speed = 10.0;
 
 	newElement->Bullet.angle = RadToDeg(createAngle(Player->pos, _window));
 

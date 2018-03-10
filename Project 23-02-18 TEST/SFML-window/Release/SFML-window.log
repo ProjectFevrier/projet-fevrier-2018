@@ -1,8 +1,8 @@
 ﻿  main.c
-d:\telechargements firefox\a- project 09-03-18\a- project 09-03-18\sfml-window\lib.h(41): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
-  d:\telechargements firefox\a- project 09-03-18\a- project 09-03-18\sfml-window\lib.h(13): note: voir la définition précédente de 'SPEED_PLAYER'
-d:\telechargements firefox\a- project 09-03-18\a- project 09-03-18\sfml-window\lib.h(43): warning C4005: 'GRAVITY' : redéfinition de macro
-  d:\telechargements firefox\a- project 09-03-18\a- project 09-03-18\sfml-window\lib.h(12): note: voir la définition précédente de 'GRAVITY'
+d:\github\projet\projet-fevrier-2018\project 23-02-18 test\sfml-window\lib.h(41): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
+  d:\github\projet\projet-fevrier-2018\project 23-02-18 test\sfml-window\lib.h(13): note: voir la définition précédente de 'SPEED_PLAYER'
+d:\github\projet\projet-fevrier-2018\project 23-02-18 test\sfml-window\lib.h(43): warning C4005: 'GRAVITY' : redéfinition de macro
+  d:\github\projet\projet-fevrier-2018\project 23-02-18 test\sfml-window\lib.h(12): note: voir la définition précédente de 'GRAVITY'
 main.c(109): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
 main.c(263): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
 main.c(56): warning C4101: 'backButton' : variable locale non référencée
@@ -99,4 +99,4 @@ main.c(2594): warning C4244: 'fonction' : conversion de 'float' en 'unsigned in
   Génération de code en cours
   All 40 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Fin de la génération du code
-  SFML-window.vcxproj -> D:\telechargements firefox\A- Project 09-03-18\A- Project 09-03-18\Release\SFML-window.exe
+  SFML-window.vcxproj -> D:\GitHub\projet\projet-fevrier-2018\Project 23-02-18 TEST\Release\SFML-window.exe
