@@ -145,6 +145,8 @@ struct s_player
 	float protect_Current;
 	float protect_Start;
 	float protect_Since;
+
+	int playerLevel;
 	
 	sfVector2f velocity;
 

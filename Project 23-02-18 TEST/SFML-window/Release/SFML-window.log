@@ -6,173 +6,173 @@ d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-windo
 main.c(110): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
 main.c(264): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
 main.c(54): warning C4101: 'backButton' : variable locale non référencée
-main.c(358): warning C4098: 'txtCreate' : fonction 'void' retournant une valeur
-main.c(586): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
-main.c(606): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
-main.c(606): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(745): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-main.c(669): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-main.c(827): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(846): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(847): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(849): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(850): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(856): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(860): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(867): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(871): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(883): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(365): warning C4098: 'txtCreate' : fonction 'void' retournant une valeur
+main.c(595): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
+main.c(615): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
+main.c(615): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(754): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+main.c(678): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+main.c(862): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(881): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(882): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(884): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(886): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(887): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(893): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(897): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(904): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(908): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(918): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(919): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(923): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(924): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(933): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(934): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(936): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(937): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(943): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(944): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(948): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(949): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(956): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(957): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(961): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(962): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(885): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(891): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(895): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(902): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(906): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(918): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(919): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(921): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(922): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(928): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(932): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(939): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(943): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(953): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(954): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(958): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(959): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(968): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(969): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(971): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(972): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(973): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(975): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(976): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(982): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(983): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(987): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(988): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(995): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(996): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1000): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1001): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1014): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1015): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1017): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1018): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1024): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1025): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1029): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1030): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1037): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1038): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1042): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1043): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(978): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(979): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(983): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(984): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(991): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(992): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(996): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(997): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1007): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1008): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1010): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1011): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1017): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1018): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1022): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1023): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1030): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1031): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1035): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1036): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1049): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1050): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1052): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(1053): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1054): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1056): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1057): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1063): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1059): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1060): warning C4305: '+=' : troncation de 'double' à 'float'
 main.c(1064): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1068): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1069): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1076): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1065): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1072): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1073): warning C4305: '+=' : troncation de 'double' à 'float'
 main.c(1077): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1081): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1082): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1098): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1099): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1101): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1102): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1108): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1112): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1119): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1123): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1078): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1088): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1089): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1091): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1092): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1098): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1099): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1103): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1104): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1111): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1112): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1116): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1117): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1133): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1134): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1136): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(1137): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1138): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1140): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1141): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1147): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1148): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1152): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1153): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1160): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1161): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1165): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1166): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1143): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1147): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1154): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1158): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1172): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1173): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1175): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(1176): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1177): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1179): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1180): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1186): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1187): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1191): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1192): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1199): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1200): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1204): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1205): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1218): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1219): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1221): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1222): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1228): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1229): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1233): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1234): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1241): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1242): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1246): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1247): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1182): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1183): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1187): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1188): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1195): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1196): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1200): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1201): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1211): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1212): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1214): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1215): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1221): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1222): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1226): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1227): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1234): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1235): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1239): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1240): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1253): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1254): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1256): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 main.c(1257): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1258): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1260): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1261): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-main.c(1267): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1263): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1264): warning C4305: '+=' : troncation de 'double' à 'float'
 main.c(1268): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1272): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1273): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1280): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1269): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1276): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1277): warning C4305: '+=' : troncation de 'double' à 'float'
 main.c(1281): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1285): warning C4305: '+=' : troncation de 'double' à 'float'
-main.c(1286): warning C4305: '-=' : troncation de 'double' à 'float'
-main.c(1299): warning C4142: 'RadToDeg' : redéfinition bénigne du type
-main.c(1300): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-main.c(1305): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(1307): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-main.c(1882): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1940): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1942): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1943): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1956): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1958): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1959): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1972): warning C4305: '=' : troncation de 'double' à 'float'
-main.c(1974): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(1975): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(2109): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(2114): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(2119): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(2246): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(2247): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(2269): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(2270): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(2312): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-main.c(2368): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-main.c(2419): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(2491): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(2563): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(2635): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(2825): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
-main.c(2980): warning C4101: 'readChar' : variable locale non référencée
-main.c(3016): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-main.c(3017): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-main.c(3058): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-main.c(3059): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(1282): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1292): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1293): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1295): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1296): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+main.c(1302): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1303): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1307): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1308): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1315): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1316): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1320): warning C4305: '+=' : troncation de 'double' à 'float'
+main.c(1321): warning C4305: '-=' : troncation de 'double' à 'float'
+main.c(1334): warning C4142: 'RadToDeg' : redéfinition bénigne du type
+main.c(1335): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+main.c(1340): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(1342): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+main.c(1917): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1975): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(1977): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1978): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1991): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(1993): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(1994): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(2007): warning C4305: '=' : troncation de 'double' à 'float'
+main.c(2009): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(2010): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(2144): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(2149): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(2154): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(2281): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(2282): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(2304): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(2305): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(2347): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+main.c(2408): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+main.c(2459): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(2531): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(2603): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(2675): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(2865): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
+main.c(3020): warning C4101: 'readChar' : variable locale non référencée
+main.c(3056): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+main.c(3057): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+main.c(3098): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+main.c(3099): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
   Génération de code en cours
-  2 of 42 functions ( 4.8%) were compiled, the rest were copied from previous compilation.
+  2 of 46 functions ( 4.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
   SFML-window.vcxproj -> D:\telechargements firefox\A- Project 09-03-18(2)\A- Project 09-03-18\Release\SFML-window.exe

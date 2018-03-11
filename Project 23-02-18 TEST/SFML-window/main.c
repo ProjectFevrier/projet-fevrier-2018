@@ -299,11 +299,18 @@ int main()
 				sfRenderWindow_drawSprite(window, paralax.sprite, NULL);
 
 				/*set et draw des elements*/
+				if (Player.playerLevel == 2)
+				{
+					currentLevel = 2;
+					loadMaps(&maps, currentLevel, asStarted);
+					nextMapYOffset(&maps, 0, &Player);
+					Player.playerLevel = 3;
+				}
 				displayMaps(&maps, window);
-
-
-				//manageBoss(window, mode, &Boss, &Player, list);
-				managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis,&Player, timeSinceBackground);
+				if (currentLevel == 2)
+					manageBoss(window, mode, &Boss, &Player, list);
+				else
+					managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis,&Player, timeSinceBackground);
 				managePlayer(window, mode, &Player, &Boss, list, &gravity_Since);
 				ReadBullet(window, mode, list, &maps, &Player, &Hud);
 				manageHud(window, &Hud, &Player);
@@ -417,15 +424,16 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				else
 					_poney1[i].currentAnimFrame = 0;
 			}
+			if (IsOver(Player->hitBox, _poney1[i].hitBox) && Player->hit == 0)
+			{
+				Player->hit = 1;
+				Player->protect_Start = (float)clock() / CLOCKS_PER_SEC;
+
+				Player->jaugePoint -= DOWN_JAUGE * Player->upShoot;
+			}
 		}
 
-		if (IsOver(Player->hitBox, _poney1[i].hitBox) && Player->hit == 0)
-		{
-			Player->hit = 1;
-			Player->protect_Start = (float)clock() / CLOCKS_PER_SEC;
 
-			Player->jaugePoint -= DOWN_JAUGE * Player->upShoot; 
-		}
 	}
 	for (int i = 0; i < _poney2[0].elementsNumber; i++)
 	{
@@ -474,14 +482,13 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				else
 					_poney2[i].currentAnimFrame = 0;
 			}
-		}
+			if (IsOver(Player->hitBox, _poney2[i].hitBox) && Player->hit == 0)
+			{
+				Player->hit = 1;
+				Player->protect_Start = (float)clock() / CLOCKS_PER_SEC;
 
-		if (IsOver(Player->hitBox, _poney2[i].hitBox) && Player->hit == 0)
-		{
-			Player->hit = 1;
-			Player->protect_Start = (float)clock() / CLOCKS_PER_SEC;
-
-			Player->jaugePoint -= DOWN_JAUGE * Player->upShoot;
+				Player->jaugePoint -= DOWN_JAUGE * Player->upShoot;
+			}
 		}
 	}
 }
@@ -582,6 +589,8 @@ void initPlayer(t_player *Player)
 	Player->protect_Current = 0;
 	Player->protect_Start = 0;
 	Player->protect_Since = 0;
+
+	Player->playerLevel = 1;
 
 	return Player;
 }
@@ -745,17 +754,29 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 		if (nextEllementDeleted == NULL)
 		{
 
-		sfRenderWindow_drawSprite(_window, currentElement->Bullet.sprite, NULL);
+			sfRenderWindow_drawSprite(_window, currentElement->Bullet.sprite, NULL);
 
 
 			for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
 			{
-				if (sfFloatRect_intersects(&(_maps->currentMap.ennemis[i].hitBox), &currentElement->Bullet.hitBox, NULL))
+				if (sfFloatRect_intersects(&(_maps->currentMap.ennemis[i].hitBox), &currentElement->Bullet.hitBox, NULL) && Player->playerLevel == 1)
 				{
 					_maps->currentMap.ennemis[i].sprite = NULL;
 					_maps->currentMap.ennemis[i].hitBox.width = 0;
 					_maps->currentMap.ennemis[i].hitBox.height = 0;
-					Player->jaugePoint += 7;
+					if (Hud->stateBarre == START)
+					{
+						Player->jaugePoint += 6;
+					}
+					else if (Hud->stateBarre == MID)
+					{
+						Player->jaugePoint += 5;
+					}
+					else if (Hud->stateBarre == END)
+					{
+						Player->jaugePoint += 3;
+					}
+
 					Hud->stateBarre = KILL;
 					DeleteBulletToID(_list, countElement);
 					break;
@@ -764,12 +785,23 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 			for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 			{
 
-				if (sfFloatRect_intersects(&_maps->nextMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL))
+				if (sfFloatRect_intersects(&_maps->nextMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL) && Player->playerLevel == 1)
 				{
 					_maps->nextMap.ennemis[i].sprite = NULL;
 					_maps->nextMap.ennemis[i].hitBox.width = 0;
 					_maps->nextMap.ennemis[i].hitBox.height = 0;
-					Player->jaugePoint += 7;
+					if (Hud->stateBarre == START)
+					{
+						Player->jaugePoint += 6;
+					}
+					else if (Hud->stateBarre == MID)
+					{
+						Player->jaugePoint += 5;
+					}
+					else if (Hud->stateBarre == END)
+					{
+						Player->jaugePoint += 3;
+					}
 					Hud->stateBarre = KILL;
 					DeleteBulletToID(_list, countElement);
 					break;
@@ -796,7 +828,6 @@ void DeleteBulletToID(List *_list, int ID)
 
 	int currentID = 0;
 
-
 	if (currentID == ID)
 	{
 		DeleteFirstBullet(_list);
@@ -808,10 +839,14 @@ void DeleteBulletToID(List *_list, int ID)
 			currentID++;
 			if (currentID == ID)
 			{
+				printf("Id : %d Current : %d\n", ID, currentID);
 				ListElement *deletedElement = currentElement->nextElement;
 
-				currentElement->nextElement = currentElement->nextElement->nextElement;
-				free(deletedElement);
+				if (deletedElement != NULL)
+				{
+					currentElement->nextElement = currentElement->nextElement->nextElement;
+					free(deletedElement);
+				}
 				break;
 			}
 			else
@@ -2015,7 +2050,7 @@ void initHud(t_hud *Hud, t_player *Player)
 		{
 			Hud->Rouages[i].sprite = createSprite("resources/textures/RouageD.png");
 
-			Hud->Rouages[i].pos.x = 416;
+			Hud->Rouages[i].pos.x = 365;
 			Hud->Rouages[i].pos.y = 134;
 		}
 		if (i == 4)
@@ -2313,9 +2348,9 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 			sfSprite_setOrigin(Hud->sprite_jauge, Hud->jaugeOrigin);
 		}
 	}
-	if (Player->jaugePoint > JAUGE_START_SIZE)
+	if (Player->jaugePoint > 114)
 	{
-		Player->speedFactor = (((float)Player->jaugePoint - JAUGE_START_SIZE) / 100) + 1;
+		Player->speedFactor = (((float)Player->jaugePoint - JAUGE_START_SIZE) / 350) + 1;
 	//	printf_s("JAUGE :%d ,SPEED : %.4f\n", Player->jaugePoint, Player->speedFactor);
 	}
 	else
@@ -2323,6 +2358,11 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 	Hud->jaugeRect.left = Hud->intAnimX * Hud->jaugeRect.width;
 	sfSprite_setTextureRect(Hud->sprite_jauge, Hud->jaugeRect);
 
+	if (Player->jaugePoint >= 228)
+	{
+		Player->jaugePoint = 112;
+		Player->playerLevel = 2;
+	}
 
 	sfSprite_setPosition(Hud->sprite_jauge, Hud->jaugePos);
 	sfRenderWindow_drawSprite(_window, Hud->sprite_jauge, NULL);
@@ -2767,7 +2807,7 @@ void displayMaps(t_maps* _maps, sfRenderWindow *window)
 	}
 	for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
 	{
-		if (_maps->currentMap.ennemis[i].sprite != NULL)
+		if (_maps->currentMap.ennemis[i].sprite != NULL && Player.playerLevel == 1)
 		{
 			_maps->currentMap.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->currentMap.ennemis[i].sprite);
 			sfSprite_setPosition(_maps->currentMap.ennemis[i].sprite, _maps->currentMap.ennemis[i].pos);
@@ -2782,7 +2822,7 @@ void displayMaps(t_maps* _maps, sfRenderWindow *window)
 	}
 	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 	{
-		if (_maps->nextMap.ennemis[i].sprite != NULL)
+		if (_maps->nextMap.ennemis[i].sprite != NULL && Player.playerLevel == 1)
 		{
 			_maps->nextMap.ennemis[i].hitBox = sfSprite_getGlobalBounds(_maps->nextMap.ennemis[i].sprite);
 			sfSprite_setPosition(_maps->nextMap.ennemis[i].sprite, _maps->nextMap.ennemis[i].pos);
