@@ -1,7 +1,6 @@
 #define PI 3.14159265359
-#define FRAMERATE 120
-#define BG_SPEED 2
-#define BG_VELOCITY 100
+#define FRAMERATE 60
+#define BG_VELOCITY 200
 #define PRLX_VELOCITY 30
 #define MAP_HEIGHT 2000
 #define PONEY_VELOCITY 500
@@ -17,6 +16,12 @@
 #define WIDTH_PLAYER 87
 #define HEIGHT_PLAYER 178
 
+#define WIDTH_PROTECT 135
+#define HEIGHT_PROTECT 202
+
+#define WIDTH_BOSS 131
+#define HEIGHT_BOSS 125
+
 #define WIDTH_BRAS 85
 #define HEIGHT_BRAS 51
 
@@ -27,13 +32,21 @@
 #define CD_ANIM_COEUR 0.05
 #define NB_ANIM_COEUR 6
 
+// Tir boss
+#define WIDTH_BULLET 76
+#define HEIGHT_BULLET 44
+
+#define CD_ANIM_BULLET 0.10
+#define NB_ANIM_BULLET 4
+
 // -- | Hud | --
 
 // Jauge
 #define CD_ANIM_JAUGE 0.080
 #define NB_ANIM_JAUGE 13
 #define CD_TIME_JAUGE 1.20
-#define JAUGE_START_SIZE 128
+#define JAUGE_START_SIZE 65
+#define DOWN_JAUGE 1
 //
 
 #define PLAYER_SIZE_WIDTH 46
@@ -41,8 +54,6 @@
 #define SPEED_PLAYER 250
 #define SPEED_PLAYER_FALL 20
 #define GRAVITY 100
-
-#define Color_Collid 255
 
 #pragma region Variables
 // Variables
@@ -55,11 +66,34 @@ sfColor red = { 255,0,0,255 };
 
 #pragma region Struct
 // Struct
+typedef struct s_boss t_boss;
+
+struct s_boss
+{
+	sfSprite *sprite;
+	sfVector2f pos;
+	sfVector2f Origin;
+	sfFloatRect hitBox;
+	int distMax;
+	int distMin;
+	int sens;
+
+	float speed;
+	float cd_Shoot;
+
+	float shoot_Current;
+	float shoot_Since;
+	float shoot_Start;
+
+};
+
 typedef struct s_player t_player;
 
 struct s_player
 {
 	sfSprite *sprite;
+	sfSprite *proctect;
+	sfVector2f Origin_protect;
 	sfVector2f pos;
 	sfVector2f Origin;
 	sfFloatRect hitBox;
@@ -74,12 +108,11 @@ struct s_player
 	int airOn;
 	int jaugePoint;
 	int upShoot;
-
 	int OnJump;
 	int OnPlatform;
-
 	int BlockRight;
 	int BlockLeft;
+	int hit;
 
 	float Speed;
 	float angCursor;
@@ -108,6 +141,10 @@ struct s_player
 	float timer_Current;
 	float timer_Start;
 	int timer_Since;
+
+	float protect_Current;
+	float protect_Start;
+	float protect_Since;
 	
 	sfVector2f velocity;
 
@@ -117,21 +154,11 @@ struct s_player
 	sfVector2f origin_Bras;
 	sfFloatRect sizeSpr;
 	sfIntRect rectBras;
-	/*Collision Control*/
-	int leftCollider;
-	int rightCollider;
-	int downCollider;
-
-	float offSetCollision_Y ;
-	float offSetCollision_X ;
-
-	int blobk ;
-
 };
 
 t_player Player;
 
-
+typedef struct s_background t_background;
 
 typedef struct s_bullet t_bullet;
 
@@ -144,7 +171,7 @@ struct s_bullet
 	sfFloatRect hitBox;
 	float speed;
 	float angle;
-
+	int type; // Perso ou Boss
 	sfIntRect rect;
 	int intAnim;
 	float anim_shoot_Current;
@@ -152,13 +179,10 @@ struct s_bullet
 	float anim_shoot_Start;
 };
 
-typedef struct s_background t_background;
-
 struct s_background
 {
 	sfSprite* sprite;
 	sfVector2f pos;
-	sfImage *collid;
 	int backgroundNumber;
 };
 
@@ -295,8 +319,8 @@ typedef struct s_mapSlot t_mapSlot;
 struct s_mapSlot
 {
 	t_background background;
-	t_rectangle collisions[10];
-	t_poney ennemis[10];
+	t_rectangle collisions[20];
+	t_poney ennemis[20];
 };
 
 typedef struct s_maps t_maps;
@@ -402,24 +426,24 @@ void highScoreEnter(t_scoreTable* _scoreTable, t_player *Player, t_gameState* _g
 
 /*fct player*/
 void initPlayer(t_player *Player);
-sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, int _index);
+sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, t_boss *Boss, int noAngle, int _index, int type);
 float createAngle(sfVector2f _pointA, sfRenderWindow *_window);
-void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, List *_list, float *gravity_Since, float _velocityOffset);
+void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, t_boss *Boss, List *_list, float *gravity_Since);
 void Gravity(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float *gravity_Since);
-void Gravity2(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float *gravity_Since);
 void manageAnimPlayer(t_player *PLAYER, sfRenderWindow* _window);
 void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rectangle2);
-void collidPlayer(t_player *Player, t_maps* _maps);
+int IsOver(sfFloatRect hitBox1, sfFloatRect hitBox2);
+
 
 /*fcts plateformes et enemis*/
 void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted);
 void nextMapYOffset(t_maps* _maps, float _velocityOffset,t_player *Player);
-void moveMaps(t_maps* _maps, float _velocityOffset, t_player *Player);
+void moveMaps(t_maps* _maps, float _velocityOffset, t_player *Player, t_boss *Boss);
 void displayMaps(t_maps* _maps, sfRenderWindow *window);
-void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2, float _timeSinceBackground);
+void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2, t_player *Player, float _timeSinceBackground);
 
 // Liste
-void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player *Player, sfVector2f Direction);
+void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player *Player, t_boss *Boss, sfVector2f Direction, int type);
 void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player, t_hud *Hud);
 void DeleteFirstBullet(List *_list);
 void DeleteBulletToID(List *_list, int ID);
@@ -428,12 +452,16 @@ void DeleteBulletToID(List *_list, int ID);
 // Hud
 void initHud(t_hud *Hud, t_player *Player);
 void manageHud(sfRenderWindow *window, t_hud *Hud, t_player *Player);
-int IsOver(sfRenderWindow *_window, sfFloatRect boundingBox);
+int IsOverMenu(sfRenderWindow *_window, sfFloatRect boundingBox);
 void normalAngle(t_hud *Hud);
 int randomBarre(int type, int _index, t_hud *Hud);
 int randBarre_Speed(t_hud *Hud);
 //
 
+// Boss
+void initBoss(t_boss *Boss);
+void manageBoss(sfRenderWindow *_window, sfVideoMode _mode, t_boss *Boss, t_player *Player, List *_list);
+//
 
 /*New fonctions*/
 void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted);

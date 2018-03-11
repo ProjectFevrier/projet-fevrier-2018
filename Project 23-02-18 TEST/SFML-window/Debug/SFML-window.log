@@ -1,66 +1,173 @@
 ﻿  main.c
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\lib.h(40): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
-  c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\lib.h(12): note: voir la définition précédente de 'SPEED_PLAYER'
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\lib.h(42): warning C4005: 'GRAVITY' : redéfinition de macro
-  c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\lib.h(11): note: voir la définition précédente de 'GRAVITY'
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(109): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(263): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(56): warning C4101: 'backButton' : variable locale non référencée
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(357): warning C4098: 'txtCreate' : fonction 'void' retournant une valeur
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(526): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(573): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(573): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(640): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(586): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(725): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(731): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(732): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(736): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(737): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(751): warning C4013: 'atan' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(751): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(752): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(754): warning C4013: 'cos' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(754): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(755): warning C4013: 'sin' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(755): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(763): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(764): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(766): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(767): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(775): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(776): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(778): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(779): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(790): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(791): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(793): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(794): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(804): warning C4142: 'RadToDeg' : redéfinition bénigne du type
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(805): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(810): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(812): warning C4013: 'atan2' non défini(e) ; extern retournant int pris par défaut
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(812): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1364): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1422): warning C4305: '=' : troncation de 'double' à 'float'
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1424): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1425): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1438): warning C4305: '=' : troncation de 'double' à 'float'
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1440): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1441): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1454): warning C4305: '=' : troncation de 'double' à 'float'
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1456): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1457): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1555): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1560): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1565): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1640): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1641): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1663): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1664): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1706): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(1762): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(2128): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
-c:\users\dimitri\desktop\projet github\a- project 09-03-18\sfml-window\main.c(2283): warning C4101: 'readChar' : variable locale non référencée
-  LINK : C:\Users\Dimitri\Desktop\Projet GitHub\A- Project 09-03-18\Debug\SFML-window.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
-  SFML-window.vcxproj -> C:\Users\Dimitri\Desktop\Projet GitHub\A- Project 09-03-18\Debug\SFML-window.exe
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\lib.h(54): warning C4005: 'SPEED_PLAYER' : redéfinition de macro
+  d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\lib.h(12): note: voir la définition précédente de 'SPEED_PLAYER'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\lib.h(56): warning C4005: 'GRAVITY' : redéfinition de macro
+  d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\lib.h(11): note: voir la définition précédente de 'GRAVITY'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(110): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(264): warning C4244: '-=' : conversion de 'double' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(54): warning C4101: 'backButton' : variable locale non référencée
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(358): warning C4098: 'txtCreate' : fonction 'void' retournant une valeur
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(586): warning C4098: 'initPlayer' : fonction 'void' retournant une valeur
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(606): warning C4013: 'RadToDeg' non défini(e) ; extern retournant int pris par défaut
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(606): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(745): warning C4047: '==' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(669): warning C4047: 'initialisation' : les niveaux d'indirection de 'int' et de 'void *' sont différents
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(827): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(846): warning C4013: 'atan' non défini(e) ; extern retournant int pris par défaut
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(846): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(847): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(849): warning C4013: 'cos' non défini(e) ; extern retournant int pris par défaut
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(849): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(850): warning C4013: 'sin' non défini(e) ; extern retournant int pris par défaut
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(850): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(856): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(860): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(867): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(871): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(883): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(884): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(886): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(887): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(893): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(897): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(904): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(908): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(918): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(919): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(923): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(924): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(933): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(934): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(936): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(937): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(943): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(944): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(948): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(949): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(956): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(957): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(961): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(962): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(972): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(973): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(975): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(976): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(982): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(983): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(987): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(988): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(995): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(996): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1000): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1001): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1014): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1015): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1017): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1018): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1024): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1025): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1029): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1030): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1037): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1038): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1042): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1043): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1053): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1054): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1056): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1057): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1063): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1064): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1068): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1069): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1076): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1077): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1081): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1082): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1098): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1099): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1101): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1102): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1108): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1112): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1119): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1123): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1137): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1138): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1140): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1141): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1147): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1148): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1152): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1153): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1160): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1161): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1165): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1166): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1176): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1177): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1179): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1180): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1186): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1187): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1191): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1192): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1199): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1200): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1204): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1205): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1218): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1219): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1221): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1222): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1228): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1229): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1233): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1234): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1241): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1242): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1246): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1247): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1257): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1258): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1260): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1261): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1267): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1268): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1272): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1273): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1280): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1281): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1285): warning C4305: '+=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1286): warning C4305: '-=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1299): warning C4142: 'RadToDeg' : redéfinition bénigne du type
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1300): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1305): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1307): warning C4013: 'atan2' non défini(e) ; extern retournant int pris par défaut
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1307): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1882): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1940): warning C4305: '=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1942): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1943): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1956): warning C4305: '=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1958): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1959): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1972): warning C4305: '=' : troncation de 'double' à 'float'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1974): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(1975): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2109): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2114): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2119): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2246): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2247): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2269): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2270): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2312): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2368): warning C4133: 'fonction' : types incompatibles - de 'sfRenderWindow *' à 'const sfWindow *'
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2733): warning C4047: 'initialisation' : les niveaux d'indirection de 'char' et de 'void *' sont différents
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2888): warning C4101: 'readChar' : variable locale non référencée
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2924): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2925): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2966): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+d:\telechargements firefox\a- project 09-03-18(2)\a- project 09-03-18\sfml-window\main.c(2967): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+  SFML-window.vcxproj -> D:\telechargements firefox\A- Project 09-03-18(2)\A- Project 09-03-18\Debug\SFML-window.exe

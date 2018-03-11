@@ -8,10 +8,8 @@
 #include "lib.h"
 
 
-
 int main()
 {
-
 	/*CSFML Vars*/
 	sfVideoMode mode = { 1920, 1080, 32 };
 	sfRenderWindow* window;
@@ -55,6 +53,7 @@ int main()
 	t_menu menuTxts;
 	t_txtBox backButton;
 	t_scoreTable scoreTable;
+	t_boss Boss;
 
 	/*Enums*/
 	t_gameState gameState = MENU;
@@ -81,6 +80,8 @@ int main()
 				
 	///*init menu txts*/
 	initMenu(&menuTxts);
+
+	initBoss(&Boss);
 	
 	/*Load highscores*/
 	loadHighscores(&scoreTable);
@@ -103,7 +104,7 @@ int main()
 	if (!window)
 		return -1;
 
-	sfRenderWindow_setFramerateLimit(window, 60);
+	sfRenderWindow_setFramerateLimit(window, 30);
 
 	/*Time*/
 	srand(time(NULL));
@@ -125,7 +126,7 @@ int main()
 
 				sfRenderWindow_drawSprite(window, menuBg, NULL);
 				/*txt jouer*/
-				if (IsOver(window, menuTxts.Jouer.txtBoundingBox))
+				if (IsOverMenu(window, menuTxts.Jouer.txtBoundingBox))
 				{
 					sfText_setColor(menuTxts.Jouer.txt, sfRed);
 					if (sfMouse_isButtonPressed(sfMouseLeft))
@@ -174,7 +175,7 @@ int main()
 				sfRenderWindow_drawText(window, menuTxts.Jouer.txt, NULL);
 
 				/*txt Highscores*/
-				if (IsOver(window, menuTxts.Highscore.txtBoundingBox))
+				if (IsOverMenu(window, menuTxts.Highscore.txtBoundingBox))
 				{
 					sfText_setColor(menuTxts.Highscore.txt, sfRed);
 					if (sfMouse_isButtonPressed(sfMouseLeft))
@@ -188,7 +189,7 @@ int main()
 				sfRenderWindow_drawText(window, menuTxts.Highscore.txt, NULL);
 
 				/*txt quitter*/
-				if (IsOver(window, menuTxts.Quitter.txtBoundingBox))
+				if (IsOverMenu(window, menuTxts.Quitter.txtBoundingBox))
 				{
 					sfText_setColor(menuTxts.Quitter.txt, sfRed);
 					if (sfMouse_isButtonPressed(sfMouseLeft))
@@ -207,7 +208,7 @@ int main()
 				sfRenderWindow_drawText(window, scoreTable.score1.txtB.txt, NULL);
 				sfRenderWindow_drawText(window, scoreTable.score2.txtB.txt, NULL);
 				sfRenderWindow_drawText(window, scoreTable.score3.txtB.txt, NULL);
-				if (IsOver(window, scoreTable.backBtn.txtBoundingBox))
+				if (IsOverMenu(window, scoreTable.backBtn.txtBoundingBox))
 				{
 					sfText_setColor(scoreTable.backBtn.txt, sfRed);
 					if (sfMouse_isButtonPressed(sfMouseLeft) && keyPressed ==0)
@@ -290,7 +291,7 @@ int main()
 				{
 					paralax.animRect.top = 0;
 				}
-				moveMaps(&maps, velocityOffset,&Player);
+				moveMaps(&maps, velocityOffset,&Player,&Boss);
 
 
 				/*Set et draw parallax*/
@@ -301,14 +302,14 @@ int main()
 				displayMaps(&maps, window);
 
 
-
-				managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis, timeSinceBackground);
-				managePlayer(window, mode, &Player, list, &gravity_Since, velocityOffset);
+				//manageBoss(window, mode, &Boss, &Player, list);
+				managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis,&Player, timeSinceBackground);
+				managePlayer(window, mode, &Player, &Boss, list, &gravity_Since);
 				ReadBullet(window, mode, list, &maps, &Player, &Hud);
 				manageHud(window, &Hud, &Player);
-				//checkColision(&Player, maps.currentMap.collisions, maps.nextMap.collisions);
-				//Gravity(window, mode, &Player, &gravity_Since);
-				collidPlayer(&Player, &maps);
+				Gravity(window, mode, &Player, &gravity_Since);
+				checkColision(&Player, maps.currentMap.collisions, maps.nextMap.collisions);
+
 				sfRenderWindow_drawSprite(window, clouds, NULL);
 
 				break;
@@ -318,6 +319,7 @@ int main()
 				highScoreEnter(&scoreTable, &Player,&gameState);
 				sfRenderWindow_drawText(window, scoreTable.playerScore.txtB.txt, NULL);
 				sfRenderWindow_drawText(window, scoreTable.playerScore.txtS.txt, NULL);
+				printf_s("gamestate out : %d\n", gameState);
 			}
 			default:
 				break;
@@ -366,7 +368,7 @@ void txtCreate(char* _src, t_txtBox* _text)
 	_text->txtBoundingBox = sfText_getGlobalBounds(_text->txt);
 }
 
-void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2, float _timeSinceBackground)
+void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t_poney *_poney2, t_player *Player, float _timeSinceBackground)
 {
 	for (int i = 0; i < _poney1[0].elementsNumber; i++)
 	{
@@ -415,6 +417,14 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 				else
 					_poney1[i].currentAnimFrame = 0;
 			}
+		}
+
+		if (IsOver(Player->hitBox, _poney1[i].hitBox) && Player->hit == 0)
+		{
+			Player->hit = 1;
+			Player->protect_Start = (float)clock() / CLOCKS_PER_SEC;
+
+			Player->jaugePoint -= DOWN_JAUGE * Player->upShoot; 
 		}
 	}
 	for (int i = 0; i < _poney2[0].elementsNumber; i++)
@@ -465,12 +475,41 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 					_poney2[i].currentAnimFrame = 0;
 			}
 		}
+
+		if (IsOver(Player->hitBox, _poney2[i].hitBox) && Player->hit == 0)
+		{
+			Player->hit = 1;
+			Player->protect_Start = (float)clock() / CLOCKS_PER_SEC;
+
+			Player->jaugePoint -= DOWN_JAUGE * Player->upShoot;
+		}
+	}
+}
+
+int IsOver(sfFloatRect hitBox1, sfFloatRect hitBox2)
+{
+	if (hitBox1.left >= (hitBox2.left + hitBox2.width)
+		|| (hitBox1.left + hitBox1.width) <= hitBox2.left
+		|| hitBox1.top >= (hitBox2.top + hitBox2.height)
+		|| (hitBox1.top + hitBox1.height) <= hitBox2.top)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
 	}
 }
 
 void initPlayer(t_player *Player)
 {
 	Player->sprite = createSprite("resources/textures/perso.png");
+
+	Player->proctect = createSprite("resources/textures/Halo.png");
+
+	Player->Origin_protect.x = WIDTH_PROTECT / 2;
+	Player->Origin_protect.y = HEIGHT_PROTECT / 2;
+	sfSprite_setOrigin(Player->proctect, Player->Origin_protect);
 
 	Player->pos.x = 800 + X_OFFSET;
 	Player->pos.y = 500;
@@ -512,7 +551,7 @@ void initPlayer(t_player *Player)
 
 	Player->Recoil = 0;
 
-	Player->Speed = 0.625;
+	Player->Speed = 1.25;
 
 	// Anim Bras
 	Player->Bras = createSprite("resources/textures/Bras.png");
@@ -536,47 +575,70 @@ void initPlayer(t_player *Player)
 	Player->jaugePoint = JAUGE_START_SIZE;
 	Player->speedFactor = 1;
 
-	Player->upShoot = 3;
+	Player->upShoot = 1;
 
-	Player->downCollider = 0;
-	Player->leftCollider = 0;
-	Player->rightCollider = 0;
+	Player->hit = 0;
 
-	Player->OnPlatform = 0;
-
-	Player->offSetCollision_Y = 0;
-	Player->offSetCollision_X = 0;
+	Player->protect_Current = 0;
+	Player->protect_Start = 0;
+	Player->protect_Since = 0;
 
 	return Player;
 }
 
-void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player *Player, sfVector2f Direction)
+void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player *Player, t_boss *Boss, sfVector2f Direction, int type)
 {
 	ListElement *newElement = malloc(sizeof(ListElement));
-	if (Player->intAnim == 0 || Player->intAnim == 4 || Player->intAnim == 5) // Gauche
-	{
-		newElement->Bullet.pos.x = Player->pos.x - 48;
-		newElement->Bullet.pos.y = Player->pos.y - 12;
-	}
-	else if (Player->intAnim == 1 || Player->intAnim == 3 || Player->intAnim == 6) // Droite
-	{
-		newElement->Bullet.pos.x = Player->pos.x + 48;
-		newElement->Bullet.pos.y = Player->pos.y - 12;
-	}
-	else if (Player->intAnim == 2) // Mid
-	{
-		newElement->Bullet.pos.x = Player->pos.x;
-		newElement->Bullet.pos.y = Player->pos.y + 25;
-	}
 
-	newElement->Bullet.sprite = createSprite("resources/textures/Coeur.png");
+	if (type == 0)
+	{
+		newElement->Bullet.sprite = createSprite("resources/textures/Coeur.png");
+
+		newElement->Bullet.speed = 20.0;
+
+		newElement->Bullet.type = 0;
+
+		newElement->Bullet.rect.width = WIDTH_COEUR;
+		newElement->Bullet.rect.height = HEIGHT_COEUR;
+		newElement->Bullet.rect.left = newElement->Bullet.intAnim * WIDTH_COEUR;
+		newElement->Bullet.rect.top = 0;
+
+		newElement->Bullet.angle = RadToDeg(createAngle(Player->pos, _window));
+
+		if (Player->intAnim == 0 || Player->intAnim == 4 || Player->intAnim == 5) // Gauche
+		{
+			newElement->Bullet.pos.x = Player->pos.x - 48;
+			newElement->Bullet.pos.y = Player->pos.y - 12;
+		}
+		else if (Player->intAnim == 1 || Player->intAnim == 3 || Player->intAnim == 6) // Droite
+		{
+			newElement->Bullet.pos.x = Player->pos.x + 48;
+			newElement->Bullet.pos.y = Player->pos.y - 12;
+		}
+		else if (Player->intAnim == 2) // Mid
+		{
+			newElement->Bullet.pos.x = Player->pos.x;
+			newElement->Bullet.pos.y = Player->pos.y + 25;
+		}
+	}
+	else if (type == 1)
+	{
+		newElement->Bullet.rect.width = WIDTH_BULLET;
+		newElement->Bullet.rect.height = HEIGHT_BULLET;
+		newElement->Bullet.rect.left = newElement->Bullet.intAnim * WIDTH_BULLET;
+		newElement->Bullet.rect.top = 0;
+
+		newElement->Bullet.pos.x = Boss->pos.x;
+		newElement->Bullet.pos.y = Boss->pos.y;
+
+		newElement->Bullet.speed = -20.0;
+
+		newElement->Bullet.sprite = createSprite("resources/textures/tirA.png");
+
+		newElement->Bullet.type = 1;
+	}
 
 	newElement->Bullet.intAnim = 0;
-
-	newElement->Bullet.rect.width = WIDTH_COEUR;
-	newElement->Bullet.rect.height = HEIGHT_COEUR;
-	newElement->Bullet.rect.left = newElement->Bullet.intAnim * WIDTH_COEUR;
-	newElement->Bullet.rect.top = 0;
 
 	newElement->Bullet.anim_shoot_Current = 0;
 	newElement->Bullet.anim_shoot_Since = 0;
@@ -592,9 +654,6 @@ void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player
 	newElement->Bullet.Dir.x = Direction.x;
 	newElement->Bullet.Dir.y = Direction.y;
 
-	newElement->Bullet.speed = 10.0;
-
-	newElement->Bullet.angle = RadToDeg(createAngle(Player->pos, _window));
 
 	sfSprite_setOrigin(newElement->Bullet.sprite, newElement->Bullet.Origin);
 
@@ -644,21 +703,43 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 
 		currentElement->Bullet.anim_shoot_Since = currentElement->Bullet.anim_shoot_Current - currentElement->Bullet.anim_shoot_Start;
 
-		if (currentElement->Bullet.anim_shoot_Since >= CD_ANIM_COEUR)
+		if (currentElement->Bullet.type == 0)
 		{
-			currentElement->Bullet.anim_shoot_Since = 0;
-			currentElement->Bullet.anim_shoot_Start = currentElement->Bullet.anim_shoot_Current;
-
-			currentElement->Bullet.intAnim += 1;
-
-			if (currentElement->Bullet.intAnim >= NB_ANIM_COEUR - 1)
+			if (currentElement->Bullet.anim_shoot_Since >= CD_ANIM_COEUR)
 			{
-				currentElement->Bullet.intAnim = 0;
+				currentElement->Bullet.anim_shoot_Since = 0;
+				currentElement->Bullet.anim_shoot_Start = currentElement->Bullet.anim_shoot_Current;
+
+				currentElement->Bullet.intAnim += 1;
+
+				if (currentElement->Bullet.intAnim >= NB_ANIM_COEUR - 1)
+				{
+					currentElement->Bullet.intAnim = 0;
+				}
+
+				currentElement->Bullet.rect.left = currentElement->Bullet.intAnim * currentElement->Bullet.rect.width;
+
+				sfSprite_setTextureRect(currentElement->Bullet.sprite, currentElement->Bullet.rect);
 			}
+		}
+		else
+		{
+			if (currentElement->Bullet.anim_shoot_Since >= CD_ANIM_BULLET)
+			{
+				currentElement->Bullet.anim_shoot_Since = 0;
+				currentElement->Bullet.anim_shoot_Start = currentElement->Bullet.anim_shoot_Current;
 
-			currentElement->Bullet.rect.left = currentElement->Bullet.intAnim * currentElement->Bullet.rect.width;
+				currentElement->Bullet.intAnim += 1;
 
-			sfSprite_setTextureRect(currentElement->Bullet.sprite, currentElement->Bullet.rect);
+				if (currentElement->Bullet.intAnim >= NB_ANIM_BULLET - 1)
+				{
+					currentElement->Bullet.intAnim = 0;
+				}
+
+				currentElement->Bullet.rect.left = currentElement->Bullet.intAnim * currentElement->Bullet.rect.width;
+
+				sfSprite_setTextureRect(currentElement->Bullet.sprite, currentElement->Bullet.rect);
+			}
 		}
 		////////////////
 		if (nextEllementDeleted == NULL)
@@ -741,7 +822,7 @@ void DeleteBulletToID(List *_list, int ID)
 	}
 }
 
-sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, int _index)
+sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, t_boss *Boss, int noAngle, int _index, int type)
 {
 	sfVector2i posCursor = sfMouse_getPosition(_window);
 
@@ -752,9 +833,9 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 	float Ang = 0;
 	float Angle = 0;
 
-	if (noAngle == 3)
+	if(type == 0)
 	{
-		if (Player->upShoot == 3)
+		if (noAngle == 3)
 		{
 			// Gauche
 			if (posCursor.x < Player->pos.x)
@@ -768,13 +849,27 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 				Direction.x = cos(Ang);
 				Direction.y = sin(Ang);
 
-				if (_index == 1)
+				if (Player->upShoot == 2)
 				{
-					Direction.x += 0.20;
+					if (_index == 0)
+					{
+						Direction.x += 0.05;
+					}
+					else if (_index == 1)
+					{
+						Direction.x -= 0.05;
+					}
 				}
-				else if (_index == 2)
+				else if (Player->upShoot == 3)
 				{
-					Direction.x -= 0.20;
+					if (_index == 1)
+					{
+						Direction.x += 0.20;
+					}
+					else if (_index == 2)
+					{
+						Direction.x -= 0.20;
+					}
 				}
 
 				Direction.x *= -1;
@@ -791,6 +886,234 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 				Direction.x = cos(Ang);
 				Direction.y = sin(Ang);
 
+				if (Player->upShoot == 2)
+				{
+					if (_index == 0)
+					{
+						Direction.x += 0.05;
+					}
+					else if (_index == 1)
+					{
+						Direction.x -= 0.05;
+					}
+				}
+				else if (Player->upShoot == 3)
+				{
+					if (_index == 1)
+					{
+						Direction.x += 0.20;
+					}
+					else if (_index == 2)
+					{
+						Direction.x -= 0.20;
+					}
+				}
+			}
+			//Droite
+		}
+		else
+		{
+			if (noAngle == 1)
+			{
+				posCursor.x = Player->pos.x - 262;
+				posCursor.y = Player->pos.y - 50;
+			}
+			else if (noAngle == 2)
+			{
+				posCursor.x = Player->pos.x + 262;
+				posCursor.y = Player->pos.y - 50;
+			}
+
+			// Haut Droite
+			if (posCursor.x > Player->pos.x && posCursor.y < Player->pos.y)
+			{
+				BA = Player->pos.x - (float)posCursor.x;
+				AC = Player->pos.y - (float)posCursor.y;
+
+				Ang = atan(AC / BA);
+				Angle = Ang * (180 / PI);
+
+				Direction.x = cos(Ang);
+				Direction.y = sin(Ang);
+
+				if (Player->upShoot == 2)
+				{
+					if (_index == 0)
+					{
+						Direction.x += 0.05;
+						Direction.y += 0.05;
+					}
+					else if (_index == 1)
+					{
+						Direction.x -= 0.05;
+						Direction.y -= 0.05;
+					}
+				}
+				else if (Player->upShoot == 3)
+				{
+					if (_index == 1)
+					{
+						Direction.x += 0.20;
+						Direction.y += 0.20;
+					}
+					else if (_index == 2)
+					{
+						Direction.x -= 0.20;
+						Direction.y -= 0.20;
+					}
+				}
+			}
+			// Haut Gauche
+			else if (posCursor.x < Player->pos.x && posCursor.y > Player->pos.y)
+			{
+				BA = (float)posCursor.x - Player->pos.x;
+				AC = (float)posCursor.y - Player->pos.y;
+
+				Ang = atan(AC / BA);
+				Angle = Ang * (180 / PI);
+
+				Direction.x = cos(Ang);
+				Direction.y = sin(Ang);
+
+				if (Player->upShoot == 2)
+				{
+					if (_index == 0)
+					{
+						Direction.x += 0.05;
+						Direction.y += 0.05;
+					}
+					else if (_index == 1)
+					{
+						Direction.x -= 0.05;
+						Direction.y -= 0.05;
+					}
+				}
+				else if (Player->upShoot == 3)
+				{
+					if (_index == 1)
+					{
+						Direction.x += 0.20;
+						Direction.y += 0.20;
+					}
+					else if (_index == 2)
+					{
+						Direction.x -= 0.20;
+						Direction.y -= 0.20;
+					}
+				}
+
+				Direction.x *= -1;
+				Direction.y *= -1;
+			}
+			// Bas Droite
+			else if (posCursor.x > Player->pos.x && posCursor.y > Player->pos.y)
+			{
+				BA = Player->pos.x - (float)posCursor.x;
+				AC = Player->pos.y - (float)posCursor.y;
+
+				Ang = atan(AC / BA);
+				Angle = Ang * (180 / PI);
+
+				Direction.x = cos(Ang);
+				Direction.y = sin(Ang);
+
+				if (Player->upShoot == 2)
+				{
+					if (_index == 0)
+					{
+						Direction.x -= 0.05;
+						Direction.y += 0.05;
+					}
+					else if (_index == 1)
+					{
+						Direction.x += 0.05;
+						Direction.y -= 0.05;
+					}
+				}
+				else if (Player->upShoot == 3)
+				{
+					if (_index == 1)
+					{
+						Direction.x -= 0.20;
+						Direction.y += 0.20;
+					}
+					else if (_index == 2)
+					{
+						Direction.x += 0.20;
+						Direction.y -= 0.20;
+					}
+				}
+			}
+			// Bas Gauche
+			else if (posCursor.x < Player->pos.x && posCursor.y < Player->pos.y)
+			{
+				BA = (float)posCursor.x - Player->pos.x;
+				AC = (float)posCursor.y - Player->pos.y;
+
+				Ang = atan(AC / BA);
+				Angle = Ang * (180 / PI);
+
+				Direction.x = cos(Ang);
+				Direction.y = sin(Ang);
+
+				if (Player->upShoot == 2)
+				{
+					if (_index == 0)
+					{
+						Direction.x -= 0.05;
+						Direction.y += 0.05;
+					}
+					else if (_index == 1)
+					{
+						Direction.x += 0.05;
+						Direction.y -= 0.05;
+					}
+				}
+				else if (Player->upShoot == 3)
+				{
+					if (_index == 1)
+					{
+						Direction.x -= 0.20;
+						Direction.y += 0.20;
+					}
+					else if (_index == 2)
+					{
+						Direction.x += 0.20;
+						Direction.y -= 0.20;
+					}
+				}
+
+				Direction.x *= -1;
+				Direction.y *= -1;
+			}
+		}
+	}
+	else
+	{
+		if (Player->pos.x < Boss->pos.x + 30 && Player->pos.x > Boss->pos.x - 30)
+		{
+			BA = (float)posCursor.x - Player->pos.x;
+			AC = (float)posCursor.y - Player->pos.y;
+
+			Ang = atan(AC / BA);
+			Angle = Ang * (180 / PI);
+
+			Direction.x = cos(Ang);
+			Direction.y = sin(Ang);
+
+			if (Player->upShoot == 2)
+			{
+				if (_index == 0)
+				{
+					Direction.x += 0.05;
+				}
+				else if (_index == 1)
+				{
+					Direction.x -= 0.05;
+				}
+			}
+			else if (Player->upShoot == 3)
+			{
 				if (_index == 1)
 				{
 					Direction.x += 0.20;
@@ -800,27 +1123,16 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 					Direction.x -= 0.20;
 				}
 			}
-			//Droite
-		}
-	}
-	else
-	{
-		if (noAngle == 1)
-		{
-			posCursor.x = Player->pos.x - 262;
-			posCursor.y = Player->pos.y - 50;
-		}
-		else if (noAngle == 2)
-		{
-			posCursor.x = Player->pos.x + 262;
-			posCursor.y = Player->pos.y - 50;
+
+			Direction.x *= -1;
+			Direction.y *= -1;
 		}
 
-		// Haut Droite
-		if (posCursor.x > Player->pos.x && posCursor.y < Player->pos.y)
+		// Haut Droite 
+		else if (Boss->pos.x > Player->pos.x && Boss->pos.y < Player->pos.y)
 		{
-			BA = Player->pos.x - (float)posCursor.x;
-			AC = Player->pos.y - (float)posCursor.y;
+			BA = Player->pos.x - Boss->pos.x;
+			AC = Player->pos.y - Boss->pos.y;
 
 			Ang = atan(AC / BA);
 			Angle = Ang * (180 / PI);
@@ -828,7 +1140,20 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 			Direction.x = cos(Ang);
 			Direction.y = sin(Ang);
 
-			if (Player->upShoot == 3)
+			if (Player->upShoot == 2)
+			{
+				if (_index == 0)
+				{
+					Direction.x += 0.05;
+					Direction.y += 0.05;
+				}
+				else if (_index == 1)
+				{
+					Direction.x -= 0.05;
+					Direction.y -= 0.05;
+				}
+			}
+			else if (Player->upShoot == 3)
 			{
 				if (_index == 1)
 				{
@@ -843,10 +1168,10 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 			}
 		}
 		// Haut Gauche
-		if (posCursor.x < Player->pos.x && posCursor.y > Player->pos.y)
+		else if (Boss->pos.x < Player->pos.x && Boss->pos.y > Player->pos.y)
 		{
-			BA = (float)posCursor.x - Player->pos.x;
-			AC = (float)posCursor.y - Player->pos.y;
+			BA = Boss->pos.x - Player->pos.x;
+			AC = Boss->pos.y - Player->pos.y;
 
 			Ang = atan(AC / BA);
 			Angle = Ang * (180 / PI);
@@ -854,7 +1179,20 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 			Direction.x = cos(Ang);
 			Direction.y = sin(Ang);
 
-			if (Player->upShoot == 3)
+			if (Player->upShoot == 2)
+			{
+				if (_index == 0)
+				{
+					Direction.x += 0.05;
+					Direction.y += 0.05;
+				}
+				else if (_index == 1)
+				{
+					Direction.x -= 0.05;
+					Direction.y -= 0.05;
+				}
+			}
+			else if (Player->upShoot == 3)
 			{
 				if (_index == 1)
 				{
@@ -872,10 +1210,10 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 			Direction.y *= -1;
 		}
 		// Bas Droite
-		if (posCursor.x > Player->pos.x && posCursor.y > Player->pos.y)
+		else if (Boss->pos.x > Player->pos.x && Boss->pos.y > Player->pos.y)
 		{
-			BA = Player->pos.x - (float)posCursor.x;
-			AC = Player->pos.y - (float)posCursor.y;
+			BA = Player->pos.x - Boss->pos.x;
+			AC = Player->pos.y - Boss->pos.y;
 
 			Ang = atan(AC / BA);
 			Angle = Ang * (180 / PI);
@@ -883,7 +1221,20 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 			Direction.x = cos(Ang);
 			Direction.y = sin(Ang);
 
-			if (Player->upShoot == 3)
+			if (Player->upShoot == 2)
+			{
+				if (_index == 0)
+				{
+					Direction.x -= 0.05;
+					Direction.y += 0.05;
+				}
+				else if (_index == 1)
+				{
+					Direction.x += 0.05;
+					Direction.y -= 0.05;
+				}
+			}
+			else if (Player->upShoot == 3)
 			{
 				if (_index == 1)
 				{
@@ -898,10 +1249,10 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 			}
 		}
 		// Bas Gauche
-		if (posCursor.x < Player->pos.x && posCursor.y < Player->pos.y)
+		else if (Boss->pos.x < Player->pos.x && Boss->pos.y < Player->pos.y)
 		{
-			BA = (float)posCursor.x - Player->pos.x;
-			AC = (float)posCursor.y - Player->pos.y;
+			BA = Boss->pos.x - Player->pos.x;
+			AC = Boss->pos.y - Player->pos.y;
 
 			Ang = atan(AC / BA);
 			Angle = Ang * (180 / PI);
@@ -909,7 +1260,20 @@ sfVector2f vectorStart(sfRenderWindow* _window, t_player *Player, int noAngle, i
 			Direction.x = cos(Ang);
 			Direction.y = sin(Ang);
 
-			if (Player->upShoot == 3)
+			if (Player->upShoot == 2)
+			{
+				if (_index == 0)
+				{
+					Direction.x -= 0.05;
+					Direction.y += 0.05;
+				}
+				else if (_index == 1)
+				{
+					Direction.x += 0.05;
+					Direction.y -= 0.05;
+				}
+			}
+			else if (Player->upShoot == 3)
 			{
 				if (_index == 1)
 				{
@@ -942,15 +1306,14 @@ float createAngle(sfVector2f _pointA, sfRenderWindow *_window)
 
 	float angleRad = atan2((posMouse.y - _pointA.y), (posMouse.x - _pointA.x));
 
-	return angleRad;
+	return angleRad;  
 }
 
-void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, List *_list, float *gravity_Since, float _velocityOffset)
+void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, t_boss *Boss, List *_list, float *gravity_Since)
 {
 	manageAnimPlayer(Player, _window);
 	// Calcule D'angle
-	Player->angCursor = RadToDeg(createAngle(Player->pos, _window));
-
+	Player->angCursor = RadToDeg(createAngle(Player->pos,_window));
 
 	if (Player->angCursor < 0) // Evite un angle négatif !
 	{
@@ -959,7 +1322,6 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 
 	int noAngle = 0;
 	int shootOk = 0;
-	//printf("Ang : %.2f\n", Player->angCursor);
 
 	if (sfKeyboard_isKeyPressed(sfKeyRight))
 	{
@@ -1097,8 +1459,8 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 
 		for (int i = 0; i < Player->upShoot; i++)
 		{
-			sfVector2f Direction = vectorStart(_window, Player, noAngle, i);
-			AddBullet(_window, _mode, _list, Player, Direction);
+			sfVector2f Direction = vectorStart(_window, Player, Boss, noAngle, i, 0);
+			AddBullet(_window, _mode, _list, Player, Boss, Direction, 0);
 		}
 
 		Player->shoot_Start = Player->shoot_Current;
@@ -1112,57 +1474,45 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 	/////////////////////////////////////////////
 
 	// Recul du tir
-	if (Player->Recoil == 1 || Player->Recoil == 2)
+	if (Player->stateAir == AIR)
 	{
-		if (Player->Recoil == 2)
+		if (Player->Recoil == 1 || Player->Recoil == 2)
 		{
-			Player->recoil_Start = (float)clock() / CLOCKS_PER_SEC;
-			Player->Recoil = 1;
-		}
-
-		Player->velocity.y -= (*gravity_Since * GRAVITY) * 110;
-
-		if (Player->velocity.y < 0)
-		{
-			if (Player->velocity.y <= -150)
+			if (Player->Recoil == 2)
 			{
-				Player->velocity.y = -150;
+				Player->recoil_Start = (float)clock() / CLOCKS_PER_SEC;
+				Player->Recoil = 1;
 			}
-		}
-		Player->pos.y += Player->velocity.y * (*gravity_Since);
 
-		Player->recoil_Since = Player->shoot_Current - Player->recoil_Start;
+			Player->velocity.y -= (*gravity_Since * GRAVITY) * 110;
 
-		if (Player->recoil_Since >= CD_RECOIL)
-		{
-			Player->Recoil = 0;
-			Player->recoil_Start = Player->shoot_Current;
+			if (Player->velocity.y < 0)
+			{
+				if (Player->velocity.y <= -150)
+				{
+					Player->velocity.y = -150;
+				}
+			}
+			Player->pos.y += Player->velocity.y * (*gravity_Since);
+
+			Player->recoil_Since = Player->shoot_Current - Player->recoil_Start;
+
+			if (Player->recoil_Since >= CD_RECOIL)
+			{
+				Player->Recoil = 0;
+				Player->recoil_Start = Player->shoot_Current;
+			}
 		}
 	}
 	/////////////////////////////////////////////
-	Player->hitBox = sfSprite_getGlobalBounds(Player->sprite);
+
 	// Deplacement 
-	if (Player->downCollider == 0)
-	{
-		Gravity2(_window, _mode, Player, gravity_Since);
-		Player->offSetCollision_Y += BG_SPEED;
-		Player->OnPlatform = 0;
-	}
-
-	else if (Player->downCollider == 1) 
-	{
-		Player->pos.y -= BG_SPEED;
-		Player->offSetCollision_Y += BG_SPEED;
-		Player->velocity.y = 0;
-		Player->OnPlatform = 1;
-	}
-
 	if (Player->stateAir == AIR)
 	{
 		Player->walk_Start = 0;
 	}
 
-	if (Player->leftCollider == 0 && sfKeyboard_isKeyPressed(sfKeyQ) && Player->pos.x >= (0 + X_OFFSET) + WIDTH_PLAYER / 2)
+	if (sfKeyboard_isKeyPressed(sfKeyLeft) && Player->pos.x >= (0 + X_OFFSET) + WIDTH_PLAYER / 2)
 	{
 		if (Player->stateAir == SOL)
 		{
@@ -1181,7 +1531,7 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 			Player->pos.x -= Player->Speed * 5;
 		}
 	}
-	else if (Player->rightCollider == 0 && sfKeyboard_isKeyPressed(sfKeyD) && Player->pos.x <= 1920 - WIDTH_PLAYER / 2)
+	else if (sfKeyboard_isKeyPressed(sfKeyRight) && Player->pos.x <= 1920 - WIDTH_PLAYER / 2)
 	{
 		if (Player->stateAir == SOL)
 		{
@@ -1216,18 +1566,6 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 			Player->intAnim = 0;
 		}
 	}
-
-	if (Player->leftCollider == 1 && Player->OnPlatform == 0) {
-		Player->velocity.y = 0;
-		Gravity2(_window, _mode, Player, gravity_Since);
-
-	}
-	if (Player->rightCollider == 1 && Player->OnPlatform == 0) {
-		Player->velocity.y = 0;
-		Gravity2(_window, _mode, Player, gravity_Since);
-
-	}
-
 	//////////////////////////////////////////////
 
 	if (Player->pos.y < 0 || Player->pos.y > 1080)
@@ -1350,6 +1688,23 @@ void manageAnimPlayer(t_player *Player, sfRenderWindow* _window)
 
 		sfRenderWindow_drawSprite(_window, Player->Bras, NULL);
 	}
+
+	if (Player->hit == 1)
+	{
+		Player->protect_Current = (float)clock() / CLOCKS_PER_SEC;
+
+		Player->protect_Since = Player->protect_Current - Player->protect_Start;
+
+		if (Player->protect_Since < 3 && Player->hit == 1)
+		{
+			sfSprite_setPosition(Player->proctect, Player->pos);
+			sfRenderWindow_drawSprite(_window, Player->proctect, NULL);
+		}
+		else
+		{
+			Player->hit = 0;
+		}
+	}
 }
 
 void Gravity(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float *gravity_Since)
@@ -1357,38 +1712,10 @@ void Gravity(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float
 	// Gravité
 	//if (Player->pos.y <= _mode.height - (Player->hitBox.height / 2))
 	//{
-	if (Player->OnPlatform == 0)
-	{
-		Player->velocity.y += (*gravity_Since * GRAVITY) * 25;
+	Player->velocity.y += (*gravity_Since * GRAVITY) * 25;
 
-		Player->pos.x += Player->velocity.x * (*gravity_Since);
-		Player->pos.y += Player->velocity.y * (*gravity_Since);
-
-	}
-
-	//printf_s("GRAVITY\n");
-	//////////////////////////////////////////////
-}
-
-void Gravity2(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, float *gravity_Since)
-{
-	// Gravité
-	//if (Player->pos.y <= _mode.height - (Player->size.height / 2))
-	//{
-	if (Player->OnPlatform == 0)
-		Player->velocity.y += (*gravity_Since * GRAVITY) * 25;
-	else
-		Player->velocity.y = 0;
-	//}
-	//else
-	//{
-	//	Player->velocity.y = 0;
-	//}
-
-	Player->pos.y += (Player->velocity.y * *gravity_Since);
-
-
-
+	Player->pos.x += Player->velocity.x * (*gravity_Since);
+	Player->pos.y += Player->velocity.y * (*gravity_Since);
 	//////////////////////////////////////////////
 }
 
@@ -1515,15 +1842,9 @@ void checkColision(t_player *Player, t_rectangle *_rectangle1, t_rectangle *_rec
 
 					if (Player->OnPlatform == 0) {
 						Player->pos.x += frctIntersection.width;
-
 					}
-					//printf("left\n");
 					Player->BlockRight = 1;
-
-
 				}
-
-				//printf("RectPoint : %.2f\n", ((PlayerCenter.y - (PLAYER_SIZE_HEIGHT / 2)) - (RectCenter.y + (54 / 2))));
 			}
 		}
 		else if (Player->velocity.y > 50 && Player->velocity.y > -50)
@@ -1598,8 +1919,8 @@ void initHud(t_hud *Hud, t_player *Player)
 
 	// Aiguilles
 
-	Hud->stateBarre = 0;//
-	Hud->previousState = 0;//
+	Hud->stateBarre = START;//
+	Hud->previousState = START;//
 	Hud->countAfterKill = 0;//
 
 	for (int i = 0; i < 3; i++)
@@ -1740,6 +2061,42 @@ int randomBarre(int minOrmax,int _index, t_hud *Hud)
 				numberMin = 121;
 			}
 		}
+		else if (Hud->stateBarre == MID || Hud->previousState == MID && Hud->stateBarre == KILL)
+		{
+			if (_index == 0)
+			{
+				numberMax = 395;
+				numberMin = 345;
+			}
+			if (_index == 1)
+			{
+				numberMax = 335;
+				numberMin = 285;
+			}
+			if (_index == 2)
+			{
+				numberMax = 270;
+				numberMin = 220;
+			}
+		}
+		else if (Hud->stateBarre == END || Hud->previousState == END && Hud->stateBarre == KILL)
+		{
+			if (_index == 0)
+			{
+				numberMax = 455;
+				numberMin = 425;
+			}
+			if (_index == 1)
+			{
+				numberMax = 395;
+				numberMin = 365;
+			}
+			if (_index == 2)
+			{
+				numberMax = 330;
+				numberMin = 300;
+			}
+		}
 		newNumber = rand() % (numberMax - numberMin) + numberMin;
 	}
 	else if (minOrmax == 1) // Min
@@ -1761,6 +2118,42 @@ int randomBarre(int minOrmax,int _index, t_hud *Hud)
 				numberMax = 120;
 				numberMin = Hud->Aiguille[_index].angStart + 10;
 
+			}
+		}
+		else if (Hud->stateBarre == MID || Hud->previousState == MID && Hud->stateBarre == KILL)
+		{
+			if (_index == 0)
+			{
+				numberMax = 345;
+				numberMin = 295;
+			}
+			if (_index == 1)
+			{
+				numberMax = 285;
+				numberMin = 235;
+			}
+			if (_index == 2)
+			{
+				numberMax = 220;
+				numberMin = 170;
+			}
+		}
+		else if (Hud->stateBarre == END || Hud->previousState == END && Hud->stateBarre == KILL)
+		{
+			if (_index == 0)
+			{
+				numberMax = 425;
+				numberMin = 395;
+			}
+			if (_index == 1)
+			{
+				numberMax = 365;
+				numberMin = 335;
+			}
+			if (_index == 2)
+			{
+				numberMax = 300;
+				numberMin = 270;
 			}
 		}
 		newNumber = rand() % (numberMax - numberMin) + numberMin;
@@ -1808,6 +2201,22 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 	// Aiguilles
 
 	normalAngle(Hud);
+
+	if (Player->jaugePoint < 114)
+	{
+		Hud->stateBarre = START;
+		Player->upShoot = 1;
+	}
+	else if (Player->jaugePoint > 114 && Player->jaugePoint < 170)
+	{
+		Hud->stateBarre = MID;
+		Player->upShoot = 2;
+	}
+	else
+	{
+		Hud->stateBarre = END;
+		Player->upShoot = 3;
+	}
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -1907,7 +2316,7 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 	if (Player->jaugePoint > JAUGE_START_SIZE)
 	{
 		Player->speedFactor = (((float)Player->jaugePoint - JAUGE_START_SIZE) / 100) + 1;
-		//printf_s("JAUGE :%d ,SPEED : %.4f\n", Player->jaugePoint, Player->speedFactor);
+	//	printf_s("JAUGE :%d ,SPEED : %.4f\n", Player->jaugePoint, Player->speedFactor);
 	}
 	else
 		Player->speedFactor = 1;
@@ -1918,7 +2327,7 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 	sfSprite_setPosition(Hud->sprite_jauge, Hud->jaugePos);
 	sfRenderWindow_drawSprite(_window, Hud->sprite_jauge, NULL);
 	// Boutton Menu
-	if (IsOver(_window, Hud->buttMenu_hitBox))
+	if (IsOverMenu(_window, Hud->buttMenu_hitBox))
 	{
 		Hud->intButt = 1;
 	}
@@ -1954,7 +2363,7 @@ void normalAngle(t_hud *Hud)
 	}
 }
 
-int IsOver(sfRenderWindow *_window, sfFloatRect boundingBox)
+int IsOverMenu(sfRenderWindow *_window, sfFloatRect boundingBox)
 {
 	sfVector2i mousePos = sfMouse_getPosition(_window);
 
@@ -2006,7 +2415,30 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	for (int i = 0; i < elementsNumber; i++)
 	{
 		//fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap1.ennemis[i].xStart, &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax);
-		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d,aRL=%d,aRT=%d,aRW=%d,aRH=%d,aF=%d,aCT=%d,eT=%d\n", &_maps->saveMap1.ennemis[i].xStart, &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax, &_maps->saveMap1.ennemis[i].animRect.left, &_maps->saveMap1.ennemis[i].animRect.top, &_maps->saveMap1.ennemis[i].animRect.width, &_maps->saveMap1.ennemis[i].animRect.height, &_maps->saveMap1.ennemis[i].animFrames, &_maps->saveMap1.ennemis[i].currentAnimFrameTop, &_maps->saveMap1.ennemis[i].ennemiType);
+		fscanf_s(file, "pX=%f,pY=%f,d=%d,dM=%d,eT=%d\n", &_maps->saveMap1.ennemis[i].pos.x, &_maps->saveMap1.ennemis[i].pos.y, &_maps->saveMap1.ennemis[i].Direction, &_maps->saveMap1.ennemis[i].distMax, &_maps->saveMap1.ennemis[i].ennemiType);
+		_maps->saveMap1.ennemis[i].xStart = _maps->saveMap1.ennemis[i].pos.x;
+		_maps->saveMap1.ennemis[i].animRect.left = 0;
+		_maps->saveMap1.ennemis[i].animRect.top = 0;
+		switch (_maps->saveMap1.ennemis[i].ennemiType)
+		{
+		case 1:
+			_maps->saveMap1.ennemis[i].animRect.width = 212;
+			_maps->saveMap1.ennemis[i].animRect.height = 235;
+			_maps->saveMap1.ennemis[i].animFrames = 14;
+			break;
+		case 2:
+			_maps->saveMap1.ennemis[i].animRect.width = 140;
+			_maps->saveMap1.ennemis[i].animRect.height = 181;
+			_maps->saveMap1.ennemis[i].animFrames = 4;
+			break;
+		case 3:
+			_maps->saveMap1.ennemis[i].animRect.width = 83;
+			_maps->saveMap1.ennemis[i].animRect.height = 76;
+			_maps->saveMap1.ennemis[i].animFrames = 7;
+			break;
+		default:
+			break;
+		}		
 		_maps->saveMap1.ennemis[i].sprite = sfSprite_create();
 		sprintf_s(path, 50, "resources/sprites/m%d-%d.png", _currentLevel, _maps->saveMap1.ennemis[i].ennemiType);
 		_maps->saveMap1.ennemis[i].sprite = createSprite(path);
@@ -2030,9 +2462,6 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	_maps->saveMap1.background.pos.x = 0 + X_OFFSET;
 	_maps->saveMap1.background.pos.y = 0;
 	fclose(file);
-	sprintf_s(path, 50, "resources/maps/c%d-1.png", _currentLevel);
-	_maps->saveMap1.background.collid = sfImage_createFromFile(path);
-
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/*charger la map 2 du level en cours*/
@@ -2058,7 +2487,30 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	for (int i = 0; i < elementsNumber; i++)
 	{
 		//fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap2.ennemis[i].xStart, &_maps->saveMap2.ennemis[i].pos.x, &_maps->saveMap2.ennemis[i].pos.y, &_maps->saveMap2.ennemis[i].Direction, &_maps->saveMap2.ennemis[i].distMax);
-		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d,aRL=%d,aRT=%d,aRW=%d,aRH=%d,aF=%d,aCT=%d,eT=%d\n", &_maps->saveMap2.ennemis[i].xStart, &_maps->saveMap2.ennemis[i].pos.x, &_maps->saveMap2.ennemis[i].pos.y, &_maps->saveMap2.ennemis[i].Direction, &_maps->saveMap2.ennemis[i].distMax, &_maps->saveMap2.ennemis[i].animRect.left, &_maps->saveMap2.ennemis[i].animRect.top, &_maps->saveMap2.ennemis[i].animRect.width, &_maps->saveMap2.ennemis[i].animRect.height, &_maps->saveMap2.ennemis[i].animFrames, &_maps->saveMap2.ennemis[i].currentAnimFrameTop, &_maps->saveMap2.ennemis[i].ennemiType);
+		fscanf_s(file, "pX=%f,pY=%f,d=%d,dM=%d,eT=%d\n", &_maps->saveMap2.ennemis[i].pos.x, &_maps->saveMap2.ennemis[i].pos.y, &_maps->saveMap2.ennemis[i].Direction, &_maps->saveMap2.ennemis[i].distMax, &_maps->saveMap2.ennemis[i].ennemiType);
+		_maps->saveMap2.ennemis[i].xStart = _maps->saveMap2.ennemis[i].pos.x;
+		_maps->saveMap2.ennemis[i].animRect.left = 0;
+		_maps->saveMap2.ennemis[i].animRect.top = 0;
+		switch (_maps->saveMap2.ennemis[i].ennemiType)
+		{
+		case 1:
+			_maps->saveMap2.ennemis[i].animRect.width = 212;
+			_maps->saveMap2.ennemis[i].animRect.height = 235;
+			_maps->saveMap2.ennemis[i].animFrames = 14;
+			break;
+		case 2:
+			_maps->saveMap2.ennemis[i].animRect.width = 140;
+			_maps->saveMap2.ennemis[i].animRect.height = 181;
+			_maps->saveMap2.ennemis[i].animFrames = 4;
+			break;
+		case 3:
+			_maps->saveMap2.ennemis[i].animRect.width = 83;
+			_maps->saveMap2.ennemis[i].animRect.height = 76;
+			_maps->saveMap2.ennemis[i].animFrames = 7;
+			break;
+		default:
+			break;
+		}
 		_maps->saveMap2.ennemis[i].sprite = sfSprite_create();
 		sprintf_s(path, 50, "resources/sprites/m%d-%d.png", _currentLevel, _maps->saveMap2.ennemis[i].ennemiType);
 		_maps->saveMap2.ennemis[i].sprite = createSprite(path);
@@ -2082,8 +2534,6 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	_maps->saveMap2.background.pos.x = 0 + X_OFFSET;
 	_maps->saveMap2.background.pos.y = 0;
 	fclose(file);
-	sprintf_s(path, 50, "resources/maps/c%d-2.png", _currentLevel);
-	_maps->saveMap2.background.collid = sfImage_createFromFile(path);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/*charger la map 3 du level en cours*/
@@ -2109,7 +2559,30 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	for (int i = 0; i < elementsNumber; i++)
 	{
 		//fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap3.ennemis[i].xStart, &_maps->saveMap3.ennemis[i].pos.x, &_maps->saveMap3.ennemis[i].pos.y, &_maps->saveMap3.ennemis[i].Direction, &_maps->saveMap3.ennemis[i].distMax);
-		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d,aRL=%d,aRT=%d,aRW=%d,aRH=%d,aF=%d,aCT=%d,eT=%d\n", &_maps->saveMap3.ennemis[i].xStart, &_maps->saveMap3.ennemis[i].pos.x, &_maps->saveMap3.ennemis[i].pos.y, &_maps->saveMap3.ennemis[i].Direction, &_maps->saveMap3.ennemis[i].distMax, &_maps->saveMap3.ennemis[i].animRect.left, &_maps->saveMap3.ennemis[i].animRect.top, &_maps->saveMap3.ennemis[i].animRect.width, &_maps->saveMap3.ennemis[i].animRect.height, &_maps->saveMap3.ennemis[i].animFrames, &_maps->saveMap3.ennemis[i].currentAnimFrameTop, &_maps->saveMap3.ennemis[i].ennemiType);
+		fscanf_s(file, "pX=%f,pY=%f,d=%d,dM=%d,eT=%d\n", &_maps->saveMap3.ennemis[i].pos.x, &_maps->saveMap3.ennemis[i].pos.y, &_maps->saveMap3.ennemis[i].Direction, &_maps->saveMap3.ennemis[i].distMax, &_maps->saveMap3.ennemis[i].ennemiType);
+		_maps->saveMap3.ennemis[i].xStart = _maps->saveMap3.ennemis[i].pos.x;
+		_maps->saveMap3.ennemis[i].animRect.left = 0;
+		_maps->saveMap3.ennemis[i].animRect.top = 0;
+		switch (_maps->saveMap3.ennemis[i].ennemiType)
+		{
+		case 1:
+			_maps->saveMap3.ennemis[i].animRect.width = 212;
+			_maps->saveMap3.ennemis[i].animRect.height = 235;
+			_maps->saveMap3.ennemis[i].animFrames = 14;
+			break;
+		case 2:
+			_maps->saveMap3.ennemis[i].animRect.width = 140;
+			_maps->saveMap3.ennemis[i].animRect.height = 181;
+			_maps->saveMap3.ennemis[i].animFrames = 4;
+			break;
+		case 3:
+			_maps->saveMap3.ennemis[i].animRect.width = 83;
+			_maps->saveMap3.ennemis[i].animRect.height = 76;
+			_maps->saveMap3.ennemis[i].animFrames = 7;
+			break;
+		default:
+			break;
+		}
 		_maps->saveMap3.ennemis[i].sprite = sfSprite_create();
 		sprintf_s(path, 50, "resources/sprites/m%d-%d.png", _currentLevel, _maps->saveMap3.ennemis[i].ennemiType);
 		_maps->saveMap3.ennemis[i].sprite = createSprite(path);
@@ -2133,8 +2606,6 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	_maps->saveMap3.background.pos.x = 0 + X_OFFSET;
 	_maps->saveMap3.background.pos.y = 0;
 	fclose(file);
-	sprintf_s(path, 50, "resources/maps/c%d-3.png", _currentLevel);
-	_maps->saveMap3.background.collid = sfImage_createFromFile(path);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/*charger la map 4 du level en cours*/
@@ -2160,7 +2631,30 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	for (int i = 0; i < elementsNumber; i++)
 	{
 		//fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d\n", &_maps->saveMap4.ennemis[i].xStart, &_maps->saveMap4.ennemis[i].pos.x, &_maps->saveMap4.ennemis[i].pos.y, &_maps->saveMap4.ennemis[i].Direction, &_maps->saveMap4.ennemis[i].distMax);
-		fscanf_s(file, "pXS=%d,pX=%f,pY=%f,d=%d,dM=%d,aRL=%d,aRT=%d,aRW=%d,aRH=%d,aF=%d,aCT=%d,eT=%d\n", &_maps->saveMap4.ennemis[i].xStart, &_maps->saveMap4.ennemis[i].pos.x, &_maps->saveMap4.ennemis[i].pos.y, &_maps->saveMap4.ennemis[i].Direction, &_maps->saveMap4.ennemis[i].distMax, &_maps->saveMap4.ennemis[i].animRect.left, &_maps->saveMap4.ennemis[i].animRect.top, &_maps->saveMap4.ennemis[i].animRect.width, &_maps->saveMap4.ennemis[i].animRect.height, &_maps->saveMap4.ennemis[i].animFrames, &_maps->saveMap4.ennemis[i].currentAnimFrameTop, &_maps->saveMap4.ennemis[i].ennemiType);
+		fscanf_s(file, "pX=%f,pY=%f,d=%d,dM=%d,eT=%d\n", &_maps->saveMap4.ennemis[i].pos.x, &_maps->saveMap4.ennemis[i].pos.y, &_maps->saveMap4.ennemis[i].Direction, &_maps->saveMap4.ennemis[i].distMax, &_maps->saveMap4.ennemis[i].ennemiType);
+		_maps->saveMap4.ennemis[i].xStart = _maps->saveMap4.ennemis[i].pos.x;
+		_maps->saveMap4.ennemis[i].animRect.left = 0;
+		_maps->saveMap4.ennemis[i].animRect.top = 0;
+		switch (_maps->saveMap4.ennemis[i].ennemiType)
+		{
+		case 1:
+			_maps->saveMap4.ennemis[i].animRect.width = 212;
+			_maps->saveMap4.ennemis[i].animRect.height = 235;
+			_maps->saveMap4.ennemis[i].animFrames = 14;
+			break;
+		case 2:
+			_maps->saveMap4.ennemis[i].animRect.width = 140;
+			_maps->saveMap4.ennemis[i].animRect.height = 181;
+			_maps->saveMap4.ennemis[i].animFrames = 4;
+			break;
+		case 3:
+			_maps->saveMap4.ennemis[i].animRect.width = 83;
+			_maps->saveMap4.ennemis[i].animRect.height = 76;
+			_maps->saveMap4.ennemis[i].animFrames = 7;
+			break;
+		default:
+			break;
+		}
 		_maps->saveMap4.ennemis[i].sprite = sfSprite_create();
 		sprintf_s(path, 50, "resources/sprites/m%d-%d.png", _currentLevel, _maps->saveMap4.ennemis[i].ennemiType);
 		_maps->saveMap4.ennemis[i].sprite = createSprite(path);
@@ -2184,15 +2678,6 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 	_maps->saveMap4.background.pos.x = 0 + X_OFFSET;
 	_maps->saveMap4.background.pos.y = 0;
 	fclose(file);
-	sprintf_s(path, 50, "resources/maps/c%d-4.png", _currentLevel);
-	_maps->saveMap4.background.collid = sfImage_createFromFile(path);
-
-
-	if (_maps->saveMap1.background.collid == NULL || _maps->saveMap2.background.collid == NULL || _maps->saveMap3.background.collid == NULL || _maps->saveMap4.background.collid == NULL)
-	{
-		printf_s("erreur d'ouverture des masques de collisions\n");
-		return EXIT_FAILURE;
-	}
 
 	_maps->currentMap = _maps->saveMap1;
 	_maps->nextMap = _maps->saveMap2;
@@ -2202,40 +2687,40 @@ void loadMaps(t_maps* _maps, int _currentLevel, int _asStarted)
 
 void nextMapYOffset(t_maps* _maps, float _velocityOffset, t_player *Player)
 {
-
 	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
 	{
-		_maps->nextMap.collisions[i].pos.y += MAP_HEIGHT - BG_SPEED;
+		_maps->nextMap.collisions[i].pos.y += MAP_HEIGHT - (_velocityOffset * Player->speedFactor);
 	}
 	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 	{
-		_maps->nextMap.ennemis[i].pos.y += MAP_HEIGHT - BG_SPEED;
+		_maps->nextMap.ennemis[i].pos.y += MAP_HEIGHT - (_velocityOffset * Player->speedFactor);
 	}
-	_maps->nextMap.background.pos.y += MAP_HEIGHT - BG_SPEED;
+	_maps->nextMap.background.pos.y += MAP_HEIGHT - (_velocityOffset * Player->speedFactor);
 }
 
-void moveMaps(t_maps* _maps, float _velocityOffset, t_player *Player)
+void moveMaps(t_maps* _maps, float _velocityOffset, t_player *Player, t_boss *Boss)
 {
 	/*Deplacements*/
 	for (int i = 0; i < _maps->currentMap.collisions[0].elementsNumber; i++)
 	{
-		_maps->currentMap.collisions[i].pos.y -= BG_SPEED;
+		_maps->currentMap.collisions[i].pos.y -= (_velocityOffset * Player->speedFactor);
 	}
 	for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
 	{
-		_maps->currentMap.ennemis[i].pos.y -= BG_SPEED;
+		_maps->currentMap.ennemis[i].pos.y -= (_velocityOffset * Player->speedFactor);
 	}
 
 	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
 	{
-		_maps->nextMap.collisions[i].pos.y -= BG_SPEED;
+		_maps->nextMap.collisions[i].pos.y -= (_velocityOffset * Player->speedFactor);
 	}
 	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 	{
-		_maps->nextMap.ennemis[i].pos.y -= BG_SPEED;
+		_maps->nextMap.ennemis[i].pos.y -= (_velocityOffset * Player->speedFactor);
 	}
-	_maps->currentMap.background.pos.y -= BG_SPEED;
-	_maps->nextMap.background.pos.y -= BG_SPEED;
+
+	_maps->currentMap.background.pos.y -= (_velocityOffset * Player->speedFactor);
+	_maps->nextMap.background.pos.y -= (_velocityOffset * Player->speedFactor);
 
 
 	/*chargement de la map suivante*/
@@ -2263,7 +2748,6 @@ void moveMaps(t_maps* _maps, float _velocityOffset, t_player *Player)
 			_maps->nextMap = _maps->saveMap4;
 			break;
 		}
-		//printf_s("next map :%d\n",_maps->nextMap.background.backgroundNumber);
 		nextMapYOffset(_maps, _velocityOffset, Player);
 	}
 
@@ -2279,7 +2763,7 @@ void displayMaps(t_maps* _maps, sfRenderWindow *window)
 	for (int i = 0; i < _maps->currentMap.collisions[0].elementsNumber; i++)
 	{
 		sfRectangleShape_setPosition(_maps->currentMap.collisions[i].rectangle, _maps->currentMap.collisions[i].pos);
-		//sfRenderWindow_drawRectangleShape(window, _maps->currentMap.collisions[i].rectangle, NULL);
+		sfRenderWindow_drawRectangleShape(window, _maps->currentMap.collisions[i].rectangle, NULL);
 	}
 	for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
 	{
@@ -2294,7 +2778,7 @@ void displayMaps(t_maps* _maps, sfRenderWindow *window)
 	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
 	{
 		sfRectangleShape_setPosition(_maps->nextMap.collisions[i].rectangle, _maps->nextMap.collisions[i].pos);
-		//sfRenderWindow_drawRectangleShape(window, _maps->nextMap.collisions[i].rectangle, NULL);
+		sfRenderWindow_drawRectangleShape(window, _maps->nextMap.collisions[i].rectangle, NULL);
 	}
 	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 	{
@@ -2525,99 +3009,107 @@ void highScoreEnter(t_scoreTable* _scoreTable, t_player *Player, t_gameState* _g
 	}
 }
 
-
-void collidPlayer(t_player *Player, t_maps* _maps)
+int randDistBoss(int type, t_boss *Boss)
 {
-	int _index = 0;
-	float offSet_BG = 0;
+	int newNumber = 0;
 
-	offSet_BG *= -_maps->currentMap.background.pos.y;
+	int numberMin = 500 + Boss->Origin.x;
+	int numberMax = 1920 - Boss->Origin.x;
 
-	sfVector2f pos = { Player->pos.x , Player->pos.y + offSet_BG };
+	int Mid = numberMax - numberMin;
+	int Max = 0;
+	int Min = 0;
 
-
-	if (_maps->currentMap.background.pos.y + 2000 > pos.y + Player->Origin.y)
+	if (type == 0)
 	{
-
-		if (Player->blobk == 4) {
-
-		}
-		//printf("Map Up !\n");
-		Player->blobk = 0;
+		Max = Mid + 50;
+		Min = numberMin;
 	}
-	else
+	else if (type == 1)
 	{
-		if (Player->blobk == 0) {
-
-			Player->offSetCollision_Y = -(pos.y + Player->Origin.y);
-
-
-			Player->blobk = 4;
-
-		}
-		//printf("pos : %.2f | Offset : %.2f | PlayerPos : %.2f\n", pos.y + Player->Origin.y + Player->offSetCollision_Y, Player->offSetCollision_Y, pos.y);
-
-
-		//printf("Map Down !\n");
+		Max = numberMax;
+		Min = Mid - 50;
 	}
 
+	return newNumber = rand() % (Max - Min) + Min;
 
+}
 
+void initBoss(t_boss *Boss)
+{
+	Boss->sprite = createSprite("resources/textures/Boss.png");
+	
+	Boss->hitBox = sfSprite_getGlobalBounds(Boss->sprite);
 
-	/*Down Collid*/
+	Boss->Origin.x = Boss->hitBox.width / 2;
+	Boss->Origin.y = Boss->hitBox.height / 2;
 
-	sfColor down_left = sfImage_getPixel(_maps->currentMap.background.collid, pos.x - Player->Origin.x, pos.y + Player->Origin.y + Player->offSetCollision_Y);
-	sfColor down_mid = sfImage_getPixel(_maps->currentMap.background.collid, pos.x, pos.y + Player->Origin.y + Player->offSetCollision_Y);
-	sfColor down_right = sfImage_getPixel(_maps->currentMap.background.collid, pos.x + Player->Origin.x, pos.y + Player->Origin.y + Player->offSetCollision_Y);
+	sfSprite_setOrigin(Boss->sprite, Boss->Origin);
 
-	/*Right Collid*/
-	if (sfColor_toInteger(down_left) == Color_Collid || sfColor_toInteger(down_mid) == Color_Collid || sfColor_toInteger(down_right) == Color_Collid)
+	Boss->pos.x = 1420 / 2 + 500;
+	Boss->pos.y = 1080 - (Boss->hitBox.height / 2) - 40;
+
+	Boss->cd_Shoot = 1;
+
+	Boss->sens = 0;
+
+	Boss->speed = 5;
+
+	Boss->distMin = 500 + Boss->Origin.x;
+	Boss->distMax = 1920 - Boss->Origin.x;
+
+	Boss->shoot_Current = 0;
+	Boss->shoot_Since = 0;
+	Boss->shoot_Start = (float)clock() / CLOCKS_PER_SEC;
+}
+
+void manageBoss(sfRenderWindow *_window, sfVideoMode _mode, t_boss *Boss, t_player *Player, List *_list)
+{
+	Boss->shoot_Current = (float)clock() / CLOCKS_PER_SEC;
+
+	Boss->shoot_Since = Boss->shoot_Current - Boss->shoot_Start;
+
+	if (Boss->shoot_Since > Boss->cd_Shoot)
 	{
-		Player->downCollider = 1;
+		Boss->shoot_Start = Boss->shoot_Current;
 
-	}
-	else {
-		Player->downCollider = 0;
-
-	}
-	if (pos.y - Player->Origin.y + Player->offSetCollision_Y >= 50) {
-
-		sfColor right_up = sfImage_getPixel(_maps->currentMap.background.collid, pos.x + Player->Origin.x + 5, pos.y - Player->Origin.y + Player->offSetCollision_Y);
-		sfColor right_mid = sfImage_getPixel(_maps->currentMap.background.collid, pos.x + Player->Origin.x + 5, pos.y + Player->offSetCollision_Y);
-		sfColor right_down = sfImage_getPixel(_maps->currentMap.background.collid, pos.x + Player->Origin.x + 5, pos.y + Player->Origin.y + Player->offSetCollision_Y - 8);
-
-
-
-		/*Left Collid*/
-		sfColor left_up = sfImage_getPixel(_maps->currentMap.background.collid, pos.x - Player->Origin.x - 5, pos.y - Player->Origin.y + Player->offSetCollision_Y);
-		sfColor left_mid = sfImage_getPixel(_maps->currentMap.background.collid, pos.x - Player->Origin.x - 5, pos.y + Player->offSetCollision_Y);
-		sfColor left_down = sfImage_getPixel(_maps->currentMap.background.collid, pos.x - Player->Origin.x - 5, pos.y + Player->Origin.y + Player->offSetCollision_Y - 8);
-
-
-
-
-		if (sfColor_toInteger(right_up) == Color_Collid || sfColor_toInteger(right_mid) == Color_Collid || sfColor_toInteger(right_down) == Color_Collid)
+		for (int i = 0; i < Player->upShoot; i++)
 		{
-			Player->rightCollider = 1;
-
+			sfVector2f Direction = vectorStart(_window, Player, Boss, 0, i, 1);
+			AddBullet(_window, _mode, _list, Player, Boss, Direction, 1);
 		}
-		else {
-			Player->rightCollider = 0;
-		}
-
-
-		if (sfColor_toInteger(left_up) == Color_Collid || sfColor_toInteger(left_mid) == Color_Collid || sfColor_toInteger(left_down) == Color_Collid)
-		{
-			Player->leftCollider = 1;
-		}
-		else {
-			Player->leftCollider = 0;
-		}
-
-
 	}
 
+	if (Boss->sens == 0)
+	{
+		Boss->pos.x -= Boss->speed;
 
+		if (Boss->pos.x <= Boss->distMin)
+		{
+			Boss->distMin = randDistBoss(0, Boss);
+			Boss->sens = 1;
+		}
+	}
+	else if (Boss->sens == 1)
+	{
+		Boss->pos.x += Boss->speed;
 
-	//return 0;
+		if (Boss->pos.x >= Boss->distMax)
+		{
+			Boss->distMax = randDistBoss(1, Boss);
+			Boss->sens = 0;
+		}
+	}
+
+	if (IsOver(Player->hitBox, Boss->hitBox) && Player->hit == 0)
+	{
+		Player->hit = 1;
+		Player->protect_Start = (float)clock() / CLOCKS_PER_SEC;
+
+		Player->jaugePoint -= DOWN_JAUGE * Player->upShoot;
+	}
+
+	Boss->hitBox = sfSprite_getGlobalBounds(Boss->sprite);
+	sfSprite_setPosition(Boss->sprite, Boss->pos);
+	sfRenderWindow_drawSprite(_window, Boss->sprite, NULL);
 }
