@@ -55,6 +55,9 @@ int main()
 	t_scoreTable scoreTable;
 	t_boss Boss;
 
+	t_txtBox timerP;
+	t_txtBox gameover;
+
 	/*Enums*/
 	t_gameState gameState = MENU;
 
@@ -71,9 +74,11 @@ int main()
 	sfSprite_setTextureRect(paralax.sprite, paralax.animRect);
 	sfSprite_setPosition(paralax.sprite, paralax.pos);
 
-
+	initTimer(&timerP);
 	/*Player init*/
 	initPlayer(&Player);
+
+
 
 	/*Hud init*/
 	initHud(&Hud, &Player);
@@ -87,6 +92,13 @@ int main()
 	loadHighscores(&scoreTable);
 
 	asStarted = 1;
+
+	/*init gameover txt*/
+	gameover.txt = malloc(50);
+	gameover.fontSize = 150;
+	gameover.txtPos.x = 960;
+	gameover.txtPos.y = 500;
+	txtCreate("GAME OVER", &gameover);
 
 	/*Load maps*/
 	loadMaps(&maps, currentLevel, asStarted);
@@ -167,6 +179,7 @@ int main()
 						BlockLeft = 0;
 						asStarted = 0;
 						keyPressed = 0;
+						highScoreEnterInit(&scoreTable, &Player);
 						gameState = GAME;
 					}
 				}
@@ -180,7 +193,7 @@ int main()
 					sfText_setColor(menuTxts.Highscore.txt, sfRed);
 					if (sfMouse_isButtonPressed(sfMouseLeft))
 					{
-						highScoreEnterInit(&scoreTable, &Player);
+						//highScoreEnterInit(&scoreTable, &Player);
 						gameState = HIGHSCORE;
 					}
 				}
@@ -254,7 +267,9 @@ int main()
 				velocityOffset = (BG_VELOCITY * timeSinceBackground);
 
 				Player.timer_Current = (float)clock() / CLOCKS_PER_SEC;
-				Player.timer_Since = (int)(Player.timer_Current - Player.timer_Start) + 1;
+				Player.timer_Since = (int)(Player.timer_Current - Player.timer_Start);
+
+
 
 				// Calcul de point !!!
 				if (sinceJauge >= 1.5)
@@ -306,18 +321,30 @@ int main()
 					nextMapYOffset(&maps, 0, &Player);
 					Player.playerLevel = 3;
 				}
+				if (Player.playerLevel == 4)
+				{
+					scoreTable.playerScore.score = Player.timer_Since;
+					highScoreEnterInit(&scoreTable, &Player);
+					gameState = END_GAME;
+				}
+				if (Player.playerLevel == 6)
+				{
+					gameState = OVER_GAME;
+				}
 				displayMaps(&maps, window);
 				if (currentLevel == 2)
 					manageBoss(window, mode, &Boss, &Player, list);
 				else
 					managePoney(window, mode, maps.currentMap.ennemis, maps.nextMap.ennemis,&Player, timeSinceBackground);
 				managePlayer(window, mode, &Player, &Boss, list, &gravity_Since);
-				ReadBullet(window, mode, list, &maps, &Player, &Hud);
+				ReadBullet(window, mode, list, &maps, &Player, &Hud, &Boss);
 				manageHud(window, &Hud, &Player);
 				Gravity(window, mode, &Player, &gravity_Since);
 				checkColision(&Player, maps.currentMap.collisions, maps.nextMap.collisions);
 
 				sfRenderWindow_drawSprite(window, clouds, NULL);
+				updateTimer(&timerP, &Player);
+				sfRenderWindow_drawText(window, timerP.txt, NULL);
 
 				break;
 			case END_GAME : 
@@ -327,6 +354,19 @@ int main()
 				sfRenderWindow_drawText(window, scoreTable.playerScore.txtB.txt, NULL);
 				sfRenderWindow_drawText(window, scoreTable.playerScore.txtS.txt, NULL);
 				printf_s("gamestate out : %d\n", gameState);
+				break;
+			}
+			case OVER_GAME:
+			{
+				int a = 0;
+				sfRenderWindow_drawSprite(window, menuScoreBg, NULL);
+				sfRenderWindow_drawText(window, gameover.txt, NULL);
+				if (sfMouse_isButtonPressed(sfMouseRight) && a == 0)
+				{
+					gameState = MENU;
+					a = 1;
+				}
+
 			}
 			default:
 				break;
@@ -607,11 +647,6 @@ void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player
 
 		newElement->Bullet.type = 0;
 
-		newElement->Bullet.rect.width = WIDTH_COEUR;
-		newElement->Bullet.rect.height = HEIGHT_COEUR;
-		newElement->Bullet.rect.left = newElement->Bullet.intAnim * WIDTH_COEUR;
-		newElement->Bullet.rect.top = 0;
-
 		newElement->Bullet.angle = RadToDeg(createAngle(Player->pos, _window));
 
 		if (Player->intAnim == 0 || Player->intAnim == 4 || Player->intAnim == 5) // Gauche
@@ -632,9 +667,6 @@ void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player
 	}
 	else if (type == 1)
 	{
-		newElement->Bullet.rect.width = WIDTH_BULLET;
-		newElement->Bullet.rect.height = HEIGHT_BULLET;
-		newElement->Bullet.rect.left = newElement->Bullet.intAnim * WIDTH_BULLET;
 		newElement->Bullet.rect.top = 0;
 
 		newElement->Bullet.pos.x = Boss->pos.x;
@@ -642,10 +674,15 @@ void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player
 
 		newElement->Bullet.speed = -20.0;
 
-		newElement->Bullet.sprite = createSprite("resources/textures/tirA.png");
+		newElement->Bullet.sprite = createSprite("resources/textures/Coeur.png");
 
 		newElement->Bullet.type = 1;
 	}
+
+	newElement->Bullet.rect.width = WIDTH_COEUR;
+	newElement->Bullet.rect.height = HEIGHT_COEUR;
+	newElement->Bullet.rect.left = newElement->Bullet.intAnim * WIDTH_COEUR;
+	newElement->Bullet.rect.top = 0;
 
 	newElement->Bullet.intAnim = 0;
 
@@ -670,7 +707,7 @@ void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player
 	_list->firstElement = newElement;
 }
 
-void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player, t_hud *Hud)
+void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player, t_hud *Hud, t_boss *Boss)
 {
 	ListElement *currentElement = _list->firstElement;
 
@@ -679,8 +716,6 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 	int sens = 0;
 	int i = 0;
 	int max = 1000;
-
-	
 
 	while (currentElement != NULL)
 	{
@@ -712,43 +747,22 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 
 		currentElement->Bullet.anim_shoot_Since = currentElement->Bullet.anim_shoot_Current - currentElement->Bullet.anim_shoot_Start;
 
-		if (currentElement->Bullet.type == 0)
+
+		if (currentElement->Bullet.anim_shoot_Since >= CD_ANIM_COEUR)
 		{
-			if (currentElement->Bullet.anim_shoot_Since >= CD_ANIM_COEUR)
+			currentElement->Bullet.anim_shoot_Since = 0;
+			currentElement->Bullet.anim_shoot_Start = currentElement->Bullet.anim_shoot_Current;
+
+			currentElement->Bullet.intAnim += 1;
+
+			if (currentElement->Bullet.intAnim >= NB_ANIM_COEUR - 1)
 			{
-				currentElement->Bullet.anim_shoot_Since = 0;
-				currentElement->Bullet.anim_shoot_Start = currentElement->Bullet.anim_shoot_Current;
-
-				currentElement->Bullet.intAnim += 1;
-
-				if (currentElement->Bullet.intAnim >= NB_ANIM_COEUR - 1)
-				{
-					currentElement->Bullet.intAnim = 0;
-				}
-
-				currentElement->Bullet.rect.left = currentElement->Bullet.intAnim * currentElement->Bullet.rect.width;
-
-				sfSprite_setTextureRect(currentElement->Bullet.sprite, currentElement->Bullet.rect);
+				currentElement->Bullet.intAnim = 0;
 			}
-		}
-		else
-		{
-			if (currentElement->Bullet.anim_shoot_Since >= CD_ANIM_BULLET)
-			{
-				currentElement->Bullet.anim_shoot_Since = 0;
-				currentElement->Bullet.anim_shoot_Start = currentElement->Bullet.anim_shoot_Current;
 
-				currentElement->Bullet.intAnim += 1;
+			currentElement->Bullet.rect.left = currentElement->Bullet.intAnim * currentElement->Bullet.rect.width;
 
-				if (currentElement->Bullet.intAnim >= NB_ANIM_BULLET - 1)
-				{
-					currentElement->Bullet.intAnim = 0;
-				}
-
-				currentElement->Bullet.rect.left = currentElement->Bullet.intAnim * currentElement->Bullet.rect.width;
-
-				sfSprite_setTextureRect(currentElement->Bullet.sprite, currentElement->Bullet.rect);
-			}
+			sfSprite_setTextureRect(currentElement->Bullet.sprite, currentElement->Bullet.rect);
 		}
 		////////////////
 		if (nextEllementDeleted == NULL)
@@ -774,7 +788,7 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 					}
 					else if (Hud->stateBarre == END)
 					{
-						Player->jaugePoint += 3;
+						Player->jaugePoint += 4;
 					}
 
 					Hud->stateBarre = KILL;
@@ -784,7 +798,6 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 			}
 			for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 			{
-
 				if (sfFloatRect_intersects(&_maps->nextMap.ennemis[i].hitBox, &currentElement->Bullet.hitBox, NULL) && Player->playerLevel == 1)
 				{
 					_maps->nextMap.ennemis[i].sprite = NULL;
@@ -800,11 +813,43 @@ void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps*
 					}
 					else if (Hud->stateBarre == END)
 					{
-						Player->jaugePoint += 3;
+						Player->jaugePoint += 4;
 					}
 					Hud->stateBarre = KILL;
 					DeleteBulletToID(_list, countElement);
 					break;
+				}
+			}
+
+			if (Player->playerLevel != 1)
+			{
+				if (currentElement->Bullet.type == 0)
+				{
+					if (IsOver(currentElement->Bullet.hitBox, Boss->hitBox))
+					{
+						if (Hud->stateBarre == START)
+						{
+							Player->jaugePoint += 6;
+						}
+						else
+						{
+							Player->jaugePoint += 5;
+						}
+						DeleteBulletToID(_list, countElement);
+						break;
+					}
+				}
+				else if (currentElement->Bullet.type == 1)
+				{
+					if (IsOver(currentElement->Bullet.hitBox, Player->hitBox))
+					{
+						Player->hit = 1;
+						Player->protect_Start = (float)clock() / CLOCKS_PER_SEC;
+						Player->jaugePoint -= DOWN_JAUGE * Player->upShoot + 2;
+
+						DeleteBulletToID(_list, countElement);
+						break;
+					}
 				}
 			}
 		}
@@ -1605,7 +1650,7 @@ void managePlayer(sfRenderWindow* _window, sfVideoMode _mode, t_player *Player, 
 
 	if (Player->pos.y < 0 || Player->pos.y > 1080)
 	{
-		//sfRenderWindow_close(_window);
+		Player->playerLevel = 6;
 	}
 }
 
@@ -2348,22 +2393,32 @@ void manageHud(sfRenderWindow *_window, t_hud *Hud, t_player *Player)
 			sfSprite_setOrigin(Hud->sprite_jauge, Hud->jaugeOrigin);
 		}
 	}
+	if (Player->jaugePoint < 0)
+	{
+		Player->playerLevel = 6;
+	}
 	if (Player->jaugePoint > 114)
 	{
 		Player->speedFactor = (((float)Player->jaugePoint - JAUGE_START_SIZE) / 350) + 1;
 	//	printf_s("JAUGE :%d ,SPEED : %.4f\n", Player->jaugePoint, Player->speedFactor);
 	}
 	else
-		Player->speedFactor = 1;
+	Player->speedFactor = 1;
+
 	Hud->jaugeRect.left = Hud->intAnimX * Hud->jaugeRect.width;
 	sfSprite_setTextureRect(Hud->sprite_jauge, Hud->jaugeRect);
 
-	if (Player->jaugePoint >= 228)
+	if (Player->jaugePoint >= 228 && Player->playerLevel == 1)
 	{
-		Player->jaugePoint = 112;
+		Player->jaugePoint = JAUGE_START_SIZE;
 		Player->playerLevel = 2;
 	}
 
+	if (Player->jaugePoint >= 228 && Player->playerLevel == 3)
+	{
+		Player->jaugePoint = JAUGE_START_SIZE;
+		Player->playerLevel = 4;
+	}
 	sfSprite_setPosition(Hud->sprite_jauge, Hud->jaugePos);
 	sfRenderWindow_drawSprite(_window, Hud->sprite_jauge, NULL);
 	// Boutton Menu
@@ -2803,7 +2858,7 @@ void displayMaps(t_maps* _maps, sfRenderWindow *window)
 	for (int i = 0; i < _maps->currentMap.collisions[0].elementsNumber; i++)
 	{
 		sfRectangleShape_setPosition(_maps->currentMap.collisions[i].rectangle, _maps->currentMap.collisions[i].pos);
-		sfRenderWindow_drawRectangleShape(window, _maps->currentMap.collisions[i].rectangle, NULL);
+		//sfRenderWindow_drawRectangleShape(window, _maps->currentMap.collisions[i].rectangle, NULL);
 	}
 	for (int i = 0; i < _maps->currentMap.ennemis[0].elementsNumber; i++)
 	{
@@ -2818,7 +2873,7 @@ void displayMaps(t_maps* _maps, sfRenderWindow *window)
 	for (int i = 0; i < _maps->nextMap.collisions[0].elementsNumber; i++)
 	{
 		sfRectangleShape_setPosition(_maps->nextMap.collisions[i].rectangle, _maps->nextMap.collisions[i].pos);
-		sfRenderWindow_drawRectangleShape(window, _maps->nextMap.collisions[i].rectangle, NULL);
+		//sfRenderWindow_drawRectangleShape(window, _maps->nextMap.collisions[i].rectangle, NULL);
 	}
 	for (int i = 0; i < _maps->nextMap.ennemis[0].elementsNumber; i++)
 	{
@@ -2960,7 +3015,7 @@ void highScoreEnterInit(t_scoreTable* _scoreTable, t_player *Player)
 	_scoreTable->isPressedBack = 0;
 	char* str = malloc(50);
 	//_scoreTable->playerScore.score = Player->timer_Since;
-	_scoreTable->playerScore.score = 25;
+	//_scoreTable->playerScore.score = 60;
 	sprintf_s(str, 50, "SCORE : %d\nSAISISSEZ VOTRE NOM :", _scoreTable->playerScore.score);
 	_scoreTable->playerScore.txtB.txt = malloc(50);
 	_scoreTable->playerScore.txtB.fontSize = 100;
@@ -3023,18 +3078,18 @@ void highScoreEnter(t_scoreTable* _scoreTable, t_player *Player, t_gameState* _g
 		{
 			printf_s("Erreur d’ouverture de fichier");
 		}
-		if (_scoreTable->playerScore.score > _scoreTable->score1.score)
+		if (_scoreTable->playerScore.score < _scoreTable->score1.score)
 		{
 			_scoreTable->score3 = _scoreTable->score2;
 			_scoreTable->score2 = _scoreTable->score1;
 			_scoreTable->score1 = _scoreTable->playerScore;
 		}
-		else if (_scoreTable->playerScore.score > _scoreTable->score2.score && _scoreTable->playerScore.score <= _scoreTable->score1.score)
+		else if (_scoreTable->playerScore.score <= _scoreTable->score2.score && _scoreTable->playerScore.score > _scoreTable->score1.score)
 		{
 			_scoreTable->score3 = _scoreTable->score2;
 			_scoreTable->score2 = _scoreTable->playerScore;
 		}
-		else if (_scoreTable->playerScore.score > _scoreTable->score3.score && _scoreTable->playerScore.score <= _scoreTable->score2.score)
+		else if (_scoreTable->playerScore.score <= _scoreTable->score3.score && _scoreTable->playerScore.score > _scoreTable->score2.score)
 		{
 			_scoreTable->score3 = _scoreTable->playerScore;
 		}
@@ -3046,6 +3101,7 @@ void highScoreEnter(t_scoreTable* _scoreTable, t_player *Player, t_gameState* _g
 	{
 		_scoreTable->isPressed = 0;
 		*_gameState = MENU;
+		loadHighscores(_scoreTable);
 	}
 }
 
@@ -3089,7 +3145,7 @@ void initBoss(t_boss *Boss)
 	Boss->pos.x = 1420 / 2 + 500;
 	Boss->pos.y = 1080 - (Boss->hitBox.height / 2) - 40;
 
-	Boss->cd_Shoot = 1;
+	Boss->cd_Shoot = 1.20;
 
 	Boss->sens = 0;
 
@@ -3152,4 +3208,28 @@ void manageBoss(sfRenderWindow *_window, sfVideoMode _mode, t_boss *Boss, t_play
 	Boss->hitBox = sfSprite_getGlobalBounds(Boss->sprite);
 	sfSprite_setPosition(Boss->sprite, Boss->pos);
 	sfRenderWindow_drawSprite(_window, Boss->sprite, NULL);
+}
+
+void initTimer(t_txtBox* _timer)
+{
+	_timer->txt = malloc(50);
+	_timer->fontSize = 25;
+	_timer->txtPos.x = 250;
+	_timer->txtPos.y = 98;
+	txtCreate("A", _timer);
+	if (_timer->txt == NULL)
+		printf_s("error\n");
+}
+
+void updateTimer(t_txtBox* _timer, t_player *Player)
+{
+	char *str = malloc(50);
+	sprintf_s(str, 50, "%d sec", Player->timer_Since);
+	sfText_setString(_timer->txt,str);
+	_timer->txtBoundingBox = sfText_getLocalBounds(_timer->txt);
+	_timer->txtOrigin.x = _timer->txtBoundingBox.width / 2;
+	_timer->txtOrigin.y = _timer->txtBoundingBox.height / 2;
+	sfText_setOrigin(_timer->txt, _timer->txtOrigin);
+	sfText_setPosition(_timer->txt, _timer->txtPos);
+
 }

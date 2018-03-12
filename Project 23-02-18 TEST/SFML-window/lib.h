@@ -412,6 +412,7 @@ enum e_gameState
 	HIGHSCORE,
 	GAME,
 	END_GAME,
+	OVER_GAME
 
 };
 #pragma endregion
@@ -425,6 +426,8 @@ void initMenu(t_menu* _menuTxts);
 void loadHighscores(t_scoreTable* _scoreTable);
 void highScoreEnterInit(t_scoreTable* _scoreTable, t_player *Player);
 void highScoreEnter(t_scoreTable* _scoreTable, t_player *Player, t_gameState* _gameState);
+void initTimer(t_txtBox* _timer);
+void updateTimer(t_txtBox* _timer, t_player *Player);
 
 /*fct player*/
 void initPlayer(t_player *Player);
@@ -446,7 +449,7 @@ void managePoney(sfRenderWindow *_window, sfVideoMode _mode, t_poney *_poney1, t
 
 // Liste
 void AddBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_player *Player, t_boss *Boss, sfVector2f Direction, int type);
-void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player, t_hud *Hud);
+void ReadBullet(sfRenderWindow* _window, sfVideoMode _mode, List *_list, t_maps* _maps, t_player *Player, t_hud *Hud, t_boss *Boss);
 void DeleteFirstBullet(List *_list);
 void DeleteBulletToID(List *_list, int ID);
 //
